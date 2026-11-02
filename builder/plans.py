@@ -2,9 +2,16 @@
 from lib import *
 import geography, electives, speech, mult
 
-def block(title, color, rows):
+def tv(vids):
+    vids = [(u, l) for u, l in vids if u]
+    if not vids: return ""
+    return ("<div class='tvrow' style='float:right;display:flex;gap:6px;margin:0 0 4px 8px'>"
+            + "".join(qr_box(u, "TV: " + l, 50) for u, l in vids) + "</div>")
+
+def block(title, color, rows, vids=()):
     body = "".join(f"<div style='margin:2px 0'><b>{k}:</b> {v}</div>" for k, v in rows)
-    return f"<div class='box' style='padding:6px 10px;border-left:5px solid {color}'><div class='lab' style='color:{color}'>{title}</div>{body}</div>"
+    return (f"<div class='box' style='padding:6px 10px;border-left:5px solid {color};overflow:hidden'>{tv(vids)}"
+            f"<div class='lab' style='color:{color}'>{title}</div>{body}</div>")
 
 GEO = [
  [("Goal", "Everyone can name and point to the 7 continents."),
@@ -52,14 +59,14 @@ EL = [
   ("Explain", "Milk's surface is like a stretched skin (surface tension). Soap weakens it where it touches, so the colors get pulled away. Soap also chases the fat in the milk, "
    "which keeps it swirling — that's why whole milk works best."),
   ("Tiers", "A: predict & draw, slow/fast checkbox, trace “milk.” B: hypothesis, observations, conclusion. C: full explanation + variable test.")],
- [("Gather", "Colored paper (or let kids paint plain paper with watercolors first and let it dry), scissors, glue sticks, cardstock. Search “Matisse The Snail” to show the real piece."),
-  ("Before", "Play the Matisse story QR. Show The Snail and ask: what shapes do you see? How do they make a spiral?"),
+ [("Gather", "Colored paper (or let kids paint plain paper with watercolors first and let it dry), scissors, glue sticks, cardstock. The two Matisse videos show his cut-outs."),
+  ("Before", "Play the Matisse story video. Show The Snail and ask: what shapes do you see? How do they make a spiral?"),
   ("Steps", "1) Cut freely — no drawing first (Matisse “drew with scissors”). 2) Make at least 8 shapes: leaves, stars, squiggles, rectangles. "
    "3) Arrange them on the page BEFORE gluing; move things around. 4) Glue. 5) Give the piece a title."),
   ("Talk about", "Organic shapes (curvy, like leaves) vs geometric shapes (squares, triangles). Matisse kept making art after his illness — God gives creativity in every season."),
   ("Tiers", "A: free collage in the box. B: why cut-outs + organic vs geometric + title. C: same plus explain one design choice.")],
- [("Gather", "The QR music on your phone or TV; scarves or ribbons for the littles (optional)."),
-  ("Before", "Tell the Nutcracker story in 1 minute (or play the story QR): Clara, the nutcracker, the Mouse King, the Land of Sweets."),
+ [("Gather", "The music video (TV link up top); scarves or ribbons for the littles (optional)."),
+  ("Before", "Tell the Nutcracker story in 1 minute (or play the story video): Clara, the nutcracker, the Mouse King, the Land of Sweets."),
   ("Steps", "1) Play “Dance of the Sugar Plum Fairy” — eyes closed. Ask: what instrument sounds like tiny bells? (the celesta) 2) Play it again: littles draw or tiptoe, "
    "big kids fill in the listening table. 3) Play “Russian Dance (Trepak)” — fast and loud! Everyone dance. 4) End with “Waltz of the Flowers.”"),
   ("Fun fact", "Tchaikovsky found the celesta in Paris and kept it a secret so other composers wouldn't use it first."),
@@ -96,7 +103,8 @@ SPEECH = [
 def day_plan(i):
     d, wd, dt = DAYS[i]
     return ("<div class='small'>Order of the day for together subjects: Multiplication → Speech → Geography → Elective. About 10–15 minutes each.</div>"
-            + block(f"Multiplication Mastery · {mult.TITLES[i]}", "#6d28d9", [("Plan", MULT[i])])
-            + block(f"Speech Stars · {speech.TITLES[i]} (Nariah, Titus, Nayeli)", "#a21caf", [("Plan", SPEECH[i])])
-            + block(f"Geography · {geography.TITLES[i]}", "#2f5bd3", GEO[i])
-            + block(f"{electives.NAMES[i]} · {electives.TOPIC[i]}", "#b02fc9", EL[i]))
+            + block(f"Multiplication Mastery · {mult.TITLES[i]}", "#6d28d9", [("Plan", MULT[i])],
+                    ([(mult.VID[i], "Song")] if i < 4 else []) + [(mult.VIDSC[i], "Skip count")])
+            + block(f"Speech Stars · {speech.TITLES[i]} (Nariah, Titus, Nayeli)", "#a21caf", [("Plan", SPEECH[i])], [(speech.VID[i], "Watch & copy")])
+            + block(f"Geography · {geography.TITLES[i]}", "#2f5bd3", GEO[i], [(geography.VID[i], "Geography")])
+            + block(f"{electives.NAMES[i]} · {electives.TOPIC[i]}", "#b02fc9", EL[i], [(electives.VID[i], "Video"), (electives.VID2[i], "Story")]))
