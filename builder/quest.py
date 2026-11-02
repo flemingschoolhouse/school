@@ -68,14 +68,23 @@ KIDS = {
                 pm=[P("bath", "Take a bath", "🛁"), P("pjs", "Put on pajamas", "🌙"), P("teeth2", "Brush teeth", "🪥"), P("bible", "Bible study — sit and listen", "📖")]),
 }
 
-# Level N needs LEVELS[N-1] total XP (after the list, every level is +900 more).
-LEVELS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200]
-TEEN_TITLES = ["Rookie", "Apprentice", "Helper Pro", "Tidy Tactician", "Clean Captain", "Chore Champion", "Home Hero", "Elite", "Master", "Legend"]
-KID_TITLES = ["Little Helper", "Busy Helper", "Super Helper", "Star Helper", "Mighty Helper", "Awesome Helper", "Hero Helper", "Champion Helper", "Master Helper", "Legendary Helper"]
-PETS = [("🥚", "Egg"), ("🐣", "Hatchling"), ("🐥", "Chick"), ("🦜", "Parrot"), ("🦚", "Peacock"), ("🦄", "Unicorn"), ("🐉", "Dragon")]  # stage = min(level-1, last)
-# Rewards Grace can change any time (level -> reward). "Show Mom to claim!"
-REWARDS = {2: "Pick tonight's dessert 🍪", 3: "Choose the family movie 🎬", 4: "Stay up 30 minutes late 🌙", 5: "Pick the pizza on church night 🍕",
-           6: "Skip one chore of your choice 🎟️", 7: "One-on-one time with Mom or Dad 💜", 8: "Ice cream trip 🍦", 9: "Pick game night's game 🎲", 10: "Big surprise reward 🎁"}
+# Levels get slower as they go: Level 2 needs 300 XP, and each level after needs 100 XP more than the one before.
+# A kid who finishes everything earns roughly 150 XP a day, so Level 5 ≈ 2–3 weeks, Level 10 ≈ 7 weeks,
+# Level 15 ≈ 3½ months, Level 20 ≈ 6 months, Level 25 ≈ 9 months, Level 30 ≈ a year.
+def _levels(n=60):
+    t, inc = [0], 300
+    while len(t) < n: t.append(t[-1] + inc); inc += 100
+    return t
+LEVELS = _levels()
+# Titles change every 5 levels (index = (level-1)//5).
+TEEN_TITLES = ["Rookie", "Apprentice", "Pro", "Captain", "Champion", "Legend", "Mythic", "Immortal"]
+KID_TITLES = ["Little Helper", "Busy Helper", "Super Helper", "Star Helper", "Mighty Helper", "Hero Helper", "Legendary Helper", "Mega Helper"]
+# Pets grow every 4 levels (index = (level-1)//4).
+PETS = [("🥚", "Egg"), ("🐣", "Hatchling"), ("🐥", "Chick"), ("🦜", "Parrot"), ("🦚", "Peacock"), ("🦄", "Unicorn"), ("🐉", "Dragon")]
+TEEN_PETS = [("🥚", "Dragon Egg"), ("🦎", "Hatchling"), ("🐊", "Drake"), ("🐲", "Young Dragon"), ("🐉", "Dragon"), ("🐉", "Elder Dragon"), ("🐉", "Legendary Dragon")]
+# Small, spaced-out rewards Grace can change any time (level -> reward). "Show Mom to claim!"
+REWARDS = {5: "Pick tonight's dessert 🍪", 10: "Choose the family movie 🎬", 15: "Stay up 30 minutes late 🌙",
+           20: "Pick the pizza on church night 🍕", 25: "One-on-one time with Mom or Dad 💜", 30: "Ice cream trip 🍦"}
 XP_RULES = dict(day_bonus=25, streak_step=3, streak_cap=30, inspect=25)
 BADGES = [  # id, emoji, name, how to earn (checked in JS by stat >= n)
  ("first", "🏁", "First Quest", "Finish a whole day", "complete", 1),
@@ -110,7 +119,7 @@ body.teen{background:radial-gradient(circle at 20% 0%,#2a1f5c 0%,#12142e 55%,#0b
 .kid .hero{background:#fff;box-shadow:0 4px 0 rgba(31,42,92,.12)}
 .teen .hero{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px)}
 .av{width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:56px;flex:none;position:relative}
-.kid .av{background:var(--c)}.teen .av{background:linear-gradient(135deg,var(--c),#0b0c1f);font-size:30px;font-weight:800;color:#fff;border:3px solid rgba(255,255,255,.3)}
+.kid .av{background:var(--c)}.teen .av{background:linear-gradient(135deg,var(--c),#0b0c1f);border:3px solid rgba(255,255,255,.3)}
 .av .lv{position:absolute;bottom:-4px;right:-4px;background:#1f2a5c;color:#fff;font:800 14px Poppins;border-radius:12px;padding:2px 8px;border:2px solid #fff}
 .hi{flex:1;min-width:0}.hi h1{margin:0;font-size:26px;line-height:1.1}.hi .ti{font-weight:600;opacity:.8;font-size:15px}
 .bar{height:16px;border-radius:10px;margin:8px 0 3px;overflow:hidden}.kid .bar{background:#e6e1f5}.teen .bar{background:rgba(255,255,255,.12)}
@@ -170,11 +179,15 @@ var S={days:{},base:{}},INSP={},CLAIMS={},TODAY=today();
 try{var l=JSON.parse(localStorage.getItem(LS)||'null');if(l&&l.days)S=l}catch(e){}
 if(!S.base)S.base={};
 function day(k){k=k||TODAY;if(!S.days[k])S.days[k]={p:[],t:[]};return S.days[k]}
-function personal(dateStr){var wd=new Date(dateStr+'T12:00:00').getDay(),out=[];
+function sabbath(dateStr){return new Date(dateStr+'T12:00:00').getDay()===0}
+function prevActive(k){var d=new Date(k+'T12:00:00');do{d.setDate(d.getDate()-1)}while(d.getDay()===0);return dkey(d)}
+function title(L){return C.titles[Math.min(Math.floor((L-1)/5),C.titles.length-1)]}
+function petOf(L){return C.pets[Math.min(Math.floor((L-1)/4),C.pets.length-1)]}
+function personal(dateStr){var wd=new Date(dateStr+'T12:00:00').getDay(),out=[];if(wd===0)return out;
   ['am','school','own','pm'].forEach(function(s){(C[s]||[]).forEach(function(it){if(!it.days||it.days.indexOf(wd)>=0)out.push(it)})});return out}
 function dayXP(k,d){var x=0,its={};personal(k).forEach(function(i){its[i.id]=i});
   d.p.forEach(function(id){x+=(its[id]?its[id].xp:5)});d.t.forEach(function(id){x+=(CH[id]?CH[id].xp:5)});return x}
-function complete(k,d){var ps=personal(k);for(var i=0;i<ps.length;i++)if(d.p.indexOf(ps[i].id)<0)return false;return d.t.length>=C.goal}
+function complete(k,d){if(sabbath(k))return false;var ps=personal(k);for(var i=0;i<ps.length;i++)if(d.p.indexOf(ps[i].id)<0)return false;return d.t.length>=C.goal}
 function stats(){
   var keys=Object.keys(S.days).sort(),b=S.base,st={xp:b.xp||0,complete:b.complete||0,team:b.team||0,kitchen:b.kitchen||0,bath:b.bath||0,vacuum:b.vacuum||0,
     early:b.early||0,micro:b.micro||0,inspect:0,beststreak:b.beststreak||0,streak:0};
@@ -182,11 +195,11 @@ function stats(){
   keys.forEach(function(k){var d=S.days[k],c=complete(k,d);st.xp+=dayXP(k,d);
     d.t.forEach(function(id){st.team++;if(ROOMOF[id]=='Kitchen')st.kitchen++;if(ROOMOF[id]=='Bathroom')st.bath++;if(/vacuum/i.test(CH[id]?CH[id].text:''))st.vacuum++});
     if(d.p.indexOf('micro')>=0)st.micro++; if(d.early)st.early++;
-    if(c){st.complete++;var gap=prev?Math.round((new Date(k)-new Date(prev))/864e5):1;run=(gap==1)?run+1:1;prev=k;
+    if(c){st.complete++;run=(prev&&prevActive(k)==prev)?run+1:1;prev=k;
       st.xp+=C.rules.day_bonus+Math.min(run*C.rules.streak_step,C.rules.streak_cap);st.beststreak=Math.max(st.beststreak,run)}});
   // current streak: ends today or yesterday
-  var y=new Date();y.setDate(y.getDate()-1);
-  st.streak=(prev==TODAY||prev==dkey(y))?run:0;
+  // current streak stays alive through Sundays (Sabbath — no chores, no penalty)
+  st.streak=(prev==TODAY||prev==prevActive(TODAY))?run:0;
   for(var k in INSP){st.inspect++;st.xp+=C.rules.inspect}
   var L=1;while(L<C.levels.length&&st.xp>=C.levels[L])L++;st.level=L;st.lo=C.levels[L-1];st.hi=C.levels[L]||st.lo+900;return st}
 // ---------- sound & fx ----------
@@ -219,9 +232,9 @@ function render(){
   var d=day(),st=stats(),ps=personal(TODAY),done=0;ps.forEach(function(i){if(d.p.indexOf(i.id)>=0)done++});
   var tot=ps.length+C.goal,cnt=done+Math.min(d.t.length,C.goal),pct=tot?cnt/tot:0,comp=complete(TODAY,d);
   // hero
-  var pet=C.pets[Math.min(st.level-1,C.pets.length-1)];
-  document.getElementById('av').innerHTML=(C.style=='kid'?pet[0]:KID.charAt(0))+'<span class="lv">Lv '+st.level+'</span>';
-  document.getElementById('title').textContent='Level '+st.level+' · '+C.titles[Math.min(st.level-1,C.titles.length-1)]+(C.style=='kid'?' · pet: '+pet[1]:'');
+  var pet=petOf(st.level);
+  document.getElementById('av').innerHTML=pet[0]+'<span class="lv">Lv '+st.level+'</span>';
+  document.getElementById('title').textContent='Level '+st.level+' · '+title(st.level)+' · pet: '+pet[1];
   document.getElementById('xpbar').style.width=Math.min(100,(st.xp-st.lo)/(st.hi-st.lo)*100)+'%';
   document.getElementById('xptx').textContent=st.xp+' XP · '+(st.hi-st.xp)+' to Level '+(st.level+1);
   document.getElementById('chips').innerHTML='<span class="chip">🔥 '+st.streak+' day streak</span><span class="chip">🏆 best '+st.beststreak+'</span><span class="chip">🧽 '+st.team+' team chores</span>';
@@ -231,6 +244,10 @@ function render(){
     '<text x="32" y="38" text-anchor="middle" font-size="16" font-weight="800" fill="currentColor">'+Math.round(pct*100)+'%</text>';
   document.getElementById('todaytx').innerHTML=comp?'<b>Quest complete! 🎉</b><div class="small">Everything done today. You earned your day bonus!</div>':
     '<b>'+cnt+' of '+tot+' done today</b><div class="small">Finish your list + '+C.goal+' team chore'+(C.goal>1?'s':'')+' to complete today\'s quest.</div>';
+  if(sabbath(TODAY)){document.getElementById('todaytx').innerHTML='<b>Sabbath rest 🙏</b><div class="small">No chores today — rest, worship and enjoy your family. Your streak is safe!</div>';
+    document.getElementById('ring').innerHTML='<text x="32" y="44" text-anchor="middle" font-size="34">🕊️</text>';
+    document.getElementById('lists').innerHTML='<h2>🙏 Sunday is our Sabbath</h2><div class="sec" style="padding:16px;font-size:17px">“Remember the Sabbath day, to keep it holy.” — Exodus 20:8<br><br>No list today. See you Monday!</div>';
+  } else {
   // personal sections
   var secs=[['am','☀️ Morning'],['school','✏️ School'],['own','🌟 My special job'],['pm','🌙 Evening']],h='';
   var wd=new Date().getDay();
@@ -239,13 +256,14 @@ function render(){
     if(s[0]=='school'){h+=teamHTML(d)}});
   if(!(C.school||[]).some(function(i){return !i.days||i.days.indexOf(wd)>=0}))h=h.replace('<h2>🌙 Evening</h2>',teamHTML(d)+'<h2>🌙 Evening</h2>');
   document.getElementById('lists').innerHTML=h;
+  }
   // badges
   document.getElementById('badges').innerHTML=C.badges.filter(function(b){return b[0]!='micro10'||C.own}).map(function(b){var got=(st[b[4]]||0)>=b[5];
     return '<div class="bd'+(got?'':' no')+'"><span class="e">'+b[1]+'</span>'+b[2]+'<div class="small">'+b[3]+'</div></div>'}).join('');
   // rewards
   document.getElementById('rewards').innerHTML=Object.keys(C.rewards).map(function(l){l=+l;return '<div class="rw '+(st.level>=l?'got':'no')+'"><span class="l">Level '+l+'</span><span>'+C.rewards[l]+'</span>'+(st.level>=l?'<span style="margin-left:auto">✅ show Mom!</span>':'')+'</div>'}).join('');
   if(lastLevel!==null&&st.level>lastLevel){fanfare();confetti(160);var r=C.rewards[st.level];
-    popup(C.style=='kid'?pet[0]:'⚡','Level '+st.level+'!',C.titles[Math.min(st.level-1,C.titles.length-1)]+(r?' — Reward unlocked: '+r+' Show Mom!':''))}
+    popup(pet[0],'Level '+st.level+'!',title(st.level)+(r?' — Reward unlocked: '+r+' Show Mom!':''))}
   else if(lastComplete===false&&comp){fanfare();confetti(120);popup('🎉','Quest complete!','You finished everything today! +'+C.rules.day_bonus+' bonus XP'+(st.streak>1?' · '+st.streak+' day streak 🔥':''))}
   lastLevel=st.level;lastComplete=comp;
 }
@@ -277,7 +295,7 @@ var st_;function rollup(){var keys=Object.keys(S.days).sort();if(keys.length<=60
 function save(){rollup();try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}clearTimeout(st_);st_=setTimeout(push,1500)}
 function push(){if(!API)return;var st=stats(),d=day(),ps=personal(TODAY),dn=ps.filter(function(i){return d.p.indexOf(i.id)>=0}).length;
   var body={kid:KID,week:'quest-stats',progress:{date:TODAY,team:d.t,done:dn,total:ps.length,goal:C.goal,complete:complete(TODAY,d)?1:0,
-    level:st.level,xp:st.xp,streak:st.streak,best:st.beststreak,title:C.titles[Math.min(st.level-1,C.titles.length-1)]},answers:S};
+    level:st.level,xp:st.xp,streak:st.streak,best:st.beststreak,title:title(st.level)},answers:S};
   try{fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)}).then(function(){mark('Saved ✓')})}catch(e){}}
 function mark(t){document.getElementById('sync').textContent=t+' · '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
 function merge(remote){if(!remote||!remote.days)return;for(var k in remote.days){var r=remote.days[k],l=S.days[k];
@@ -301,7 +319,7 @@ document.addEventListener('visibilitychange',function(){if(document.visibilitySt
 def page_html(kid, cfg):
     conf = dict(kid=kid, api=API, style=cfg["style"], color=cfg["color"], goal=cfg["team_goal"], read=cfg.get("read", False),
                 am=cfg["am"], school=cfg["school"], pm=cfg["pm"], own=cfg.get("own"), team=TEAM, levels=level_table(),
-                titles=TEEN_TITLES if cfg["style"] == "teen" else KID_TITLES, pets=PETS, rewards=REWARDS, rules=XP_RULES, badges=BADGES)
+                titles=TEEN_TITLES if cfg["style"] == "teen" else KID_TITLES, pets=TEEN_PETS if cfg["style"] == "teen" else PETS, rewards=REWARDS, rules=XP_RULES, badges=BADGES)
     big = " big" if kid in ("Titus", "Nayeli") else ""
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{kid}'s Quest</title><meta name="theme-color" content="{cfg['color']}"><meta name="apple-mobile-web-app-capable" content="yes">
