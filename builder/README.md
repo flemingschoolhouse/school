@@ -11,5 +11,6 @@ and the tablet web pages published on this site.
   (both expect the .py files to sit in /home/claude).
 - Site layout: root <kid>.html = CURRENT week (tablet home-screen shortcuts point here);
   weeks/<YYYY-MM-DD>/<kid>.html = archive; index.html lists current + past weeks.
+- Mom page: mompage.py builds mom-96b4fb.html (unlisted; lesson plans, answer keys, kid links, PDF print links in weeks/<date>/pdf/).
 - Each new week: update DAYS dates in lib.py, write the new week's content in the content modules,
   bump week/level numbers, rebuild, copy web pages to root + weeks/<date>/, add the week to index.html.

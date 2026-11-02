@@ -140,8 +140,9 @@ def web_html(kid, P):
             f"<div class='note'>Tap ▶ to watch a video. Tap 🔊 to hear a page read aloud. Tap a line to type your answer. Draw and trace right on the page with your finger. Your work saves on this tablet.</div>"
             f"{''.join(out)}{JS}{JS2}</body></html>")
 
-os.makedirs("/home/claude/web", exist_ok=True)
-for kid in ["Nevaeh", "Nylah", "Naomi", "Nariah", "Titus", "Nayeli"]:
+if __name__ == "__main__":
+  os.makedirs("/home/claude/web", exist_ok=True)
+  for kid in ["Nevaeh", "Nylah", "Naomi", "Nariah", "Titus", "Nayeli"]:
     P = build.build_kid(kid, build.KIDS[kid])
     open(f"/home/claude/web/{kid}.html", "w").write(web_html(kid, P))
     print(kid, os.path.getsize(f"/home/claude/web/{kid}.html"))
