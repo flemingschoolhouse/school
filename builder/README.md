@@ -14,3 +14,7 @@ and the tablet web pages published on this site.
 - Mom page: mompage.py builds mom-96b4fb.html (unlisted; lesson plans, answer keys, kid links, PDF print links in weeks/<date>/pdf/).
 - Each new week: update DAYS dates in lib.py, write the new week's content in the content modules,
   bump week/level numbers, rebuild, copy web pages to root + weeks/<date>/, add the week to index.html.
+- Progress saving: pages sync answers + per-page progress to Grace's Google Apps Script web app (API in web.py;
+  script source in builder/progress-sheet-script.gs). Each new week set WEEK in web.py AND WEEK/LABEL in mompage.py
+  to the new Tuesday date so progress is tracked per week. Never change API. Mom's Corner shows the progress board;
+  <kid>.html?view=1 shows a kid's synced answers (drawings stay on the tablet).

@@ -63,11 +63,27 @@ JS = """
 
 JS2 = r"""
 <script>
-(function(){
-  var KEY='ans-'+document.title, S={};
-  try{S=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+function schoolInit(){
+  var C=window.SCHOOL||{}, KEY='ans-'+document.title, S={};
+  var VIEW=/[?&]view=1/.test(location.search);
+  if(VIEW){ S=C.remote||{}; }
+  else { try{S=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){} }
   var badge=document.createElement('div');badge.className='saved';badge.textContent='Saved ✓';document.body.appendChild(badge);
-  var t;function save(){try{localStorage.setItem(KEY,JSON.stringify(S));badge.style.opacity=1;clearTimeout(t);t=setTimeout(function(){badge.style.opacity=0},900)}catch(e){}}
+  var t,st;
+  function progress(){var P={};document.querySelectorAll('.page').forEach(function(p){
+      var d=p.querySelector('.dayblk .d'),sj=p.querySelector('.subj .s'),tt=p.querySelector('.subj .t');if(!d||!sj||!/DAY/.test(d.textContent))return;
+      var f=p.querySelectorAll('input.fill,input.blankin,td.edit'),n=0,tot=f.length;
+      f.forEach(function(x){if((x.value||x.textContent||'').trim())n++});
+      var cv=p.querySelectorAll('canvas');tot+=cv.length;cv.forEach(function(c){if(c.dataset.k&&S[c.dataset.k])n++});
+      var ops=p.querySelectorAll('.opt.sel').length;n+=ops;tot+=p.querySelectorAll('.opt').length/2;
+      if(!tot)return;var k=d.textContent.replace('DAY ','D')+'|'+sj.textContent+'|'+(tt?tt.textContent:'');
+      P[k]=n===0?0:(n/tot>=0.8?2:1)});return P}
+  function sync(){if(VIEW||!C.api)return;var A={};for(var k in S){A[k]=(/^(dr|sv)/.test(k))?1:S[k]}
+    var body=JSON.stringify({kid:C.kid,week:C.week,progress:progress(),answers:A});
+    try{fetch(C.api,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:body})}catch(e){}}
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){clearTimeout(st);sync()}});
+  function save(){if(VIEW)return;try{localStorage.setItem(KEY,JSON.stringify(S));badge.style.opacity=1;clearTimeout(t);t=setTimeout(function(){badge.style.opacity=0},900)}catch(e){}
+    clearTimeout(st);st=setTimeout(sync,5000)}
   // lines -> inputs
   document.querySelectorAll('.ln').forEach(function(el,i){
     var inp=document.createElement('input');inp.className='fill';inp.style.height=el.style.height||'26px';
@@ -92,7 +108,7 @@ JS2 = r"""
   // drawing
   var COLORS=['#1f2a5c','#2f5bd3','#6d28d9','#d6336c','#2b8a3e','#e8590c'];
   function makeCanvas(host,k){
-    var c=document.createElement('canvas');host.appendChild(c);
+    var c=document.createElement('canvas');c.dataset.k=k;host.appendChild(c);
     var tools=document.createElement('div');tools.className='tools';host.appendChild(tools);
     var col=COLORS[0];
     COLORS.forEach(function(cc,n){var b=document.createElement('button');b.style.background=cc;if(!n)b.classList.add('on');
@@ -120,9 +136,22 @@ JS2 = r"""
     var wrap=document.createElement('span');wrap.className='drawwrap';sv.parentNode.insertBefore(wrap,sv);wrap.appendChild(sv);
     makeCanvas(wrap,'sv'+(n++));
   });
+}
+(function(){var C=window.SCHOOL||{};var view=/[?&]view=1/.test(location.search);
+  var KEY='ans-'+document.title,has=false;try{has=!!localStorage.getItem(KEY)}catch(e){}
+  if(!C.api||(!view&&has)){schoolInit();return}
+  var done=false;function go(){if(done)return;done=true;schoolInit()}
+  fetch(C.api+'?action=get&kid='+encodeURIComponent(C.kid)+'&week='+encodeURIComponent(C.week)).then(function(r){return r.json()}).then(function(j){
+    var a=j.answers||{},b={};for(var k in a){if(!/^(dr|sv)/.test(k))b[k]=a[k]}
+    if(view){C.remote=b}else if(Object.keys(b).length){try{localStorage.setItem(KEY,JSON.stringify(b))}catch(e){}}
+    go()}).catch(go);
+  setTimeout(go,7000);
 })();
 </script>
 """
+
+API = "https://script.google.com/macros/s/AKfycbzgvfEOWoBFQHBeHmbvklVpT-UCOSJUHCx3rcUvQVwzFDg9CfIY0UC6UlDvA9kr3ZeIaQ/exec"
+WEEK = "2026-11-03"
 
 def web_html(kid, P):
     pages = [p for p in P.pages if 'class="page blank"' not in p]
@@ -138,7 +167,7 @@ def web_html(kid, P):
             f"<title>{esc(title)}</title><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
             f"<style>{CSS}{WEBCSS}</style></head><body><div id='top'></div>{nav}"
             f"<div class='note'>Tap ▶ to watch a video. Tap 🔊 to hear a page read aloud. Tap a line to type your answer. Draw and trace right on the page with your finger. Your work saves on this tablet.</div>"
-            f"{''.join(out)}{JS}{JS2}</body></html>")
+            f"{''.join(out)}<script>window.SCHOOL={{api:'{API}',kid:'{kid}',week:'{WEEK}'}};</script>{JS}{JS2}</body></html>")
 
 if __name__ == "__main__":
   os.makedirs("/home/claude/web", exist_ok=True)
