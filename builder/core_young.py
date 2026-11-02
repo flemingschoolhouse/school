@@ -123,17 +123,17 @@ def nariah_english():
 
 def nariah_science():
     S = Subject("Nariah", "Science", "Week 2 · The Butterfly Life Cycle")
-    v = yt("monarch butterfly life cycle for kids")
+    VB = [yt("BF egg"), yt("BF caterpillar"), yt("BF chrysalis"), yt("BF butterfly"), yt("BF review")]
     S.set(0, "Stage 1: Egg",
         learnbox("<p class='big'>A mother <b>monarch butterfly</b> lays tiny eggs on a <b>milkweed</b> leaf. Each egg is about the size of a pin head! "
-                 "Monarchs pick milkweed because it's the only plant their babies can eat. After 3–5 days, the egg hatches.</p>", v)
+                 "Monarchs pick milkweed because it's the only plant their babies can eat. After 3–5 days, the egg hatches.</p>", VB[0])
         + f'<div class="center">{icon("egg", 2.2)}</div>'
         + qs([("What plant does a monarch lay her eggs on?", 1), ("How big is a monarch egg?", 1), ("How many days until it hatches?", 1)], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("egg", 48, 3),
         "1) milkweed 2) about the size of a pin head 3) 3–5 days")
     S.set(1, "Stage 2: Caterpillar",
         learnbox("<p class='big'>Out comes a tiny <b>caterpillar</b> (also called a <b>larva</b>). First it eats its own eggshell, then it munches milkweed all day long! "
-                 "It grows so fast it gets too big for its skin, so it <b>molts</b> — splits its skin and crawls out with a new one. It molts several times in about 2 weeks.</p>", v)
+                 "It grows so fast it gets too big for its skin, so it <b>molts</b> — splits its skin and crawls out with a new one. It molts several times in about 2 weeks.</p>", VB[1])
         + f'<div class="center">{icon("caterpillar", 2.2)}</div>'
         + qs([("What is another name for a caterpillar?", 1), ("What is the first thing it eats?", 1), ("What does “molt” mean?", 2)], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("larva", 48, 2),
@@ -141,7 +141,7 @@ def nariah_science():
     S.set(2, "Stage 3: Chrysalis",
         learnbox("<p class='big'>When the caterpillar is big, it hangs upside down in a “J” shape and forms a <b>chrysalis</b> (KRIS-uh-lis) — also called a <b>pupa</b>. "
                  "A monarch chrysalis is green with tiny gold dots. Inside, God is doing something amazing: the caterpillar is changing into a butterfly! "
-                 "This takes about 1–2 weeks.</p>", v)
+                 "This takes about 1–2 weeks.</p>", VB[2])
         + f'<div class="center">{icon("chrysalis", 2.2)}</div>'
         + qs([("What shape does the caterpillar hang in?", 1), ("What is another name for the chrysalis?", 1), ("What is happening inside?", 2)], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("pupa", 48, 3),
@@ -149,13 +149,13 @@ def nariah_science():
     S.set(3, "Stage 4: Butterfly",
         learnbox("<p class='big'>The chrysalis cracks open and an <b>adult butterfly</b> squeezes out! Its wings are wet and crumpled, so it pumps them and waits a few hours "
                  "until they're dry. Then it flies off to drink nectar from flowers with a straw-like tongue. Fall monarchs fly all the way to <b>Mexico</b>! "
-                 "Then the cycle starts over.</p>", v)
+                 "Then the cycle starts over.</p>", VB[3])
         + f'<div class="center">{icon("butterfly", 2.2)}</div>'
         + qs([("Why can't the butterfly fly right away?", 1), ("What does a butterfly drink?", 1), ("Where do fall monarchs fly?", 1)], 1, 30)
         + '<div class="box big">2 Corinthians 5:17 — “if anyone is in Christ, he is a new creation.” How is a butterfly like a new creation?</div>' + lines(2, 30),
         "1) its wings are wet/crumpled 2) nectar 3) Mexico. Reflection varies.")
     S.set(4, "The Whole Cycle",
-        learnbox("<p class='big'>Put the life cycle together! Number the stages 1–4 and draw arrows to make a circle.</p>", v)
+        learnbox("<p class='big'>Put the life cycle together! Number the stages 1–4 and draw arrows to make a circle.</p>", VB[4])
         + '<div class="grid4" style="justify-items:center">' + "".join(f'<div class="center">{icon(n, 1.4)}<div class="big">____</div></div>' for n in ["butterfly", "egg", "chrysalis", "caterpillar"]) + '</div>'
         + '<div class="lab">Draw the life cycle as a circle with arrows.</div><div class="answer-space" style="min-height:260px"></div>'
         + qs([("What plant do monarchs need?", 1), ("Which stage eats the most?", 1)], 1, 30),
@@ -288,33 +288,33 @@ def titus_letters():
 
 def titus_science():
     S = Subject("Titus", "Science", "Week 2 · My Five Senses")
-    v = yt("five senses song for kids")
+    VS = [yt("SN sight"), yt("SN hearing"), yt("SN smell taste"), yt("SN touch"), yt("SN all")]
     S.set(0, "I Can See!",
-        learnbox("<p class='big'>God gave us <b>5 senses</b>! Today: <b>seeing</b>. We see with our <b>eyes</b>. Play I Spy with Mom: “I spy something purple…”</p>", v)
+        learnbox("<p class='big'>God gave us <b>5 senses</b>! Today: <b>seeing</b>. We see with our <b>eyes</b>. Play I Spy with Mom: “I spy something purple…”</p>", VS[0])
         + f'<div class="center">{icon("eye", 2.4)}</div>'
         + '<div class="lab">Go on a walk. Draw 3 things you SEE.</div><div class="answer-space" style="min-height:300px"></div>'
         + '<div class="lab">Trace:</div>' + trace_line("see", 56, 3), "—")
     S.set(1, "I Can Hear!",
-        learnbox("<p class='big'>We <b>hear</b> with our <b>ears</b>. Close your eyes and be very quiet. What do you hear? Birds? A car? The baby?</p>", v)
+        learnbox("<p class='big'>We <b>hear</b> with our <b>ears</b>. Close your eyes and be very quiet. What do you hear? Birds? A car? The baby?</p>", VS[1])
         + f'<div class="center">{icon("ear", 2.4)}</div>'
         + '<div class="lab">Mom makes a sound behind your back (clap, shake keys, crinkle paper, ring a bell). Guess what it is!</div>'
         + '<table class="t" style="font-size:15pt">' + "".join(f"<tr><td style='height:44px'>Sound {k}</td><td>I guessed: </td><td class='center'><span class='chk'></span> right!</td></tr>" for k in range(1, 5)) + '</table>'
         + '<div class="lab">Trace:</div>' + trace_line("hear", 56, 2), "—")
     S.set(2, "I Can Smell & Taste!",
-        learnbox("<p class='big'>We <b>smell</b> with our <b>nose</b> and <b>taste</b> with our <b>tongue</b>. Some foods are sweet, some sour, some salty!</p>", v)
+        learnbox("<p class='big'>We <b>smell</b> with our <b>nose</b> and <b>taste</b> with our <b>tongue</b>. Some foods are sweet, some sour, some salty!</p>", VS[2])
         + f'<div class="flexrow" style="justify-content:center;gap:40px">{icon("nose", 1.8)}{icon("mouth", 1.8)}</div>'
         + '<div class="lab">Taste test with Mom! Try a tiny bite and color the face.</div>'
         + '<table class="t" style="font-size:15pt"><tr><th>Food</th><th>Sweet, sour, or salty?</th><th>I like it! / No thanks</th></tr>'
         + "".join(f"<tr><td style='height:46px'>{f}</td><td></td><td class='center' style='font-size:22pt'>☺ &nbsp; ☹</td></tr>" for f in ["banana or apple", "lemon", "pretzel or cracker", "pickle"]) + '</table>', "—")
     S.set(3, "I Can Touch!",
-        learnbox("<p class='big'>We feel with our <b>skin</b> — especially our <b>hands</b>! Things can feel soft, hard, bumpy, smooth, warm, or cold.</p>", v)
+        learnbox("<p class='big'>We feel with our <b>skin</b> — especially our <b>hands</b>! Things can feel soft, hard, bumpy, smooth, warm, or cold.</p>", VS[3])
         + f'<div class="center">{icon("hand", 2.2)}</div>'
         + '<div class="lab">Mystery bag! Mom puts things in a bag. Feel without looking. Is it soft or hard?</div>'
         + '<div class="grid2"><div class="box" style="min-height:200px"><div class="huge center">SOFT</div><div class="small center">draw soft things</div></div>'
           '<div class="box" style="min-height:200px"><div class="huge center">HARD</div><div class="small center">draw hard things</div></div></div>'
         + '<div class="lab">Trace:</div>' + trace_line("soft", 56, 2), "—")
     S.set(4, "My 5 Senses",
-        learnbox("<p class='big'>Match each body part to its sense. Draw a line!</p>", v)
+        learnbox("<p class='big'>Match each body part to its sense. Draw a line!</p>", VS[4])
         + '<div class="flexrow" style="justify-content:space-between;align-items:stretch"><div style="display:flex;flex-direction:column;gap:6px">'
         + "".join(icon(n, 0.95) for n in ["eye", "ear", "nose", "mouth", "hand"])
         + '</div><div style="display:flex;flex-direction:column;justify-content:space-around;font-size:22pt;font-weight:700;color:#1f2a5c">'

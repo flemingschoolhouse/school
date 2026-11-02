@@ -52,7 +52,7 @@ MCSS = """.mhead{max-width:816px;margin:0 auto;padding:16px;font-family:Poppins,
 html = (f"<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
         f"<meta name='robots' content='noindex'><title>Mom's Corner · Week of Nov 3</title>"
         f"<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
-        f"<style>{CSS}{web.WEBCSS}{MCSS}</style></head><body>{top}{pages}"
+        f"<style>{CSS}{web.WEBCSS}{MCSS}</style></head><body>{top}{pages}{web.MODAL}"
         "<script>function fit(){var w=Math.min(window.innerWidth-12,816);document.querySelectorAll('.page').forEach(function(p){p.style.zoom=(w/816)})}window.addEventListener('resize',fit);fit();</script></body></html>")
 open(f"{REPO}/mom-96b4fb.html", "w").write(html)
 shutil.copy(f"{REPO}/mom-96b4fb.html", f"{REPO}/weeks/{WEEK}/mom-96b4fb.html")

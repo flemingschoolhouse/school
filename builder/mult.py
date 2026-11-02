@@ -1,8 +1,10 @@
 from lib import *
 import random, math
 
-VID = [yt("count by 5s song for kids"), yt("count by 10s song for kids"), yt("multiplication 5s and 10s trick kids"),
-       yt("multiplication word problems 5s 10s kids"), yt("skip counting by 5 and 10 song")]
+VID = [yt("MM 5 times table song"), yt("MM 10 times table song"), yt("MM multiply by 10s Jack Hartmann"),
+       yt("MM multiplication word problems clue words"), yt("MM 5 times table song")]
+VIDSC = [yt("count by 10s song for kids"), yt("count by 5s song for kids"), yt("SC skip count by 5s 10s together"),
+         yt("SC skip count forward back by 10s"), yt("SC grandma grandpa count by 10s")]
 TITLES = ["The 5s", "The 10s", "5s & 10s Mix-Up", "Word Problems + Speed Drill", "Saturday Checkpoint"]
 KEYS = {}  # (day) -> answer html
 
@@ -96,7 +98,7 @@ def hand_svg(w=70):
             'fill="#fff" stroke="#1f2a5c" stroke-width="2"/></svg>')
 
 def skipstars_page(name, i):
-    v = qr_box(VID[[1, 0, 4, 1, 1][i]], "Sing along", 62)
+    v = qr_box(VIDSC[i], "Sing along", 62)
     if i == 0:
         nums = "".join(f'<div style="display:flex;flex-direction:column;align-items:center">{school_print(str(n), 62, "trace", False)}</div>' for n in range(10, 101, 10))
         body = (f'<div class="flexrow"><div class="learn grow"><p class="big">Let\'s count by <b>10s</b>! 10, 20, 30… all the way to 100! Sing it with the song.</p></div>' + v + '</div>'

@@ -21,7 +21,12 @@ DAYS = [("Day 1", "Tuesday", "Nov 3"), ("Day 2", "Wednesday", "Nov 4"), ("Day 3"
 
 esc = html.escape
 
+MISSING = set()
 def yt(q):
+    from videos import V
+    if q in V:
+        return "https://www.youtube.com/watch?v=" + V[q]
+    MISSING.add(q)
     return "https://www.youtube.com/results?search_query=" + urllib.parse.quote_plus(q)
 
 def qr_svg(url, size=78):
@@ -37,7 +42,8 @@ WEB = {"on": False}
 
 def qr_box(url, label, size=74):
     if WEB["on"]:
-        return f'<a class="vidbtn" href="{esc(url)}" target="_blank" rel="noopener">▶ {esc(label)}</a>'
+        vid = url.split("watch?v=")[1] if "watch?v=" in url else ""
+        return f'<a class="vidbtn" data-vid="{vid}" href="{esc(url)}" target="_blank" rel="noopener">▶ {esc(label)}</a>'
     return f'<div class="qrbox">{qr_svg(url,size)}<div class="qrl">{esc(label)}</div></div>'
 
 # ---------------- ball-and-stick school print (stroke font) ----------------

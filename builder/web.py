@@ -33,8 +33,18 @@ td.edit:focus{background:#f1ebfd}
 .tools button{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #999;cursor:pointer;padding:0}
 .tools button.clr{width:auto;border-radius:12px;padding:0 8px;font:600 11px Poppins;background:#fff;color:#333}
 .tools button.on{box-shadow:0 0 0 3px #1f2a5c}
-.drawwrap .tools{opacity:.85}
+.drawwrap .tools{opacity:.85;top:-6px;right:-6px}
+.drawwrap .tools button.clr{padding:0 6px;height:22px}
 .saved{position:fixed;bottom:10px;right:10px;background:#1f2a5c;color:#fff;font:600 12px Poppins;padding:6px 12px;border-radius:14px;opacity:0;transition:opacity .3s}
+
+
+.vmodal{position:fixed;inset:0;background:rgba(10,12,30,.88);z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:12px}
+.vmodal.on{display:flex}
+.vmodal .frame{width:min(96vw,960px);aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+.vmodal iframe{width:100%;height:100%;border:0}
+.vmodal .bar{display:flex;gap:10px}
+.vmodal button,.vmodal a{font:700 16px Poppins,sans-serif;border:0;border-radius:22px;padding:10px 20px;cursor:pointer;text-decoration:none}
+.vmodal button{background:#fff;color:#1f2a5c}.vmodal a{background:#4338ca;color:#fff}
 
 .note{max-width:780px;margin:10px auto 0;font:13px Poppins,sans-serif;color:#444;text-align:center}
 """
@@ -107,13 +117,13 @@ function schoolInit(){
       if(on){o.classList.add('sel');S[k]=1}save()})});
   // drawing
   var COLORS=['#1f2a5c','#2f5bd3','#6d28d9','#d6336c','#2b8a3e','#e8590c'];
-  function makeCanvas(host,k){
+  function makeCanvas(host,k,small){
     var c=document.createElement('canvas');c.dataset.k=k;host.appendChild(c);
     var tools=document.createElement('div');tools.className='tools';host.appendChild(tools);
     var col=COLORS[0];
-    COLORS.forEach(function(cc,n){var b=document.createElement('button');b.style.background=cc;if(!n)b.classList.add('on');
+    (small?[]:COLORS).forEach(function(cc,n){var b=document.createElement('button');b.style.background=cc;if(!n)b.classList.add('on');
       b.onclick=function(e){e.stopPropagation();col=cc;tools.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});b.classList.add('on')};tools.appendChild(b)});
-    var clr=document.createElement('button');clr.className='clr';clr.textContent='Clear';tools.appendChild(clr);
+    var clr=document.createElement('button');clr.className='clr';clr.textContent=small?'⟲':'Clear';tools.appendChild(clr);
     function size(){var r=host.getBoundingClientRect();var w=host.offsetWidth,h=host.offsetHeight;if(!w||!h)return;
       if(c.width!==w*2){c.width=w*2;c.height=h*2;load()}}
     var ctx=c.getContext('2d');
@@ -134,7 +144,7 @@ function schoolInit(){
     if(sv.closest('.qr')||sv.classList.contains('qr'))return;
     var w=sv.getBoundingClientRect().width;if(w<100&&!sv.closest('.trow'))return;
     var wrap=document.createElement('span');wrap.className='drawwrap';sv.parentNode.insertBefore(wrap,sv);wrap.appendChild(sv);
-    makeCanvas(wrap,'sv'+(n++));
+    makeCanvas(wrap,'sv'+(n++),sv.getBoundingClientRect().height<120);
   });
 }
 (function(){var C=window.SCHOOL||{};var view=/[?&]view=1/.test(location.search);
@@ -153,6 +163,18 @@ function schoolInit(){
 API = "https://script.google.com/macros/s/AKfycbzgvfEOWoBFQHBeHmbvklVpT-UCOSJUHCx3rcUvQVwzFDg9CfIY0UC6UlDvA9kr3ZeIaQ/exec"
 WEEK = "2026-11-03"
 
+MODAL = r"""
+<div class="vmodal" id="vmodal"><div class="frame"><iframe id="vframe" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+<div class="bar"><button id="vclose">✕ Close video</button><a id="vyt" href="#" target="_blank" rel="noopener">Open in YouTube</a></div></div>
+<script>
+(function(){var m=document.getElementById('vmodal'),f=document.getElementById('vframe'),y=document.getElementById('vyt');
+ document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a.vidbtn');if(!a||!a.dataset.vid)return;e.preventDefault();
+  f.src='https://www.youtube-nocookie.com/embed/'+a.dataset.vid+'?autoplay=1&rel=0&modestbranding=1&playsinline=1';y.href=a.href;m.classList.add('on')});
+ function close(){m.classList.remove('on');f.src='about:blank'}
+ document.getElementById('vclose').addEventListener('click',close);m.addEventListener('click',function(e){if(e.target===m)close()});})();
+</script>
+"""
+
 def web_html(kid, P):
     pages = [p for p in P.pages if 'class="page blank"' not in p]
     out, seen = [], set()
@@ -167,7 +189,7 @@ def web_html(kid, P):
             f"<title>{esc(title)}</title><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
             f"<style>{CSS}{WEBCSS}</style></head><body><div id='top'></div>{nav}"
             f"<div class='note'>Tap ▶ to watch a video. Tap 🔊 to hear a page read aloud. Tap a line to type your answer. Draw and trace right on the page with your finger. Your work saves on this tablet.</div>"
-            f"{''.join(out)}<script>window.SCHOOL={{api:'{API}',kid:'{kid}',week:'{WEEK}'}};</script>{JS}{JS2}</body></html>")
+            f"{''.join(out)}<script>window.SCHOOL={{api:'{API}',kid:'{kid}',week:'{WEEK}'}};</script>{JS}{JS2}{MODAL}</body></html>")
 
 if __name__ == "__main__":
   os.makedirs("/home/claude/web", exist_ok=True)
