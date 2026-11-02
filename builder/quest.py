@@ -68,12 +68,12 @@ KIDS = {
                 pm=[P("bath", "Take a bath", "🛁"), P("pjs", "Put on pajamas", "🌙"), P("teeth2", "Brush teeth", "🪥"), P("bible", "Bible study — sit and listen", "📖")]),
 }
 
-# Levels get slower as they go: Level 2 needs 300 XP, and each level after needs 100 XP more than the one before.
-# A kid who finishes everything earns roughly 150 XP a day, so Level 5 ≈ 2–3 weeks, Level 10 ≈ 7 weeks,
-# Level 15 ≈ 3½ months, Level 20 ≈ 6 months, Level 25 ≈ 9 months, Level 30 ≈ a year.
-def _levels(n=60):
+# Levels get a little slower as they go: Level 2 needs 300 XP, and each level after needs 40 XP more than the one before.
+# A kid who finishes everything earns roughly 150 XP a day (Mon–Sat), so Level 4 ≈ 1½ weeks, Level 8 ≈ 3½ weeks,
+# Level 12 ≈ 6–7 weeks, Level 16 ≈ 10 weeks, Level 20 ≈ 3–4 months.
+def _levels(n=80):
     t, inc = [0], 300
-    while len(t) < n: t.append(t[-1] + inc); inc += 100
+    while len(t) < n: t.append(t[-1] + inc); inc += 40
     return t
 LEVELS = _levels()
 # Titles change every 5 levels (index = (level-1)//5).
@@ -83,8 +83,8 @@ KID_TITLES = ["Little Helper", "Busy Helper", "Super Helper", "Star Helper", "Mi
 PETS = [("🥚", "Egg"), ("🐣", "Hatchling"), ("🐥", "Chick"), ("🦜", "Parrot"), ("🦚", "Peacock"), ("🦄", "Unicorn"), ("🐉", "Dragon")]
 TEEN_PETS = [("🥚", "Dragon Egg"), ("🦎", "Hatchling"), ("🐊", "Drake"), ("🐲", "Young Dragon"), ("🐉", "Dragon"), ("🐉", "Elder Dragon"), ("🐉", "Legendary Dragon")]
 # Small, spaced-out rewards Grace can change any time (level -> reward). "Show Mom to claim!"
-REWARDS = {5: "Pick tonight's dessert 🍪", 10: "Choose the family movie 🎬", 15: "Stay up 30 minutes late 🌙",
-           20: "Pick the pizza on church night 🍕", 25: "One-on-one time with Mom or Dad 💜", 30: "Ice cream trip 🍦"}
+REWARDS = {4: "Stay up 30 minutes late 🌙", 8: "Pick the pizza on church night 🍕", 12: "Pick tonight's dessert 🍪",
+           16: "Pick Saturday's breakfast 🥞", 20: "Ice cream trip 🍦"}
 XP_RULES = dict(day_bonus=25, streak_step=3, streak_cap=30, inspect=25)
 BADGES = [  # id, emoji, name, how to earn (checked in JS by stat >= n)
  ("first", "🏁", "First Quest", "Finish a whole day", "complete", 1),
