@@ -14,9 +14,9 @@ def math():
                  "ones, tens, hundreds, thousands. In <b>4,682</b> the 6 means <b>600</b>. <b>Expanded form</b> pulls a number apart by place: "
                  "4,682 = 4,000 + 600 + 80 + 2.</p>", yt("place value thousands hundreds tens ones"))
         + fill_table(["Number", "Thousands", "Hundreds", "Tens", "Ones", "Expanded form"], [[f"{n:,}", "", "", "", "", ""] for n in nums], 30)
-        + qs([("What is the value of the 7 in 7,305? In 3,075?", 1), ("Write the number: 5,000 + 40 + 9 = ______ &nbsp; 8,000 + 300 + 6 = ______", 1),
-              ("Compare with &lt;, &gt;, or =: &nbsp; 3,409 __ 3,490 &nbsp;&nbsp; 6,021 __ 6,012 &nbsp;&nbsp; 1,000 __ 999", 1),
-              ("What number is 100 more than 2,950? 1,000 less than 8,204?", 1), ("Order from least to greatest: 4,310 · 4,031 · 4,301 · 4,130", 1)]),
+        + qs([("What is the value of the 7 in 7,305? In 3,075?", ["7,000; 70", "7; 7", "700; 7,000"]), ("Write the number: 5,000 + 40 + 9 = ______ &nbsp; 8,000 + 300 + 6 = ______", 1),
+              ("Compare: &nbsp; 3,409 __ 3,490 &nbsp;&nbsp; 6,021 __ 6,012 &nbsp;&nbsp; 1,000 __ 999", ["&lt;, &gt;, &gt;", "&gt;, &lt;, &gt;", "&lt;, &lt;, ="]),
+              ("What number is 100 more than 2,950? 1,000 less than 8,204?", 1), ("Order from least to greatest: 4,310 · 4,031 · 4,301 · 4,130", ["4,031 · 4,130 · 4,301 · 4,310", "4,310 · 4,301 · 4,130 · 4,031", "4,031 · 4,301 · 4,130 · 4,310"])]),
         "Expanded: " + "; ".join(f"{n:,} = " + " + ".join(str(int(d) * 10 ** (3 - k)) for k, d in enumerate(str(n)) if d != '0') for n in nums)
         + ". 1) 7,000; 70. 2) 5,049; 8,306. 3) <, >, >. 4) 3,050; 7,204. 5) 4,031, 4,130, 4,301, 4,310.")
     # D2 addition w/ regrouping
@@ -44,8 +44,8 @@ def math():
                  yt("rounding to the nearest 10 and 100"))
         + fill_table(["Number", "Nearest 10", "Nearest 100"], [[str(n), "", ""] for n in rnd], 28)
         + qs([("The family drove 278 miles on Monday and 345 on Tuesday. About how many miles is that? Exactly how many?", 1),
-              ("A store had 1,000 water bottles and sold 638. How many are left?", 1), ("Dad bought a couch for $489 and a table for $215. Estimate the total, then find the exact total.", 1),
-              ("Nylah has 352 stickers. Nayeli has 189. Titus has 76. How many in all?", 1)]),
+              ("A store had 1,000 water bottles and sold 638. How many are left?", ["362", "472", "1,638"]), ("Dad bought a couch for $489 and a table for $215. Estimate the total, then find the exact total.", 1),
+              ("Nylah has 352 stickers. Nayeli has 189. Titus has 76. How many in all?", ["617", "541", "607"])]),
         "Rounding: " + "; ".join(f"{n}: {(n+5)//10*10}, {(n+50)//100*100}" for n in rnd)
         + ". 1) ≈ 300 + 300 = 600 (exact 623). 2) 362. 3) ≈ $500 + $200 = $700; exact $704. 4) 617.")
     cp = ["What is the value of the 4 in 4,906?", "Expanded form of 7,058", "653 + 289", "1,476 + 2,839", "800 − 356", "4,003 − 1,867",
@@ -70,9 +70,9 @@ def english():
         + '<div class="lab">Underline every noun. Circle every pronoun.</div>'
         + ol(["Nylah gave her brother a book about courage.", "They drove to St. Augustine on Saturday.", "Grandma baked us a pie, and it was delicious.",
               "The dog followed me to the mailbox."])
-        + '<div class="lab">Choose the correct pronoun.</div>'
-        + ol(["Mom asked Nevaeh and (I / me) to fold towels.", "(She / Her) and Naomi sang in the choir.", "Between you and (I / me), this is the best pie.",
-              "Dad and (we / us) cleaned the garage.", "The prize went to (they / them)."], 5)
+        + '<div class="lab">Circle the correct pronoun.</div>'
+        + ol([f"Mom asked Nevaeh and {pick('I', 'me')} to fold towels.", f"{pick('She', 'Her')} and Naomi sang in the choir.", f"Between you and {pick('I', 'me')}, this is the best pie.",
+              f"Dad and {pick('we', 'us')} cleaned the garage.", f"The prize went to {pick('they', 'them')}."], 5)
         + qs([("Write a sentence with a proper noun, a common noun, and a pronoun. Label each.", 2)], 10),
         "1) nouns Nylah, brother, book, courage; pronoun her. 2) nouns St. Augustine, Saturday; pronoun They. 3) nouns Grandma, pie; pronouns us, it. 4) nouns dog, mailbox; pronoun me. "
         "5) me 6) She 7) me 8) we 9) them. 10) varies.")
@@ -85,9 +85,9 @@ def english():
         + mark_list(["The baby <u>giggled</u> at the dog.", "Dinner <u>smells</u> amazing.", "We <u>are</u> going to church tonight.", "Nevaeh <u>is</u> the oldest.",
                      "Titus <u>threw</u> the ball over the fence.", "You <u>should</u> drink more water.", "The flowers <u>looked</u> wilted.", "I <u>have</u> read that book twice."],
                     ["A", "L", "H"])
-        + qs([("Write a sentence with a helping verb + main verb. Underline both.", 1), ("Write two sentences with <i>feel</i>: one as an action verb, one as a linking verb.", 2),
-              ("Change the verb tense: <i>Gideon blows the trumpet.</i> → past: ______ → future: ______", 1)], 9),
-        "1 A, 2 L, 3 H, 4 L, 5 A, 6 H, 7 L, 8 H. 9) varies. 10) e.g., I feel the soft blanket (action) / I feel tired (linking). 11) blew; will blow.")
+        + qs([("Which sentence has a helping verb + main verb?", ["We are singing in church.", "We sang in church.", "Church was fun."]), ("Write two sentences with <i>feel</i>: one as an action verb, one as a linking verb.", 2),
+              ("Change the tense of <i>Gideon blows the trumpet.</i> Which shows past, then future?", ["blew; will blow", "blowed; will blew", "blown; blows"])], 9),
+        "1 A, 2 L, 3 H, 4 L, 5 A, 6 H, 7 L, 8 H. 9) We are singing in church. 10) e.g., I feel the soft blanket (action) / I feel tired (linking). 11) blew; will blow.")
     S.set(2, "Adjectives & Adverbs",
         learnbox("<p><b>Adjectives</b> describe nouns — they tell <i>which one, what kind, how many</i> (<i>three <b>small</b> puppies</i>). The articles <i>a, an, the</i> are "
                  "adjectives too. <b>Adverbs</b> describe verbs, adjectives, or other adverbs — they tell <i>how, when, where, how much</i> (<i>She sang <b>beautifully</b>. "
@@ -96,7 +96,7 @@ def english():
         + '<div class="lab">Write ADJ or ADV above each underlined word, then draw an arrow to the word it describes.</div>'
         + ol(["The <u>tired</u> kids walked <u>slowly</u> home.", "Grace <u>quietly</u> opened the <u>squeaky</u> door.", "It was an <u>extremely</u> <u>hot</u> afternoon.",
               "The choir sang <u>loudly</u> and <u>joyfully</u>.", "<u>Seven</u> <u>fluffy</u> chicks hatched <u>yesterday</u>."])
-        + '<div class="lab">Choose the correct word.</div>' + ol(["Nylah did (good / well) on her test.", "That pie smells (good / well).", "He ran (quick / quickly) to the door.", "The water is (real / really) cold."], 6)
+        + '<div class="lab">Circle the correct word.</div>' + ol([f"Nylah did {pick('good', 'well')} on her test.", f"That pie smells {pick('good', 'well')}.", f"He ran {pick('quick', 'quickly')} to the door.", f"The water is {pick('real', 'really')} cold."], 6)
         + qs([("Rewrite this boring sentence with at least two adjectives and one adverb: <i>The dog ran.</i>", 2)], 10),
         "1) tired ADJ→kids, slowly ADV→walked. 2) quietly ADV→opened, squeaky ADJ→door. 3) extremely ADV→hot, hot ADJ→afternoon. 4) loudly, joyfully ADV→sang. "
         "5) Seven, fluffy ADJ→chicks; yesterday ADV→hatched. 6) well 7) good 8) quickly 9) really. 10) varies.")
@@ -108,17 +108,18 @@ def english():
         + '<div class="lab">Put parentheses around each prepositional phrase. Circle the conjunctions. Box the interjections.</div>'
         + ol(["Wow, the cat jumped over the fence and into the garden.", "We waited in the car because it was raining.", "After church, Nevaeh and Nylah walked to the park.",
               "Oh no! The cake fell off the counter.", "Put the books on the shelf or under the bed."])
-        + qs([("Write a sentence with two prepositional phrases.", 1), ("Write a sentence that uses an interjection and a conjunction.", 1),
-              ("List all 8 parts of speech.", 2)], 6),
+        + qs([("Write a sentence with two prepositional phrases.", 1), ("Which sentence uses an interjection AND a conjunction?", ["Hooray, the rain stopped and we can play!", "The rain stopped at noon.", "We played under the tree."]),
+              ("Which list is all 8 parts of speech?", ["noun, pronoun, verb, adjective, adverb, preposition, conjunction, interjection", "noun, verb, adjective, adverb, sentence, paragraph, comma, period", "noun, pronoun, verb, subject, predicate, clause, phrase, article"])], 6),
         "1) Wow (interj.); (over the fence) (into the garden); and. 2) (in the car); because. 3) (After church) (to the park); and. 4) Oh no (interj.); (off the counter). "
-        "5) (on the shelf) (under the bed); or. 6–7 vary. 8) noun, pronoun, verb, adjective, adverb, preposition, conjunction, interjection.")
+        "5) (on the shelf) (under the bed); or. 6) varies. 7) Hooray, the rain stopped and we can play! 8) noun, pronoun, verb, adjective, adverb, preposition, conjunction, interjection.")
     S.set(4, "Week Review",
         learnbox("<p><b>Review quiz.</b> Label the part of speech of each underlined word. Then finish the questions. Goal: 12 of 15.</p>")
         + '<div style="font-size:13pt;line-height:2">1. <u>Wow</u>, that was close! &nbsp; 2. <u>She</u> laughed. &nbsp; 3. The <u>tall</u> tree swayed. &nbsp; 4. We ran <u>quickly</u>.<br>'
           '5. The ball rolled <u>under</u> the porch. &nbsp; 6. I like tea <u>and</u> cookies. &nbsp; 7. <u>Jacksonville</u> is big. &nbsp; 8. Dad <u>fixed</u> the sink.<br>'
           '9. The soup <u>was</u> hot. &nbsp; 10. They <u>will</u> arrive soon.</div>'
-        + '<div class="grid5">' + "".join(f'<div>{n}. <span class="blank-ln" style="min-width:80px"></span></div>' for n in range(1, 11)) + '</div>'
-        + qs([("Fix the pronoun: <i>Him and me went fishing.</i>", 1), ("good or well? <i>You did ____ on that project.</i>", 1),
+        + mark_list([f"<u>{w}</u>" for w in ["Wow", "She", "tall", "quickly", "under", "and", "Jacksonville", "fixed", "was", "will"]],
+                    ["noun", "pronoun", "verb", "adj.", "adv.", "prep.", "conj.", "interj."], cols=1)
+        + qs([("Fix the pronoun: <i>Him and me went fishing.</i>", ["He and I went fishing.", "Him and I went fishing.", "Me and him went fishing."]), (f"<i>You did {pick('good', 'well')} on that project.</i>", 0),
               ("Write a sentence with a linking verb and an adjective.", 1), ("Write a sentence with an adverb that does NOT end in -ly.", 1),
               ("Write a sentence using all of these: a pronoun, an action verb, a preposition.", 2)], 11),
         "1 interjection, 2 pronoun, 3 adjective, 4 adverb, 5 preposition, 6 conjunction, 7 noun (proper), 8 verb (action), 9 verb (linking), 10 verb (helping). "
@@ -142,10 +143,10 @@ def science():
                  "<b>(1)</b> all living things are made of one or more cells; <b>(2)</b> the cell is the basic unit of structure and function in living things; "
                  "<b>(3)</b> all cells come from other cells. Some living things are a single cell (<b>unicellular</b>, like bacteria); you are "
                  "<b>multicellular</b> — about 30 trillion cells, all working together!</p>", yt("cell theory for middle school"))
-        + qs([("Who first named cells, and what was he looking at?", 1), ("Write the three parts of the cell theory in your own words.", 4),
-              ("What's the difference between unicellular and multicellular? Give an example of each.", 2),
+        + qs([("Who first named cells, and what was he looking at?", ["Robert Hooke — a slice of cork", "Isaac Newton — an apple", "Louis Pasteur — milk"]), ("Write the three parts of the cell theory in your own words.", 4),
+              ("Which is true?", ["Bacteria are unicellular; people are multicellular.", "Bacteria are multicellular; people are unicellular.", "Both bacteria and people are one cell."]),
               ("Psalm 139:14 says we are “fearfully and wonderfully made.” How does knowing you're made of trillions of cooperating cells connect to that verse?", 3)]),
-        "1) Robert Hooke, cork. 2) all living things are made of cells; cell is the basic unit; cells come from cells. 3) one cell (bacteria/amoeba) vs many cells (people, plants, dogs). 4) opinion.")
+        "1) Robert Hooke, cork. 2) all living things are made of cells; cell is the basic unit; cells come from cells. 3) Bacteria are unicellular; people are multicellular. 4) opinion.")
     S.set(1, "Parts of an Animal Cell",
         learnbox("<p>Cells have tiny parts called <b>organelles</b>, each with a job — like rooms in a house. The <b>cell membrane</b> is the flexible outer edge that controls what "
                  "goes in and out. The <b>nucleus</b> is the control center holding DNA (the instructions). <b>Cytoplasm</b> is the jelly-like fluid where everything "
@@ -168,7 +169,7 @@ def science():
           '<text x="400" y="20" font-size="15" font-weight="700" fill="#6d28d9">Plant only</text><text x="282" y="125" font-size="13" font-weight="700" fill="#1f2a5c">Both</text></svg>'
         + '<div>Word bank: <span class="pill">cell wall</span><span class="pill">nucleus</span><span class="pill">chloroplasts</span><span class="pill">cell membrane</span>'
           '<span class="pill">mitochondria</span><span class="pill">large central vacuole</span><span class="pill">small vacuoles</span><span class="pill">cytoplasm</span><span class="pill">ribosomes</span></div>'
-        + qs([("Why does a plant wilt when it isn't watered?", 2), ("Why don't animal cells need chloroplasts?", 2)]),
+        + qs([("Why does a plant wilt when it isn't watered?", ["Its central vacuole loses water, so the cells go limp.", "Its chloroplasts fall out.", "Its cell wall melts."]), ("Why don't animal cells need chloroplasts?", 2)]),
         "Animal only: small vacuoles (lysosomes). Plant only: cell wall, chloroplasts, large central vacuole. Both: nucleus, cell membrane, mitochondria, cytoplasm, ribosomes. "
         "1) central vacuole loses water so cells lose firmness. 2) animals get energy by eating food instead of making it from sunlight.")
     S.set(3, "Levels of Organization",
@@ -177,18 +178,18 @@ def science():
                  "(the heart). An <b>organ system</b> is a group of organs with one big job (the circulatory system: heart, blood vessels, blood). All the systems "
                  "together make an <b>organism</b> — you!</p>", yt("levels of organization cells tissues organs"))
         + '<div class="lab">Number each in order from smallest (1) to largest (5).</div>'
-        + mark_list(["___ organ system", "___ cell", "___ organism", "___ tissue", "___ organ"], [], cols=1)
-        + '<div class="lab">Label each example: cell, tissue, organ, organ system, or organism.</div>'
-        + mark_list(["stomach", "a red blood cell", "digestive system", "a golden retriever", "muscle tissue", "lungs", "nervous system", "a single skin cell"], [], cols=2)
+        + mark_list(["organ system", "cell", "organism", "tissue", "organ"], ["1", "2", "3", "4", "5"], cols=1)
+        + '<div class="lab">Circle what each example is.</div>'
+        + mark_list(["stomach", "a red blood cell", "digestive system", "a golden retriever", "muscle tissue", "lungs", "nervous system", "a single skin cell"], ["cell", "tissue", "organ", "system", "organism"], cols=1)
         + qs([("Choose one organ system. Name it, list two organs in it, and tell its job.", 3)], 14),
         "Order: cell 1, tissue 2, organ 3, organ system 4, organism 5. stomach organ; red blood cell cell; digestive system organ system; golden retriever organism; "
         "muscle tissue tissue; lungs organ; nervous system organ system; skin cell cell. 14) e.g., respiratory: lungs, trachea — brings in oxygen.")
     S.set(4, "Week Review",
         learnbox("<p><b>Review quiz</b> — cells. Goal: 8 of 10.</p>")
-        + qs([("State the three parts of the cell theory.", 3), ("Who named the cell?", 1), ("Which organelle is the control center?", 1),
-              ("Which organelle releases energy from food?", 1), ("Name the three parts plant cells have that animal cells don't.", 1),
-              ("What does the cell membrane do?", 1), ("What is photosynthesis, and where does it happen?", 2),
-              ("Put in order: organ, cell, organism, tissue, organ system.", 1), ("Is a bacterium unicellular or multicellular?", 1),
+        + qs([("State the three parts of the cell theory.", 3), ("Who named the cell?", ["Robert Hooke", "Charles Darwin", "Albert Einstein"]), ("Which organelle is the control center?", ["nucleus", "mitochondria", "vacuole"]),
+              ("Which organelle releases energy from food?", ["mitochondria", "ribosomes", "cell wall"]), ("Which three parts do plant cells have that animal cells don't?", ["cell wall, chloroplasts, large central vacuole", "nucleus, cytoplasm, ribosomes", "mitochondria, lysosomes, cell membrane"]),
+              ("What does the cell membrane do?", ["controls what enters and leaves", "makes food from sunlight", "stores DNA"]), ("What is photosynthesis, and where does it happen?", 2),
+              ("Put in order: organ, cell, organism, tissue, organ system.", ["cell, tissue, organ, organ system, organism", "organism, organ system, organ, tissue, cell", "cell, organ, tissue, organism, organ system"]), ("Is a bacterium unicellular or multicellular?", ["unicellular", "multicellular"]),
               ("Give an example of a tissue and an organ.", 1)]),
         "1) all living things are made of cells; basic unit; cells come from cells. 2) Robert Hooke. 3) nucleus. 4) mitochondria. 5) cell wall, chloroplasts, large central vacuole. "
         "6) controls what enters and leaves. 7) making food from sunlight; in chloroplasts. 8) cell, tissue, organ, organ system, organism. 9) unicellular. 10) e.g., muscle tissue; heart.")
@@ -204,7 +205,7 @@ def civics():
                  "<b>Judicial</b> branch interprets the laws. The first 10 amendments, the <b>Bill of Rights</b>, protect freedoms like speech and religion.</p>",
                  yt("three branches of government for kids"))
         + fill_table(["Branch", "Main job", "Who is in it?"], [["Legislative", "", ""], ["Executive", "", ""], ["Judicial", "", ""]], 34)
-        + qs([("Why did the Articles of Confederation need to be replaced?", 2), ("What do the words “We the People” tell us?", 2),
+        + qs([("Why did the Articles of Confederation need to be replaced?", ["The national government was too weak.", "The king wanted them gone.", "They gave the President too much power."]), ("What do the words “We the People” tell us?", ["Power comes from the citizens.", "Only the people in Philadelphia could vote.", "The President speaks for everyone."]),
               ("Why did the Founders divide power into three branches?", 2), ("Jeremiah 17:9 says the human heart is deceitful. How might that truth explain why the Founders didn't want to trust any one person with all the power?", 3)]),
         "Table: make laws — Congress; carry out laws — President/VP/Cabinet; interpret laws — Supreme Court & federal courts. 1) national government too weak. 2) power comes from the people. "
         "3) to stop any one group from getting too much power. 4) people are sinful, so power needs limits.")
@@ -215,7 +216,7 @@ def civics():
                  "A <b>bill</b> must pass <b>both</b> houses and then be signed by the President to become a law.</p>", yt("how a bill becomes a law"))
         + fill_table(["", "Senate", "House of Representatives"], [["Number of members", "", ""], ["How seats are divided", "", ""], ["Length of term", "", ""], ["Florida's members", "", ""]], 30)
         + qs([("Why do you think the Founders gave every state the same number of senators but divided House seats by population?", 3),
-              ("List the steps for a bill to become a law.", 3), ("Name two powers of Congress.", 1)]),
+              ("Which shows the steps for a bill to become a law?", ["passes the House → passes the Senate → President signs", "President writes it → Supreme Court signs it", "passes the Senate → Supreme Court votes → states sign"]), ("Name two powers of Congress.", 1)]),
         "Senate 100 / 2 per state / 6 yrs / 2; House 435 / by population / 2 yrs / 28. 1) balance big & small states (the Great Compromise). "
         "2) bill introduced → passes House → passes Senate → President signs (or veto/override). 3) make laws, tax, declare war, budget.")
     S.set(2, "Executive Branch",
@@ -224,8 +225,8 @@ def civics():
                  "The President is <b>Commander in Chief</b> of the military, makes treaties (with Senate approval), appoints judges, and can <b>veto</b> (reject) bills. "
                  "The <b>Vice President</b> takes over if needed and leads the Senate. The <b>Cabinet</b> — heads of departments like Education and Defense — advises the President.</p>",
                  yt("executive branch for kids"))
-        + qs([("List the three requirements to be President.", 2), ("How long is a term? How many terms can a President serve?", 1),
-              ("What is a veto?", 1), ("What does “Commander in Chief” mean?", 1), ("What does the Cabinet do?", 2),
+        + qs([("Which are the three requirements to be President?", ["at least 35, natural-born citizen, U.S. resident 14 years", "at least 21, a lawyer, lived in D.C.", "at least 40, served in Congress, owns land"]), ("How long is a term? How many terms can a President serve?", ["4 years; two terms", "6 years; one term", "2 years; no limit"]),
+              ("What is a veto?", ["the President rejecting a bill passed by Congress", "a new law", "a court ruling"]), ("What does “Commander in Chief” mean?", ["leader of the armed forces", "leader of the Senate", "head of the Supreme Court"]), ("What does the Cabinet do?", 2),
               ("1 Timothy 2:1–2 tells Christians to pray for “kings and all who are in high positions.” Write a short prayer for our nation's leaders.", 4)]),
         "1) 35+, natural-born citizen, 14 years resident. 2) 4 years; two terms. 3) rejecting a bill passed by Congress. 4) leader of the armed forces. 5) heads departments and advises the President. 6) varies.")
     S.set(3, "Judicial Branch + Checks & Balances",
@@ -238,14 +239,14 @@ def civics():
         + fill_table(["Check", "Branch doing the check", "Branch being checked"],
                      [["President vetoes a bill", "", ""], ["Congress overrides a veto", "", ""], ["Court rules a law unconstitutional", "", ""],
                       ["Senate rejects a Supreme Court nominee", "", ""], ["President appoints a judge", "", ""]], 28)
-        + qs([("How many justices are on the Supreme Court? How long do they serve?", 1), ("What is judicial review?", 2), ("Why are checks and balances important?", 2)]),
+        + qs([("How many justices are on the Supreme Court? How long do they serve?", ["9, for life", "12, for 6 years", "100, for 4 years"]), ("What is judicial review?", ["courts deciding whether a law follows the Constitution", "Congress reviewing the budget", "the President reviewing judges"]), ("Why are checks and balances important?", 2)]),
         "veto: Exec → Leg; override: Leg → Exec; unconstitutional: Jud → Leg (or Exec); reject nominee: Leg → Exec/Jud; appoint judge: Exec → Jud. "
         "1) 9, for life. 2) courts deciding whether a law follows the Constitution. 3) keeps any branch from getting too much power.")
     S.set(4, "Week Review",
         learnbox("<p><b>Review quiz</b> — the Constitution and three branches. Goal: 8 of 10.</p>")
-        + qs([("What year was the Constitution written?", 1), ("What are the first 10 amendments called?", 1), ("Which branch makes laws? What is it called?", 1),
-              ("How many senators? Representatives?", 1), ("How old must the President be?", 1), ("What is a veto, and how can Congress override one?", 2),
-              ("How many Supreme Court justices are there?", 1), ("What is separation of powers?", 2), ("Give one example of checks and balances.", 1),
+        + qs([("What year was the Constitution written?", ["1787", "1776", "1607"]), ("What are the first 10 amendments called?", ["the Bill of Rights", "the Preamble", "the Articles"]), ("Which branch makes laws? What is it called?", ["legislative — Congress", "executive — the Cabinet", "judicial — the Supreme Court"]),
+              ("How many senators? Representatives?", ["100; 435", "50; 100", "435; 100"]), ("How old must the President be?", ["at least 35", "at least 18", "at least 50"]), ("What is a veto, and how can Congress override one?", 2),
+              ("How many Supreme Court justices are there?", ["9", "7", "12"]), ("What is separation of powers?", 2), ("Give one example of checks and balances.", 1),
               ("Which branch do you think is most important? Defend your answer.", 3)]),
         "1) 1787. 2) Bill of Rights. 3) legislative — Congress. 4) 100; 435. 5) 35. 6) rejecting a bill; 2/3 vote of both houses. 7) 9. 8) dividing power among three branches. 9) e.g., veto. 10) opinion.")
     return S

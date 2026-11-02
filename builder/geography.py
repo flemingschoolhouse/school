@@ -1,4 +1,5 @@
 from lib import *
+from core_common import mc
 from worldmap import world_map, CONT_LABEL, OCEAN_LABEL
 
 CONTS = list(CONT_LABEL)   # 7
@@ -36,8 +37,8 @@ def geo_page(name, i):
                     + world_map(700, 330, cont_marks=NUM) + '<div class="lab">Label each numbered continent.</div>' + wordbank(sorted(CONTS))
                     + label_lines(range(1, 8)))
             if T == "B":
-                body += ('<div class="grid2"><div>Which continent do we live on?<div class="ln"></div></div>'
-                         '<div>Which continent is covered in ice?<div class="ln"></div></div></div>')
+                body += ('<div class="grid2">' + mc("Which continent do we live on?", ["North America", "Europe", "Africa"])
+                         + mc("Which continent is covered in ice?", ["Antarctica", "Asia", "Australia"]) + '</div>')
             else:
                 body += ('<table class="t"><tr><th>Fast fact</th><th>Continent</th></tr>'
                          '<tr><td>Largest continent and most people</td><td></td></tr><tr><td>Smallest continent (also a country)</td><td></td></tr>'
@@ -55,7 +56,7 @@ def geo_page(name, i):
                     + world_map(700, 330, ocean_marks=LET, cont_marks=NUM) + '<div class="lab">Label each lettered ocean.</div>'
                     + wordbank(sorted(OCEANS)) + label_lines("ABCDE"))
             if T == "B":
-                body += '<div>Which ocean touches Jacksonville, Florida?<div class="ln"></div></div><div>Color the oceans blue when you finish.</div>'
+                body += mc("Which ocean touches Jacksonville, Florida?", ["Atlantic Ocean", "Pacific Ocean", "Indian Ocean"]) + '<div>Color the oceans blue when you finish.</div>'
             else:
                 body += ('<table class="t"><tr><th>Fast fact</th><th>Ocean</th></tr><tr><td>Largest and deepest (Mariana Trench)</td><td></td></tr>'
                          '<tr><td>Smallest and shallowest; frozen much of the year</td><td></td></tr><tr><td>Between Africa and Australia</td><td></td></tr>'

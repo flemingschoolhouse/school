@@ -1,4 +1,5 @@
 from lib import *
+from core_common import mc, MC_HINT
 
 VERSE = ("Have I not commanded you? Be strong and courageous. Do not be frightened, and do not be "
          "dismayed, for the LORD your God is with you wherever you go.")
@@ -93,6 +94,22 @@ D = [
   k_trace="God wins", draw="Draw a trumpet, a jar, and a torch."),
 ]
 
+# Multiple-choice versions (correct answer first; order is shuffled when built). Keyed by day, then question index.
+MC_TEEN = {0: {1: ["a mighty man of valor", "the least in his family", "a coward"]},
+           2: {0: ["a wet fleece on dry ground, then a dry fleece on wet ground", "fire from heaven, then rain", "a talking donkey, then a burning bush"]},
+           3: {1: ["300 — the men who lapped water from their hands", "10,000 — the ones who weren't afraid", "32,000 — everyone who came"]},
+           4: {0: ["a trumpet, an empty jar, and a torch", "a sword, a shield, and a spear", "a bow, arrows, and a sling"]}}
+MC_MID = [{0: ["in a winepress", "in a cave", "up a tree"], 1: ["“I will be with you.”", "“You will be king.”", "“You will be rich.”"]},
+          {0: ["his father's altar to Baal", "the city wall", "the Midianite tents"], 1: ["He was afraid of his family and the town.", "He liked the dark.", "God said to wait for the moon."]},
+          {0: ["a wet fleece on dry ground", "a burning bush", "rain on everything"], 1: ["He did exactly what Gideon asked — twice.", "He got angry and said no.", "He sent a storm."]},
+          {0: ["32,000", "300", "100"], 1: ["300", "10,000", "32,000"]},
+          {0: ["trumpets, jars, and torches", "swords and shields", "bows and arrows"], 1: ["“A sword for the LORD and for Gideon!”", "“Charge!”", "“We win!”"]}]
+MC_EARLY = [["“I will be with you.”", "“You will be rich.”", "“You can stay home.”"],
+            ["Yes", "No"],
+            ["wet", "dry"],
+            ["300", "3", "3,000"],
+            ["a loud blast — toot, toot!", "a quiet whisper", "no sound at all"]]
+
 def _verse_block(short=False, copy_lines=0):
     v = VERSE_SHORT if short else VERSE
     out = f'<div class="flexrow"><div class="grow verse">“{esc(v)}”<div class="small" style="margin-top:3px">{REF} · memory verse</div></div>'
@@ -108,7 +125,7 @@ def page_for(level, name, i):
         g = d["greek"]
         body = (_verse_block(copy_lines=0)
           + f'<div class="box"><span class="lab">Read:</span> {d["ref"]}<p style="margin-top:4px">{esc(d["story"])}</p></div>'
-          + "".join(f'<div><b>{n+1}.</b> {esc(q)}{lines(2,24)}</div>' for n, q in enumerate(d["q_teen"]))
+          + "".join(mc(esc(q), MC_TEEN[i][n], n + 1) if n in MC_TEEN.get(i, {}) else f'<div><b>{n+1}.</b> {esc(q)}{lines(2,24)}</div>' for n, q in enumerate(d["q_teen"]))
           + f'<div class="grid2"><div class="box"><span class="lab">Greek word of the day</span>'
             f'<div style="font-size:18pt;margin:2px 0">{g[0]} <span style="font-size:12pt;color:#555">({g[1]})</span></div>'
             f'<div><b>Means:</b> {esc(g[2])}</div><div class="small" style="margin-top:3px">{esc(g[3])}</div></div>'
@@ -117,14 +134,14 @@ def page_for(level, name, i):
     elif level == "mid":
         body = (_verse_block(copy_lines=2)
           + f'<div class="box"><span class="lab">Bible story · {d["ref"]}</span><p style="margin-top:4px">{esc(d["story"])}</p></div>'
-          + "".join(f'<div><b>{n+1}.</b> {esc(q)}{lines(1,26)}</div>' for n, q in enumerate(d["q_mid"]))
+          + "".join(mc(esc(q), MC_MID[i][n], n + 1) for n, q in enumerate(d["q_mid"]))
           + f'<div class="grid2"><div class="box"><span class="lab">Bible word of the day</span><div class="word">{d["word"]}</div>'
             f'<div>{esc(d["wdef"])}</div></div><div class="box"><span class="lab">Theology fact</span><p style="margin-top:3px">{esc(d["theo"])}</p></div></div>'
           + f'<div><span class="lab">Journal:</span> {esc(d["j_mid"])}{lines(4,26)}</div>')
     elif level == "early":
         body = (_verse_block()
           + f'<div class="box"><span class="lab">Bible story · {d["ref"]}</span><p class="big" style="margin-top:4px">{esc(d["kid"])}</p></div>'
-          + f'<div><b>Question:</b> {esc(d["q_early"])}{lines(2,30)}</div>'
+          + mc(f'<b>Question:</b> {esc(d["q_early"])}', MC_EARLY[i])
           + f'<div class="box"><span class="lab">Word of the day:</span> <b>{d["word"].title()}</b> — {esc(d["wdef"])}'
             f'{trace_line(d["word"].lower(), 46, 2)}</div>'
           + f'<div class="lab">{esc(d["draw"])}</div><div class="answer-space"></div>')

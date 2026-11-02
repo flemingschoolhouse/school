@@ -26,6 +26,19 @@ def icon(name, scale=1.0):
     return s.replace('width="90" height="80"', f'width="{90*scale:.0f}" height="{80*scale:.0f}"')
 
 # ======================= NARIAH (2nd) =======================
+def _tstr(h, m): return f"{h}:{m:02d}"
+def time_choices(h, m):
+    """correct time first, then two near-misses (hands mixed up / next hour)."""
+    nxt = h % 12 + 1
+    alt = (m and _tstr(nxt, 30)) or _tstr(h, 30)
+    swap = _tstr(nxt, 0) if m else _tstr(12 if h == 6 else (6 if h == 12 else h), 30 if h not in (6, 12) else 0)
+    out = [_tstr(h, m)]
+    for c in (alt, swap, _tstr(nxt, m)):
+        if c not in out: out.append(c)
+    return out[:3]
+def clock_pick(h, m, size):
+    return f'<div class="center">{clock(h, m, size)}{mc_opts(time_choices(h, m), f"clk{h}{m}{size}")}</div>'
+
 def nariah_math():
     S = Subject("Nariah", "Math", "Level 1 · Regrouping & Time"); r = random.Random(22)
     adds = [(r.randint(13, 69), r.randint(13, 29)) for _ in range(30)]
@@ -52,8 +65,8 @@ def nariah_math():
     S.set(2, "Telling Time: Hour & Half Hour",
         learnbox("<p class='big'>The <b>short</b> hand shows the <b>hour</b>. The <b>long</b> hand shows the <b>minutes</b>. Long hand on <b>12</b> → “o'clock” (3:00). "
                  "Long hand on <b>6</b> → “thirty” — half past (3:30). At half past, the short hand sits halfway between two numbers.</p>", yt("telling time hour and half hour 2nd grade"))
-        + '<div class="lab">Write the time.</div><div class="grid3" style="justify-items:center">'
-        + "".join(f'<div class="center">{clock(h, m, 130)}<div class="big"><span class="blank-ln" style="min-width:70px"></span></div></div>' for h, m in times) + '</div>'
+        + '<div class="lab">What time is it? Circle the time.</div><div class="grid3" style="justify-items:center">'
+        + "".join(clock_pick(h, m, 130) for h, m in times) + '</div>'
         + '<div class="lab">Draw the hands.</div><div class="grid3" style="justify-items:center">'
         + "".join(f'<div class="center">{clock(0, 0, 130, False)}<div class="big"><b>{t}</b></div></div>' for t in ["4:00", "8:30", "12:30"]) + '</div>',
         "3:00, 7:30, 11:00, 1:30, 9:30, 5:00. Drawn: 4:00 (short on 4, long on 12), 8:30 (short between 8 & 9, long on 6), 12:30 (short between 12 & 1, long on 6).")
@@ -61,15 +74,15 @@ def nariah_math():
     S.set(3, "Mix It Up!",
         learnbox("<p class='big'>Look at the sign first! <b>+</b> means add, <b>−</b> means subtract. Then check: do I need to regroup?</p>")
         + vgrid([(a, b, op) for a, b, op in mix], 6)
-        + '<div class="grid3" style="justify-items:center">' + "".join(f'<div class="center">{clock(h, m, 120)}<div class="big"><span class="blank-ln" style="min-width:70px"></span></div></div>' for h, m in [(2, 30), (10, 0), (6, 30)]) + '</div>'
-        + qs([("Nariah had 45 stickers. She got 28 more. How many now?", 1), ("There were 62 cookies. The family ate 35. How many are left?", 1),
-              ("School starts at 9:00. Lunch is at 12:00. How many hours apart?", 1)], 7),
+        + '<div class="lab">Circle the time.</div><div class="grid3" style="justify-items:center">' + "".join(clock_pick(h, m, 120) for h, m in [(2, 30), (10, 0), (6, 30)]) + '</div>'
+        + qs([("Nariah had 45 stickers. She got 28 more. How many now?", ["73", "63", "17"]), ("There were 62 cookies. The family ate 35. How many are left?", ["27", "37", "97"]),
+              ("School starts at 9:00. Lunch is at 12:00. How many hours apart?", ["3 hours", "4 hours", "12 hours"])], 7),
         "83, 43, 83, 36, 78, 27. Clocks 2:30, 10:00, 6:30. 7) 73 8) 27 9) 3 hours.")
     cp = [(37, 48, "+"), (65, 19, "+"), (54, 27, "−"), (90, 36, "−"), (28, 28, "+"), (73, 45, "−")]
     S.set(4, "Checkpoint",
         learnbox("<p class='big'><b>Checkpoint!</b> 12 questions. Goal: <b>10 right</b>. You can do it!</p>")
         + vgrid([(a, b, op) for a, b, op in cp], 6)
-        + '<div class="grid3" style="justify-items:center">' + "".join(f'<div class="center">{clock(h, m, 120)}<div class="big"><span class="blank-ln" style="min-width:70px"></span></div></div>' for h, m in [(4, 30), (8, 0), (12, 30)]) + '</div>'
+        + '<div class="lab">Circle the time.</div><div class="grid3" style="justify-items:center">' + "".join(clock_pick(h, m, 120) for h, m in [(4, 30), (8, 0), (12, 30)]) + '</div>'
         + '<div class="grid3" style="justify-items:center">' + "".join(f'<div class="center">{clock(0, 0, 120, False)}<div class="big"><b>{t}</b></div></div>' for t in ["6:00", "2:30", "11:30"]) + '</div>'
         + '<div class="big">Score: ______ / 12</div>',
         "85, 84, 27, 54, 56, 28. Clocks 4:30, 8:00, 12:30. Drawn 6:00, 2:30, 11:30 — check hands.")
@@ -82,43 +95,44 @@ def nariah_english():
                 + fill_table([f"short {c}" for c in cols], [[""] * len(cols)] * 4, 34))
     S.set(0, "Short a & Short e",
         learnbox("<p class='big'>Short <b>a</b> says /a/ like in <b>cat</b>. Short <b>e</b> says /e/ like in <b>bed</b>. Say each word slowly and listen for the middle sound.</p>", yt("short a short e phonics song"))
-        + '<div class="lab">Sort the words.</div>' + sort_tbl("ae", ["map", "hen", "jam", "pet", "bag", "web", "fan", "ten"])
+        + '<div class="lab">Short a or short e? Circle the sound you hear.</div>' + mark_list(["map", "hen", "jam", "pet", "bag", "web", "fan", "ten"], ["short a", "short e"], cols=2)
         + '<div class="lab">Trace and write.</div>' + trace_line("cat", 46, 2) + trace_line("bed", 46, 2)
         + '<div class="box big"><b>Read it:</b> The red hen sat in a bag. Ted had a hat and a pet cat.</div>'
         + '<div class="lab">Circle every short a word above. Underline every short e word.</div>',
         "short a: map, jam, bag, fan; short e: hen, pet, web, ten. Reading: a — sat, bag, had, hat, cat (and 'a'); e — red, hen, Ted, pet.")
     S.set(1, "Short i, o & u",
         learnbox("<p class='big'>Short <b>i</b> — <b>pig</b>. Short <b>o</b> — <b>dog</b>. Short <b>u</b> — <b>sun</b>. Tap the sounds on your fingers: p-i-g!</p>", yt("short i o u phonics song"))
-        + '<div class="lab">Fill in the missing vowel (i, o, or u) to make a real word.</div>'
-        + '<div class="grid4">' + "".join(f'<div class="big">{w.replace("_", "<span class=blank-ln style=min-width:26px></span>")}</div>' for w in ["p_g", "h_t", "b_s", "d_g", "c_p", "f_x", "s_n", "w_g", "m_d", "l_ck", "f_sh", "dr_m"]) + '</div>'
-        + '<div class="lab">Sort the words.</div>' + sort_tbl("iou", ["fish", "mop", "bug", "lip", "log", "cup", "sit", "hot", "mud"])
+        + '<div class="lab">Which vowel makes a real word? Circle it.</div>'
+        + '<div class="grid3">' + "".join(f'<div class="big">{w.replace("_", "__")} {pick("i", "o", "u")}</div>' for w in ["p_g", "h_t", "b_s", "d_g", "c_p", "f_x", "s_n", "w_g", "m_d", "l_ck", "f_sh", "dr_m"]) + '</div>'
+        + '<div class="lab">Short i, o, or u? Circle the sound you hear.</div>' + mark_list(["fish", "mop", "bug", "lip", "log", "cup", "sit", "hot", "mud"], ["i", "o", "u"], cols=2)
         + '<div class="box big"><b>Read it:</b> A big bug sat on a log in the hot sun. It hid in a cup!</div>',
         "Possible: pig/pug, hit/hot/hut, bus, dig/dog/dug, cop/cup, fox/fix, sun/son, wig, mud/mid, lick/lock/luck, fish, drum. Sort i: fish, lip, sit; o: mop, log, hot; u: bug, cup, mud.")
     S.set(2, "Nouns",
         learnbox("<p class='big'>A <b>noun</b> is a <b>person</b>, <b>place</b>, or <b>thing</b>. <i>Mom</i> is a person. <i>Park</i> is a place. <i>Ball</i> is a thing.</p>", yt("nouns song for kids"))
-        + '<div class="lab">Sort the nouns.</div>'
-        + '<div>Word bank: ' + "".join(f'<span class="pill" style="font-size:13pt">{w}</span>' for w in ["sister", "church", "apple", "baker", "beach", "book", "Dad", "zoo", "shoe"]) + '</div>'
-        + fill_table(["Person", "Place", "Thing"], [["", "", ""]] * 3, 34)
+        + '<div class="lab">Is it a person, place, or thing? Circle one.</div>'
+        + mark_list(["sister", "church", "apple", "baker", "beach", "book", "Dad", "zoo", "shoe"], ["person", "place", "thing"], cols=1)
         + '<div class="lab">Circle the nouns in each sentence.</div>'
         + '<div class="big" style="line-height:2">1. The dog ran to the park.<br>2. My brother has a red truck.<br>3. Mom put the pie on the table.</div>'
         + '<div class="lab">Write a noun:</div><div class="grid3"><div>person: <span class="blank-ln" style="min-width:100px"></span></div><div>place: <span class="blank-ln" style="min-width:100px"></span></div><div>thing: <span class="blank-ln" style="min-width:100px"></span></div></div>',
         "Person: sister, baker, Dad. Place: church, beach, zoo. Thing: apple, book, shoe. 1) dog, park 2) brother, truck 3) Mom, pie, table.")
     S.set(3, "Verbs",
         learnbox("<p class='big'>A <b>verb</b> is an <b>action</b> word — something you can <b>do</b>! <i>run, jump, sing, eat, read</i>. Can you act it out? Then it's a verb!</p>", yt("verbs song for kids"))
-        + '<div class="lab">Circle the verbs (action words).</div>'
-        + '<div class="grid4 big">' + "".join(f'<div>{w}</div>' for w in ["hop", "cat", "swim", "blue", "clap", "tree", "kick", "sing"]) + '</div>'
-        + '<div class="lab">Finish each sentence with a verb.</div>'
-        + '<div class="big" style="line-height:2.1">1. The bird can ____________.<br>2. I like to ____________ with my sister.<br>3. Fish ____________ in the pond.<br>4. We ____________ to God at church.</div>'
+        + '<div class="lab">Can you do it? Circle verb or not a verb.</div>'
+        + mark_list(["hop", "cat", "swim", "blue", "clap", "tree", "kick", "sing"], ["verb", "not a verb"], cols=2)
+        + '<div class="lab">Circle the verb that finishes the sentence.</div>'
+        + qs([("The bird can ______.", ["fly", "tree", "green"]), ("I like to ______ with my sister.", ["play", "table", "red"]),
+              ("Fish ______ in the pond.", ["swim", "fins", "wet"]), ("We ______ to God at church.", ["sing", "pew", "loud"])])
         + '<div class="lab">Act it out! Mom says a verb, you do it: hop · wiggle · stomp · tiptoe · spin</div>'
         + '<div class="lab">Draw yourself doing your favorite verb.</div><div class="answer-space"></div>',
-        "Verbs: hop, swim, clap, kick, sing. Sentences vary (fly, play, swim, sing/pray).")
+        "Verbs: hop, swim, clap, kick, sing (cat, blue, tree = not a verb). 1) fly 2) play 3) swim 4) sing.")
     S.set(4, "Review & Read",
         learnbox("<p class='big'>Read the story. Then answer the questions.</p>")
         + '<div class="box" style="font-size:15pt;line-height:1.6">Nan has a big red dog named Gus. Gus can run and dig. One hot day, Gus dug a pit in the mud. '
           'Nan got a tub and gave Gus a bath. Gus did not like it! He shook and got Nan wet. Nan had to laugh.</div>'
-        + qs([("What is the dog's name?", 1), ("What did Gus dig in?", 1), ("What did Nan use to give Gus a bath?", 1),
-              ("Find 2 nouns in the story.", 1), ("Find 2 verbs in the story.", 1), ("Find a short u word and a short a word.", 1)], 1, 30),
-        "1) Gus 2) mud 3) a tub 4) e.g., Nan, dog, Gus, pit, mud, tub, bath 5) run, dig, dug, gave, shook, laugh 6) u: Gus, mud, tub; a: Nan, has, bath, had.")
+        + qs([("What is the dog's name?", ["Gus", "Nan", "Red"]), ("What did Gus dig in?", ["mud", "sand", "a tub"]), ("What did Nan use to give Gus a bath?", ["a tub", "a cup", "a pit"]),
+              ("Which word is a noun?", ["dog", "dig", "run"]), ("Which word is a verb?", ["dig", "mud", "tub"]), ("Which word has a short u?", ["mud", "dog", "wet"])])
+        + '<div class="lab">Write one word from the story that has a short a.</div>' + lines(1, 30),
+        "1) Gus 2) mud 3) a tub 4) dog 5) dig 6) mud. Short a word: Nan, has, bath, had.")
     return S
 
 def nariah_science():
@@ -128,14 +142,14 @@ def nariah_science():
         learnbox("<p class='big'>A mother <b>monarch butterfly</b> lays tiny eggs on a <b>milkweed</b> leaf. Each egg is about the size of a pin head! "
                  "Monarchs pick milkweed because it's the only plant their babies can eat. After 3–5 days, the egg hatches.</p>", VB[0])
         + f'<div class="center">{icon("egg", 2.2)}</div>'
-        + qs([("What plant does a monarch lay her eggs on?", 1), ("How big is a monarch egg?", 1), ("How many days until it hatches?", 1)], 1, 30)
+        + qs([("What plant does a monarch lay her eggs on?", ["milkweed", "oak tree", "grass"]), ("How big is a monarch egg?", ["about the size of a pin head", "as big as a grape", "as big as your hand"]), ("How many days until it hatches?", ["3–5 days", "1 day", "30 days"])], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("egg", 48, 3),
         "1) milkweed 2) about the size of a pin head 3) 3–5 days")
     S.set(1, "Stage 2: Caterpillar",
         learnbox("<p class='big'>Out comes a tiny <b>caterpillar</b> (also called a <b>larva</b>). First it eats its own eggshell, then it munches milkweed all day long! "
                  "It grows so fast it gets too big for its skin, so it <b>molts</b> — splits its skin and crawls out with a new one. It molts several times in about 2 weeks.</p>", VB[1])
         + f'<div class="center">{icon("caterpillar", 2.2)}</div>'
-        + qs([("What is another name for a caterpillar?", 1), ("What is the first thing it eats?", 1), ("What does “molt” mean?", 2)], 1, 30)
+        + qs([("What is another name for a caterpillar?", ["larva", "pupa", "egg"]), ("What is the first thing it eats?", ["its eggshell", "a flower", "a bug"]), ("What does “molt” mean?", ["shed its old skin", "go to sleep", "fly away"])], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("larva", 48, 2),
         "1) larva 2) its eggshell 3) shedding its old skin")
     S.set(2, "Stage 3: Chrysalis",
@@ -143,7 +157,7 @@ def nariah_science():
                  "A monarch chrysalis is green with tiny gold dots. Inside, God is doing something amazing: the caterpillar is changing into a butterfly! "
                  "This takes about 1–2 weeks.</p>", VB[2])
         + f'<div class="center">{icon("chrysalis", 2.2)}</div>'
-        + qs([("What shape does the caterpillar hang in?", 1), ("What is another name for the chrysalis?", 1), ("What is happening inside?", 2)], 1, 30)
+        + qs([("What shape does the caterpillar hang in?", ["a J", "an O", "a T"]), ("What is another name for the chrysalis?", ["pupa", "larva", "nest"]), ("What is happening inside?", ["The caterpillar is changing into a butterfly.", "The caterpillar is sleeping all winter.", "A new egg is growing."])], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("pupa", 48, 3),
         "1) a J 2) pupa 3) the caterpillar is changing into a butterfly")
     S.set(3, "Stage 4: Butterfly",
@@ -151,14 +165,14 @@ def nariah_science():
                  "until they're dry. Then it flies off to drink nectar from flowers with a straw-like tongue. Fall monarchs fly all the way to <b>Mexico</b>! "
                  "Then the cycle starts over.</p>", VB[3])
         + f'<div class="center">{icon("butterfly", 2.2)}</div>'
-        + qs([("Why can't the butterfly fly right away?", 1), ("What does a butterfly drink?", 1), ("Where do fall monarchs fly?", 1)], 1, 30)
+        + qs([("Why can't the butterfly fly right away?", ["Its wings are wet and crumpled.", "It is too hungry.", "It is too cold."]), ("What does a butterfly drink?", ["nectar", "milk", "rain"]), ("Where do fall monarchs fly?", ["Mexico", "the North Pole", "the ocean"])], 1, 30)
         + '<div class="box big">2 Corinthians 5:17 — “if anyone is in Christ, he is a new creation.” How is a butterfly like a new creation?</div>' + lines(2, 30),
         "1) its wings are wet/crumpled 2) nectar 3) Mexico. Reflection varies.")
     S.set(4, "The Whole Cycle",
-        learnbox("<p class='big'>Put the life cycle together! Number the stages 1–4 and draw arrows to make a circle.</p>", VB[4])
-        + '<div class="grid4" style="justify-items:center">' + "".join(f'<div class="center">{icon(n, 1.4)}<div class="big">____</div></div>' for n in ["butterfly", "egg", "chrysalis", "caterpillar"]) + '</div>'
+        learnbox("<p class='big'>Put the life cycle together! Circle the right number (1–4) under each stage, then draw arrows to make a circle.</p>", VB[4])
+        + '<div class="grid4" style="justify-items:center">' + "".join(f'<div class="center">{icon(n, 1.4)}<div class="big">{pick("1", "2", "3", "4")}</div></div>' for n in ["butterfly", "egg", "chrysalis", "caterpillar"]) + '</div>'
         + '<div class="lab">Draw the life cycle as a circle with arrows.</div><div class="answer-space" style="min-height:260px"></div>'
-        + qs([("What plant do monarchs need?", 1), ("Which stage eats the most?", 1)], 1, 30),
+        + qs([("What plant do monarchs need?", ["milkweed", "corn", "roses"]), ("Which stage eats the most?", ["caterpillar", "egg", "chrysalis"])], 1, 30),
         "butterfly 4, egg 1, chrysalis 3, caterpillar 2. 1) milkweed 2) caterpillar.")
     return S
 
@@ -168,7 +182,7 @@ def nariah_ss():
         learnbox("<p class='big'>In <b>1620</b>, a group called the <b>Pilgrims</b> wanted to worship God freely. They sailed from England across the <b>Atlantic Ocean</b> "
                  "on a ship called the <b>Mayflower</b>. The trip took 66 days! About 102 people were crowded on board, with storms and seasickness.</p>", yt("Mayflower Pilgrims for kids"))
         + f'<div class="center">{icon("ship", 2.0)}</div>'
-        + qs([("What was the name of the Pilgrims' ship?", 1), ("Why did the Pilgrims come?", 1), ("What ocean did they cross? (Hint: it's by our house!)", 1)], 1, 30)
+        + qs([("What was the name of the Pilgrims' ship?", ["the Mayflower", "the Titanic", "the Ark"]), ("Why did the Pilgrims come?", ["to worship God freely", "to find gold", "to go on vacation"]), ("What ocean did they cross? (Hint: it's by our house!)", ["the Atlantic Ocean", "the Pacific Ocean", "the Arctic Ocean"])], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("Mayflower", 44, 1),
         "1) the Mayflower 2) to worship God freely 3) the Atlantic Ocean")
     S.set(1, "The Wampanoag & Squanto",
@@ -176,7 +190,7 @@ def nariah_ss():
                  "<b>Wampanoag</b> (WAHM-puh-noh-ag) people. A man named <b>Squanto</b> spoke English and showed the Pilgrims how to plant <b>corn</b> with a "
                  "fish in each hole to help it grow, and where to fish and hunt.</p>", yt("Squanto story for kids"))
         + f'<div class="center">{icon("corn", 2.0)}</div>'
-        + qs([("Who did the Pilgrims meet in the spring?", 1), ("Who helped the Pilgrims?", 1), ("What did he put in each hole with the corn?", 1)], 1, 30)
+        + qs([("Who did the Pilgrims meet in the spring?", ["the Wampanoag", "the King", "pirates"]), ("Who helped the Pilgrims?", ["Squanto", "Gideon", "Columbus"]), ("What did he put in each hole with the corn?", ["a fish", "a rock", "a shell"])], 1, 30)
         + '<div class="lab">Trace:</div>' + trace_line("corn", 46, 3),
         "1) the Wampanoag 2) Squanto 3) a fish")
     S.set(2, "The Harvest Feast, 1621",
@@ -184,7 +198,7 @@ def nariah_ss():
                  "their leader <b>Massasoit</b> joined about <b>50</b> Pilgrims. The feast lasted <b>3 days</b>! They probably ate deer, wild birds, fish, corn, "
                  "and squash. They also played games and races.</p>", yt("first Thanksgiving 1621 for kids"))
         + f'<div class="center">{icon("pie", 2.0)}</div>'
-        + qs([("What year was the harvest feast?", 1), ("How many days did it last?", 1), ("Name two foods they probably ate.", 1)], 1, 30)
+        + qs([("What year was the harvest feast?", ["1621", "1492", "2021"]), ("How many days did it last?", ["3 days", "1 day", "10 days"]), ("Which two foods did they probably eat?", ["deer and corn", "pizza and tacos", "ice cream and cake"])], 1, 30)
         + '<div class="lab">Draw the feast!</div><div class="answer-space"></div>',
         "1) 1621 2) 3 days 3) deer, birds, fish, corn, squash")
     S.set(3, "Giving Thanks to God",
@@ -202,7 +216,7 @@ def nariah_ss():
           + "".join(f'<text x="20" y="{40+k*52}" font-size="19" font-weight="700" fill="#1f2a5c">{w}</text><circle cx="190" cy="{34+k*52}" r="6" fill="#8a3ab9"/>' for k, w in enumerate(["Mayflower", "Squanto", "Wampanoag", "1621", "Pilgrims"]))
           + "".join(f'<circle cx="270" cy="{34+k*52}" r="6" fill="#8a3ab9"/><text x="290" y="{40+k*52}" font-size="16" fill="#1f2a5c">{w}</text>' for k, w in enumerate(["the year of the harvest feast", "the people who sailed from England", "the Pilgrims' ship", "the Native people who lived there", "showed them how to plant corn"]))
           + '</svg>'
-        + qs([("Why did the Pilgrims have a feast?", 2), ("What is one way our family gives thanks?", 2)], 1, 30),
+        + qs([("Why did the Pilgrims have a feast?", ["to thank God for the harvest", "for a birthday", "because it was Christmas"]), ("What is one way our family gives thanks?", 2)], 1, 30),
         "Mayflower–ship; Squanto–planted corn; Wampanoag–Native people; 1621–harvest feast; Pilgrims–sailed from England. 1) to thank God for the harvest. 2) varies.")
     return S
 

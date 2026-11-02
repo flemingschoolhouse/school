@@ -85,7 +85,7 @@ function schoolInit(){
       var f=p.querySelectorAll('input.fill,input.blankin,td.edit'),n=0,tot=f.length;
       f.forEach(function(x){if((x.value||x.textContent||'').trim())n++});
       var cv=p.querySelectorAll('canvas');tot+=cv.length;cv.forEach(function(c){if(c.dataset.k&&S[c.dataset.k])n++});
-      var ops=p.querySelectorAll('.opt.sel').length;n+=ops;tot+=p.querySelectorAll('.opt').length/2;
+      var grp=[];p.querySelectorAll('.opt').forEach(function(o){if(grp.indexOf(o.parentElement)<0)grp.push(o.parentElement)});tot+=grp.length;n+=p.querySelectorAll('.opt.sel').length;
       if(!tot)return;var k=d.textContent.replace('DAY ','D')+'|'+sj.textContent+'|'+(tt?tt.textContent:'');
       P[k]=n===0?0:(n/tot>=0.8?2:1)});return P}
   function sync(){if(VIEW||!C.api)return;var A={};for(var k in S){A[k]=(/^(dr|sv)/.test(k))?1:S[k]}
@@ -188,7 +188,7 @@ def web_html(kid, P):
     return (f"<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
             f"<title>{esc(title)}</title><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
             f"<style>{CSS}{WEBCSS}</style></head><body><div id='top'></div>{nav}"
-            f"<div class='note'>Tap ▶ to watch a video. Tap 🔊 to hear a page read aloud. Tap a line to type your answer. Draw and trace right on the page with your finger. Your work saves on this tablet.</div>"
+            f"<div class='note'>Tap ▶ to watch a video. Tap 🔊 to hear a page read aloud. Tap an answer bubble to pick it. Tap a line to type your answer. Draw and trace right on the page with your finger. Your work saves on this tablet.</div>"
             f"{''.join(out)}<script>window.SCHOOL={{api:'{API}',kid:'{kid}',week:'{WEEK}'}};</script>{JS}{JS2}{MODAL}</body></html>")
 
 if __name__ == "__main__":

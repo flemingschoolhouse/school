@@ -18,3 +18,13 @@ and the tablet web pages published on this site.
   script source in builder/progress-sheet-script.gs). Each new week set WEEK in web.py AND WEEK/LABEL in mompage.py
   to the new Tuesday date so progress is tracked per week. Never change API. Mom's Corner shows the progress board;
   <kid>.html?view=1 shows a kid's synced answers (drawings stay on the tablet).
+
+## Less writing: mix in multiple choice (Grace's request, Nov 2 2026)
+- About HALF of each kid's independent questions should be multiple choice instead of written/typed answers. Not exactly half — just mix it up.
+- **Nariah (2nd grade, still learning to write): mostly multiple choice/tap** — keep her tracing and drawing, but almost no free-writing answers.
+- Titus (K): tracing and number writing are the skill practice, so keep those.
+- Helpers in core_common.py (work on paper AND tablet — kids circle on paper, tap on the tablet; answers save and count toward progress):
+  - `qs([("question", ["correct", "wrong", "wrong"]), ("written question", 2)])` — a list of choices makes it multiple choice; correct answer FIRST (order is shuffled automatically and stays the same every build).
+  - `mc(question, choices, num)` for a one-off question; `pick("I", "me")` for an inline "(I / me)" choice inside a sentence.
+  - `mark_list(items, choices)` for sort/label lists (each item gets tappable choice bubbles) — use instead of fill-in tables for sorting.
+- Keep journals, "explain/defend" questions, and paragraph writing as written work (roughly the other half).

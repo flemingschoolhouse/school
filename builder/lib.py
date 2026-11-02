@@ -211,6 +211,11 @@ table.t th { background:#eef1fb; color:#1f2a5c; text-align:left; }
 .big { font-size:15pt; } .huge { font-size:22pt; font-weight:700; }
 .center { text-align:center; } .small { font-size:9.5pt; color:#444455; }
 .verse { font-size:13pt; font-weight:600; color:#1f2a5c; background:#f1ebfd; border-radius:8px; padding:8px 12px; }
+.mcq { break-inside:avoid; }
+.mcopts { display:flex; flex-wrap:wrap; gap:3px 8px; margin:2px 0 1px 20px; }
+.mcopts .opt, .pick .opt { display:inline-block; border:1.4px solid #9aa0bb; border-radius:14px; padding:0 10px; font-size:11pt; line-height:1.45; background:#fff; }
+.pick .opt { padding:0 7px; margin:0 2px; font-size:inherit; }
+.mchint { font-size:9.5pt; color:#6b7280; font-style:italic; }
 .pill { display:inline-block; border:1.5px solid var(--ac); color:var(--ac); border-radius:14px; padding:1px 10px; font-weight:600; font-size:10pt; margin:2px 4px 2px 0; }
 .star { font-size:20pt; color:#b9bed6; letter-spacing:4px; }
 .word { font-size:20pt; font-weight:700; color:#1f2a5c; }

@@ -68,6 +68,10 @@ def math():
     return S
 
 # ---------------- ENGLISH ----------------
+def _lc(s):
+    w = s.split()[0]
+    return s if w in ("Titus", "Naomi", "Nevaeh", "Dad", "I") else s[0].lower() + s[1:]
+
 def english():
     S = Subject(K, "English", "Week 2 · Building Better Sentences")
     cl = ["the storm knocked out the power", "because the bridge was closed", "when Gideon heard the dream", "Nevaeh finished her chores",
@@ -79,8 +83,10 @@ def english():
         + '<div class="lab">Mark each clause I (independent) or D (dependent). Underline the subject once and the verb twice.</div>'
         + mark_list(cl, ["I", "D"])
         + '<div class="lab">Turn these dependent clauses into complete sentences by adding an independent clause.</div>'
-        + qs([("because the bridge was closed", 1), ("if you water the garden", 1), ("Write your own sentence that has one dependent clause:", 2)], 9),
-        "I, D, D, I, D, I, D, D. 9–11: answers vary (must add a complete thought).")
+        + qs([("Which is a complete sentence?", ["Because the bridge was closed, we took the long way home.", "Because the bridge was closed.", "Because the bridge was closed and the long way."]),
+              ("Which is a complete sentence?", ["If you water the garden, the tomatoes will grow.", "If you water the garden.", "If you water the garden every day this week."]),
+              ("Write your own sentence that has one dependent clause:", 2)], 9),
+        "I, D, D, I, D, I, D, D. 9) Because the bridge was closed, we took the long way home. 10) If you water the garden, the tomatoes will grow. 11) varies.")
     pairs = [("I wanted to go outside.", "It started to rain.", "but"), ("Naomi can read the story.", "She can listen to the audiobook.", "or"),
              ("The oven was hot.", "We put the bread in.", "so"), ("Dad mowed the yard.", "Titus raked the clippings.", "and"),
              ("He didn't like peas.", "He didn't like carrots either.", "nor"), ("We stayed home.", "The roads were flooded.", "for")]
@@ -89,8 +95,11 @@ def english():
                  "<b>FANBOYS</b>: <b>F</b>or, <b>A</b>nd, <b>N</b>or, <b>B</b>ut, <b>O</b>r, <b>Y</b>et, <b>S</b>o. "
                  "<i>The dog barked, <b>so</b> I opened the door.</i> The comma goes <b>before</b> the conjunction. You can also join them with a semicolon: "
                  "<i>The dog barked; I opened the door.</i></p>", yt("compound sentences FANBOYS"))
-        + '<div class="lab">Combine each pair into one compound sentence using the conjunction given. Don\'t forget the comma!</div>'
-        + qs([(f"{a} {b} <span class='pill'>{c}</span>", 1) for a, b, c in pairs])
+        + '<div class="lab">Which compound sentence is written correctly? Watch the comma!</div>'
+        + qs([(f"{a} {b} <span class='pill'>{c}</span>",
+               [f"{a[:-1]}, {c} {_lc(b)}", f"{a[:-1]} {c}, {_lc(b)}", f"{a[:-1]}, {_lc(b)}"]) for a, b, c in pairs[:3]])
+        + '<div class="lab">Now combine these yourself.</div>'
+        + qs([(f"{a} {b} <span class='pill'>{c}</span>", 1) for a, b, c in pairs[3:]], 4)
         + qs([("Write a compound sentence using <b>yet</b>:", 1), ("Rewrite #4 using a semicolon instead:", 1)], 7),
         "1) I wanted to go outside, but it started to rain. 2) Naomi can read the story, or she can listen to the audiobook. 3) The oven was hot, so we put the bread in. "
         "4) Dad mowed the yard, and Titus raked the clippings. 5) He didn't like peas, nor did he like carrots. 6) We stayed home, for the roads were flooded. "
@@ -102,9 +111,13 @@ def english():
                  "(after, although, as, because, before, if, since, though, unless, until, when, while). <b>Comma rule:</b> if the dependent clause comes "
                  "<b>first</b>, put a comma after it. If it comes second, usually no comma.<br><i>When the bell rang, we went inside.</i> &nbsp;·&nbsp; "
                  "<i>We went inside when the bell rang.</i></p>", yt("complex sentences subordinating conjunctions"))
+        + '<div class="lab">Which complex sentence is combined and punctuated correctly?</div>'
+        + qs([("<i>After Dad got home + We ate dinner.</i>", ["After Dad got home, we ate dinner.", "After Dad got home we ate dinner.", "After, Dad got home we ate dinner."]),
+              ("<i>Since it might rain + I'll bring an umbrella.</i>", ["Since it might rain, I'll bring an umbrella.", "Since it might rain I'll, bring an umbrella.", "Since, it might rain I'll bring an umbrella."]),
+              ("<i>Although her legs were tired + She kept running.</i>", ["Although her legs were tired, she kept running.", "Although her legs were tired. She kept running.", "Although, her legs were tired she kept running."])])
         + '<div class="lab">Combine using the word given. Write it twice — dependent clause first (with a comma), then second.</div>'
-        + qs([(f"{a} {b} <span class='pill'>{c}</span>", 2) for a, b, c in cx])
-        + qs([("Simple, compound, or complex? <i>Although we were late, Pastor waited for us.</i>", 1)], 6),
+        + qs([(f"{a} {b} <span class='pill'>{c}</span>", 2) for a, b, c in cx[3:]], 4)
+        + qs([("Simple, compound, or complex? <i>Although we were late, Pastor waited for us.</i>", ["complex", "compound", "simple"])], 6),
         "1) After Dad got home, we ate dinner. / We ate dinner after Dad got home. 2) Since it might rain, I'll bring an umbrella. 3) Although her legs were tired, she kept running. "
         "4) If you finish your vegetables, you can have dessert. 5) While we folded laundry, the baby slept. 6) complex.")
     fr = ["Running down the hallway with a muddy dog.", "I finished my math I started my essay.", "Because the store was closed.",
@@ -120,15 +133,16 @@ def english():
         "1 F, 2 RO, 3 F, 4 C, 5 CS, 6 F, 7 C, 8 RO. Fixes vary (e.g., I finished my math, so I started my essay. / We baked cookies; they were delicious.)")
     S.set(4, "Week Review",
         learnbox("<p><b>Review quiz.</b> Use everything from this week: clauses, compound and complex sentences, fragments and run-ons. Goal: 8 of 10.</p>")
-        + qs([("Define an independent clause.", 1), ("Circle the subordinating conjunction: <i>We stayed inside until the storm passed.</i> Is the clause it begins independent or dependent?", 1),
-              ("List all 7 FANBOYS.", 1), ("Fix the comma splice: <i>The phone rang, nobody answered it.</i>", 1),
-              ("Fix the fragment: <i>Since the library was open late.</i>", 1), ("Add the missing comma: <i>If you hear thunder go inside.</i>", 1),
-              ("Simple, compound, or complex? <i>Nylah practiced piano, and Naomi read.</i>", 1),
-              ("Simple, compound, or complex? <i>The tall oak tree fell during the storm.</i>", 1),
+        + qs([("What is an independent clause?", ["a clause with a subject and verb that is a complete thought", "a clause that starts with because or when", "a group of words with no verb"]),
+              ("<i>We stayed inside until the storm passed.</i> Which word is the subordinating conjunction?", ["until", "inside", "passed"]),
+              ("Which list is the FANBOYS?", ["for, and, nor, but, or, yet, so", "for, and, not, but, or, yes, so", "if, and, nor, but, or, yet, since"]), ("Fix the comma splice: <i>The phone rang, nobody answered it.</i>", 1),
+              ("Fix the fragment: <i>Since the library was open late.</i>", 1), ("Where does the comma go? <i>If you hear thunder go inside.</i>", ["after thunder", "after If", "after go"]),
+              ("Simple, compound, or complex? <i>Nylah practiced piano, and Naomi read.</i>", ["compound", "complex", "simple"]),
+              ("Simple, compound, or complex? <i>The tall oak tree fell during the storm.</i>", ["simple", "compound", "complex"]),
               ("Write a complex sentence about something you did this week. Put the dependent clause first.", 2),
               ("Write a compound sentence about Gideon using <b>but</b>.", 2)]),
-        "1) a clause with a subject & verb that expresses a complete thought. 2) until — dependent. 3) for, and, nor, but, or, yet, so. 4) The phone rang, but nobody answered it. "
-        "5) e.g., We studied there since the library was open late. 6) If you hear thunder, go inside. 7) compound. 8) simple. 9–10 vary.")
+        "1) a clause with a subject & verb that expresses a complete thought. 2) until. 3) for, and, nor, but, or, yet, so. 4) The phone rang, but nobody answered it. "
+        "5) e.g., We studied there since the library was open late. 6) after thunder (If you hear thunder, go inside). 7) compound. 8) simple. 9–10 vary.")
     return S
 
 # ---------------- SCIENCE ----------------
@@ -140,9 +154,9 @@ def science():
                  "<b>electron cloud</b> are <b>electrons</b> (negative charge, −), which are far lighter. In a neutral atom, the number of electrons equals the "
                  "number of protons, so the charges balance.</p>", yt("parts of an atom for middle school"))
         + fill_table(["Particle", "Charge", "Where is it?"], [["Proton", "", ""], ["Neutron", "", ""], ["Electron", "", ""]])
-        + qs([("What part of the atom holds most of its mass? Why?", 2), ("Why is a neutral atom's overall charge zero?", 2)])
+        + qs([("What part of the atom holds most of its mass?", ["the nucleus — protons and neutrons are much heavier than electrons", "the electron cloud — it takes up the most space", "the electrons — there are more of them"]), ("Why is a neutral atom's overall charge zero?", ["It has equal numbers of + protons and − electrons.", "Neutrons cancel out all the charges.", "Atoms never have any charge."])])
         + '<div class="lab">Draw a helium atom: 2 protons, 2 neutrons, 2 electrons. Label the nucleus and electron cloud.</div><div class="answer-space" style="min-height:190px"></div>',
-        "Proton + nucleus; Neutron 0 nucleus; Electron − electron cloud. 1) nucleus — protons & neutrons are much heavier than electrons. 2) equal numbers of + protons and − electrons cancel.")
+        "Proton + nucleus; Neutron 0 nucleus; Electron − electron cloud. 1) the nucleus. 2) equal + protons and − electrons.")
     els = [("Carbon", "C", 6, 12), ("Oxygen", "O", 8, 16), ("Sodium", "Na", 11, 23), ("Aluminum", "Al", 13, 27), ("Chlorine", "Cl", 17, 35), ("Gold", "Au", 79, 197)]
     S.set(1, "Atomic Number & Mass",
         learnbox("<p>Every element has its own <b>atomic number</b> = the number of <b>protons</b>. Change the protons and you change the element! "
@@ -151,9 +165,9 @@ def science():
                  yt("atomic number mass number protons neutrons electrons"))
         + fill_table(["Element", "Symbol", "Atomic #", "Mass #", "Protons", "Neutrons", "Electrons"],
                      [[n, s, str(a), str(m), "", "", ""] for n, s, a, m in els], 32)
-        + qs([("An atom has 15 protons and 16 neutrons. What is its mass number? (It's phosphorus.)", 1),
-              ("Why is gold's symbol Au instead of G? (Hint: Latin <i>aurum</i>.)", 1),
-              ("If an atom gains an extra proton, what happens to it?", 2)]),
+        + qs([("An atom has 15 protons and 16 neutrons. What is its mass number? (It's phosphorus.)", ["31", "15", "1"]),
+              ("Why is gold's symbol Au instead of G? (Hint: Latin <i>aurum</i>.)", ["Some symbols come from Latin names.", "G was already taken by gas.", "Au stands for “all useful.”"]),
+              ("If an atom gains an extra proton, what happens to it?", ["It becomes a different element.", "It becomes heavier but stays the same element.", "Nothing changes."])]),
         "C 6/6/6, O 8/8/8, Na 11/12/11, Al 13/14/13, Cl 17/18/17, Au 79/118/79 (protons/neutrons/electrons). 1) 31. 2) symbols can come from Latin names. 3) it becomes a different element.")
     S.set(2, "The Periodic Table",
         learnbox("<p>The <b>periodic table</b> lists all known elements in order of atomic number. The rows are <b>periods</b> (7 of them); the columns are "
@@ -161,11 +175,11 @@ def science():
                  "electricity) are on the left and middle; <b>nonmetals</b> are on the right; <b>metalloids</b> sit along the zig-zag “staircase” between them. "
                  "Group 1 metals react wildly with water; Group 18 <b>noble gases</b> (helium, neon, argon) barely react at all. Use any periodic table "
                  "(online or in a book) for today's questions.</p>", yt("how to read the periodic table"))
-        + qs([("What is the difference between a period and a group?", 2), ("Name the element with atomic number 1. What period and group is it in?", 1),
-              ("Name two noble gases. Why are they called “noble”?", 2), ("Is sulfur (S) a metal, nonmetal, or metalloid? Silicon (Si)? Iron (Fe)?", 1),
-              ("Sodium and potassium are in the same group. Predict: will potassium react with water? Why?", 2),
+        + qs([("What is the difference between a period and a group?", ["A period is a row; a group is a column of elements that act alike.", "A period is a column; a group is a row.", "There is no difference."]), ("Which element has atomic number 1, and where is it?", ["hydrogen — period 1, group 1", "helium — period 1, group 18", "oxygen — period 2, group 16"]),
+              ("Name two noble gases. Why are they called “noble”?", 2), ("Sulfur (S), Silicon (Si), Iron (Fe) — which list is right?", ["nonmetal, metalloid, metal", "metal, metal, metal", "metalloid, nonmetal, metal"]),
+              ("Sodium and potassium are in the same group. Will potassium react with water?", ["Yes — elements in the same group act alike.", "No — only sodium reacts with water.", "Only if the water is frozen."]),
               ("Find the symbols: Calcium ____ Potassium ____ Silver ____ Lead ____ Neon ____ Iron ____", 1)]),
-        "1) period = row, group = column (shared properties). 2) hydrogen, period 1, group 1. 3) e.g., helium, neon, argon — they rarely react/combine. "
+        "1) period = row, group = column (shared properties). 2) hydrogen — period 1, group 1. 3) e.g., helium, neon, argon — they rarely react/combine. "
         "4) nonmetal; metalloid; metal. 5) yes — same group, similar properties (it reacts even more strongly). 6) Ca, K, Ag, Pb, Ne, Fe.")
     things = ["water (H₂O)", "oxygen gas (O₂)", "salt water", "gold", "carbon dioxide (CO₂)", "trail mix", "table salt (NaCl)", "air", "iron", "sugar (C₁₂H₂₂O₁₁)"]
     S.set(3, "Elements, Compounds & Mixtures",
@@ -174,16 +188,16 @@ def science():
                  "table salt! A <b>mixture</b> is substances physically mixed but not bonded, so they can be separated (sand and iron filings, salt water). "
                  "A <b>chemical formula</b> shows the atoms in a compound: H₂O = 2 hydrogen + 1 oxygen.</p>", yt("elements compounds and mixtures"))
         + '<div class="lab">Classify each: E (element), C (compound), or M (mixture).</div>' + mark_list(things, ["E", "C", "M"], cols=2)
-        + qs([("How many atoms of each element are in one molecule of sugar, C₁₂H₂₂O₁₁? How many atoms total?", 2),
+        + qs([("How many atoms total are in one molecule of sugar, C₁₂H₂₂O₁₁?", ["45", "3", "12"]),
               ("How could you separate salt from salt water? Why does that prove it's a mixture?", 2),
               ("God made over 100 elements and combined them into everything you see. Name 3 things in your kitchen and guess whether each is an element, compound, or mixture.", 2)], 11),
-        "water C, oxygen E, salt water M, gold E, CO₂ C, trail mix M, NaCl C, air M, iron E, sugar C. 11) 12 C, 22 H, 11 O = 45 atoms. 12) evaporate the water — the parts kept their own properties and separated physically. 13) varies.")
+        "water C, oxygen E, salt water M, gold E, CO₂ C, trail mix M, NaCl C, air M, iron E, sugar C. 11) 45 (12 C + 22 H + 11 O). 12) evaporate the water — the parts kept their own properties and separated physically. 13) varies.")
     S.set(4, "Week Review",
         learnbox("<p><b>Review quiz</b> — atoms and the periodic table. Goal: 8 of 10. Periodic table allowed for #6–7.</p>")
-        + qs([("Name the three particles in an atom and give each one's charge.", 1), ("What does the atomic number tell you?", 1),
-              ("Mass number 40, atomic number 20. How many neutrons?", 1), ("What is a period? What is a group?", 1),
-              ("Where are metals found on the periodic table?", 1), ("Write the symbol: Helium ____ Copper ____ Nitrogen ____", 1),
-              ("Element with 8 protons: ________ Element with 26 protons: ________", 1), ("Element, compound, or mixture: lemonade ____ neon ____ H₂O ____", 1),
+        + qs([("Which shows the three particles and their charges?", ["proton +, neutron 0, electron −", "proton −, neutron +, electron 0", "proton 0, neutron −, electron +"]), ("What does the atomic number tell you?", ["the number of protons", "the number of neutrons", "how heavy the atom is"]),
+              ("Mass number 40, atomic number 20. How many neutrons?", ["20", "40", "60"]), ("A period is a ____ and a group is a ____.", ["row; column", "column; row", "metal; gas"]),
+              ("Where are metals found on the periodic table?", ["left and middle", "far right only", "top row only"]), ("Write the symbol: Helium ____ Copper ____ Nitrogen ____", 1),
+              ("Element with 8 protons: ________ Element with 26 protons: ________", 1), ("Lemonade, neon, H₂O — which list is right?", ["mixture, element, compound", "compound, mixture, element", "element, compound, mixture"]),
               ("Why does table salt behave differently from sodium and chlorine?", 2), ("Explain the difference between a compound and a mixture with an example of each.", 2)]),
         "1) proton +, neutron 0, electron −. 2) number of protons (identity). 3) 20. 4) row / column. 5) left and middle. 6) He, Cu, N. 7) oxygen, iron. 8) mixture, element, compound. "
         "9) chemical bonding forms a new substance with new properties. 10) compound bonded (water), mixture not bonded (salad, salt water).")
@@ -199,8 +213,8 @@ def history():
                  "Jamestown survived when <b>John Rolfe</b> began growing <b>tobacco</b> to sell in England. In 1619, Virginia formed the <b>House of Burgesses</b>, "
                  "the first elected lawmaking body in the colonies — and that same year the first enslaved Africans were brought to Virginia, beginning a terrible "
                  "injustice that would last for 250 years.</p>", yt("Jamestown colony history for kids"))
-        + qs([("Who sponsored the Jamestown settlement, and what did many settlers hope to find?", 2), ("List two reasons Jamestown almost failed.", 2),
-              ("What crop saved Jamestown's economy?", 1), ("Why was the House of Burgesses important for the future United States?", 2),
+        + qs([("Who sponsored Jamestown, and what did many settlers hope to find?", ["the Virginia Company of London — gold", "the King of Spain — spices", "the Pilgrims — religious freedom"]), ("List two reasons Jamestown almost failed.", 2),
+              ("What crop saved Jamestown's economy?", ["tobacco", "cotton", "wheat"]), ("Why was the House of Burgesses important?", ["It was the first elected lawmaking body in the colonies.", "It was the first church in America.", "It ended slavery in Virginia."]),
               ("John Smith's rule echoes 2 Thessalonians 3:10. Do you think it was fair? Explain.", 3)]),
         "1) Virginia Company of London; gold/riches. 2) swampy land/disease, hunger/Starving Time, settlers unwilling to farm. 3) tobacco. 4) first representative (elected) government in the colonies. 5) opinion.")
     S.set(1, "Plymouth & New England",
@@ -210,8 +224,8 @@ def history():
                  "When <b>Roger Williams</b> argued that government should not force religion, he was banished and founded <b>Rhode Island</b> (1636) "
                  "with religious freedom. New England's rocky soil and cold winters made farming hard, so people turned to <b>fishing, shipbuilding, "
                  "lumber, and trade</b>, and governed through <b>town meetings</b>.</p>", yt("New England colonies history"))
-        + qs([("What was the Mayflower Compact, and why does it matter?", 2), ("How were the Pilgrims and Puritans different?", 2),
-              ("Why did Roger Williams start Rhode Island?", 2), ("How did geography shape the New England economy?", 2),
+        + qs([("What was the Mayflower Compact?", ["an agreement to make and obey fair laws — early self-government", "a trade deal with England for tobacco", "a peace treaty with the Wampanoag"]), ("How were the Pilgrims and Puritans different?", 2),
+              ("Why did Roger Williams start Rhode Island?", ["for religious freedom", "to grow tobacco", "to fight the Spanish"]), ("How did geography shape the New England economy?", 2),
               ("Winthrop's “city upon a hill” comes from Matthew 5:14. What did he hope the colony would be?", 2)]),
         "1) agreement to make and obey fair laws — early self-government. 2) Pilgrims separated from the church; Puritans wanted to reform it. 3) for religious freedom / separation of church and state. "
         "4) rocky soil, cold → fishing, shipbuilding, lumber, trade. 5) a godly example the world would watch.")
@@ -221,8 +235,8 @@ def history():
                  "took it in 1664. <b>William Penn</b>, a <b>Quaker</b>, founded Pennsylvania in 1681 as a “holy experiment” where people of any faith could worship "
                  "freely. He made peace treaties with the Lenape people, and Philadelphia (“city of brotherly love”) grew into the largest city in the colonies. "
                  "The Middle Colonies were the most <b>diverse</b> — Dutch, English, German, Swedish, Scots-Irish, and more lived side by side.</p>", yt("Middle colonies history"))
-        + qs([("Name the four Middle Colonies.", 1), ("Why were they called the “breadbasket colonies”?", 2), ("What was William Penn's “holy experiment”?", 2),
-              ("Who controlled New York before the English?", 1), ("Why might religious freedom attract more settlers?", 2)])
+        + qs([("Which are the four Middle Colonies?", ["New York, New Jersey, Pennsylvania, Delaware", "Virginia, Maryland, Georgia, Delaware", "Massachusetts, New York, Rhode Island, Connecticut"]), ("Why were they called the “breadbasket colonies”?", ["Fertile soil grew lots of grain.", "They baked bread for England.", "They traded in baskets."]), ("What was William Penn's “holy experiment”?", 2),
+              ("Who controlled New York before the English?", ["the Dutch", "the Spanish", "the French"]), ("Why might religious freedom attract more settlers?", 2)])
         + '<div class="lab">Compare: New England vs. Middle Colonies</div>' + fill_table(["", "New England", "Middle"], [["Soil/climate", "", ""], ["Main jobs", "", ""], ["Religion", "", ""]], 34),
         "1) NY, NJ, PA, DE. 2) fertile soil grew lots of grain. 3) a colony with religious freedom for all and fair treatment. 4) the Dutch. 5) people persecuted elsewhere could worship freely. "
         "Table: rocky/cold vs fertile/mild; fishing, shipbuilding, trade vs farming grain, trade; mostly Puritan vs diverse/tolerant.")
@@ -232,16 +246,16 @@ def history():
                  "forced labor of <b>enslaved Africans</b>, a deep evil that treated people made in God's image as property. Maryland (1634) was founded by Lord "
                  "Baltimore as a refuge for Catholics. <b>Georgia</b> (1732), the last colony, was founded by James Oglethorpe as a fresh start for debtors and as a "
                  "<b>buffer</b> to protect South Carolina from the Spanish in <b>Florida</b> — just north of us!</p>", yt("Southern colonies history"))
-        + qs([("Name the five Southern Colonies.", 1), ("What is a cash crop? Name three grown in the South.", 2),
-              ("Why did Georgia's location matter to the English?", 2), ("Why was Maryland founded?", 1),
+        + qs([("Which are the five Southern Colonies?", ["Maryland, Virginia, North Carolina, South Carolina, Georgia", "Virginia, Florida, Georgia, Texas, Maryland", "Delaware, Virginia, North Carolina, Georgia, Alabama"]), ("What is a cash crop? Name three grown in the South.", 2),
+              ("Why did Georgia's location matter to the English?", ["It was a buffer against Spanish Florida.", "It had the best gold mines.", "It was closest to England."]), ("Why was Maryland founded?", ["as a refuge for Catholics", "as a home for debtors", "as a Quaker colony"]),
               ("Genesis 1:27 says every person is made in God's image. How does that truth condemn slavery?", 3)])
-        + '<div><b>6.</b> Which colony bordered Spanish Florida? <span class="blank-ln" style="min-width:160px"></span></div>',
+        + mc("Which colony bordered Spanish Florida?", ["Georgia", "Virginia", "Pennsylvania"], 6),
         "1) MD, VA, NC, SC, GA. 2) a crop grown to sell; tobacco, rice, indigo. 3) buffer against Spanish Florida. 4) refuge for Catholics. 5) every person has equal God-given worth and cannot be owned. Florida bordered Georgia.")
     S.set(4, "Week Review",
         learnbox("<p><b>Review quiz</b> — the Thirteen Colonies. Goal: 8 of 10.</p>")
         + '<div class="lab">Sort all 13 colonies into regions.</div>' + fill_table(["New England (4)", "Middle (4)", "Southern (5)"], [["", "", ""]], 120)
-        + qs([("First permanent English settlement and year:", 1), ("Document the Pilgrims signed before landing:", 1), ("Founder of Pennsylvania and his religion:", 1),
-              ("Colony founded for religious freedom by Roger Williams:", 1), ("Main economy of New England:", 1), ("Nickname for the Middle Colonies:", 1),
+        + qs([("First permanent English settlement and year:", ["Jamestown, 1607", "Plymouth, 1620", "St. Augustine, 1565"]), ("Document the Pilgrims signed before landing:", ["the Mayflower Compact", "the Constitution", "the Declaration of Independence"]), ("Founder of Pennsylvania and his religion:", ["William Penn, Quaker", "John Winthrop, Puritan", "Lord Baltimore, Catholic"]),
+              ("Colony founded for religious freedom by Roger Williams:", ["Rhode Island", "Georgia", "New York"]), ("Main economy of New England:", 1), ("Nickname for the Middle Colonies:", 1),
               ("Two cash crops of the South:", 1), ("Last colony founded, and one reason:", 1), ("Which region would you have wanted to live in? Give two reasons.", 2)]),
         "New England: MA, NH, CT, RI. Middle: NY, NJ, PA, DE. Southern: MD, VA, NC, SC, GA. Jamestown 1607; Mayflower Compact; William Penn, Quaker; Rhode Island; fishing/shipbuilding/trade; breadbasket; tobacco/rice/indigo; Georgia — debtors/buffer vs Spanish Florida; opinion.")
     return S
