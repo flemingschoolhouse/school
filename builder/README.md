@@ -28,3 +28,10 @@ and the tablet web pages published on this site.
   - `mc(question, choices, num)` for a one-off question; `pick("I", "me")` for an inline "(I / me)" choice inside a sentence.
   - `mark_list(items, choices)` for sort/label lists (each item gets tappable choice bubbles) — use instead of fill-in tables for sorting.
 - Keep journals, "explain/defend" questions, and paragraph writing as written work (roughly the other half).
+
+## Chore Quest (daily game checklists — added Nov 2 2026)
+- builder/quest.py builds quest-<kid>.html (+ .webmanifest and icons/quest-<kid>.png) at the site ROOT. These are NOT weekly — don't copy them into weeks/.
+  Edit routines, Grace's family chore chart (TEAM), team-chore goals, XP, levels, rewards and badges in its CONFIG section, then run `python3 quest.py`.
+- index.html has a "🎮 Daily Quest" row linking each kid's quest page — keep it when updating the week lines.
+- mompage.py imports quest.MOM_BOARD (Chore Quest scoreboard + "Inspection passed" buttons) into Mom's Corner — keep that import.
+- Saves through the same Apps Script API (kid/week rows "quest-stats" and "questmom"); no script changes needed.

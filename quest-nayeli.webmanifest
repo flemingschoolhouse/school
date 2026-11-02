@@ -1,0 +1,16 @@
+{
+ "name": "Nayeli's Quest",
+ "short_name": "Nayeli's Quest",
+ "start_url": "quest-nayeli.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#a21caf",
+ "icons": [
+  {
+   "src": "icons/quest-nayeli.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

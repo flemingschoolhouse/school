@@ -1,0 +1,16 @@
+{
+ "name": "Naomi's Quest",
+ "short_name": "Naomi's Quest",
+ "start_url": "quest-naomi.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#8a3ab9",
+ "icons": [
+  {
+   "src": "icons/quest-naomi.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

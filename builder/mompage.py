@@ -14,7 +14,7 @@ for k in KIDS + ["Mom's Guide"]:
     src = f"/home/claude/out/{k} - Week of Nov 3.pdf"; dst = k.lower().replace("'", "").replace(" ", "-") + ".pdf"
     shutil.copy(src, f"{pdfdir}/{dst}"); names[k] = dst
 
-import mult
+import mult, quest
 for i in range(5): mult.mult_page("x", i)
 
 DASH = """<div class="mhead" id="progress"><h2>📊 Progress this week</h2><div id="pg">Loading…</div>
@@ -45,7 +45,7 @@ btn = lambda href, txt, col: f'<a class="mb" href="{href}" style="background:{co
 top = (f'<div class="mhead"><h1>Mom\'s Corner</h1><p>Week of {LABEL}</p>'
        '<h2>Kids\' pages</h2><div class="row">' + "".join(btn(f"{k.lower()}.html", k, "#4338ca") for k in KIDS) + '</div>'
        '<h2>Print the packets (PDF)</h2><div class="row">' + "".join(btn(f"weeks/{WEEK}/pdf/{names[k]}", f"🖨 {k}", "#6d28d9") for k in KIDS + ["Mom's Guide"]) + '</div>'
-       + DASH + '<div class="mhead"><h2>Lesson plans & answer keys</h2><p class="small">Scroll down — this is your Mom\'s Guide. This page isn\'t linked from the kids\' home page.</p></div></div>')
+       + DASH + quest.MOM_BOARD + '<div class="mhead"><h2>Lesson plans & answer keys</h2><p class="small">Scroll down — this is your Mom\'s Guide. This page isn\'t linked from the kids\' home page.</p></div></div>')
 MCSS = """.mhead{max-width:816px;margin:0 auto;padding:16px;font-family:Poppins,sans-serif;color:#1f2a5c;text-align:center}
 .mhead h1{margin:6px 0 0;font-size:32px}.mhead h2{font-size:18px;margin:18px 0 8px}.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .mb{color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:20px;font-size:15px}"""

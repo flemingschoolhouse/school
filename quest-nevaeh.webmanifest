@@ -1,0 +1,16 @@
+{
+ "name": "Nevaeh's Quest",
+ "short_name": "Nevaeh's Quest",
+ "start_url": "quest-nevaeh.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#6d28d9",
+ "icons": [
+  {
+   "src": "icons/quest-nevaeh.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

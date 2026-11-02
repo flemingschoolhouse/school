@@ -1,0 +1,16 @@
+{
+ "name": "Titus's Quest",
+ "short_name": "Titus's Quest",
+ "start_url": "quest-titus.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#2f5bd3",
+ "icons": [
+  {
+   "src": "icons/quest-titus.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

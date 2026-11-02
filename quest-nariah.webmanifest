@@ -1,0 +1,16 @@
+{
+ "name": "Nariah's Quest",
+ "short_name": "Nariah's Quest",
+ "start_url": "quest-nariah.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#d6336c",
+ "icons": [
+  {
+   "src": "icons/quest-nariah.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

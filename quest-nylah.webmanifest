@@ -1,0 +1,16 @@
+{
+ "name": "Nylah's Quest",
+ "short_name": "Nylah's Quest",
+ "start_url": "quest-nylah.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#2f5bd3",
+ "icons": [
+  {
+   "src": "icons/quest-nylah.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
