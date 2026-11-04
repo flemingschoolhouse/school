@@ -16,7 +16,10 @@ and the tablet web pages published on this site.
   bump week/level numbers, rebuild, copy web pages to root + weeks/<date>/, add the week to index.html.
 - Progress saving: pages sync answers + per-page progress to Grace's Google Apps Script web app (API in web.py;
   script source in builder/progress-sheet-script.gs). Each new week set WEEK in web.py AND WEEK/LABEL in mompage.py
-  to the new Tuesday date so progress is tracked per week. Never change API. Mom's Corner shows the progress board;
+  to the new Tuesday date so progress is tracked per week. Never change API.
+  IMPORTANT: the week key sent to the sheet is 'wk-'+WEEK (web.py SCHOOL config, mompage.py DASH). A bare date like
+  '2026-11-03' gets auto-converted to a Date by Google Sheets and then never matches again (Mom's board showed nothing). Keep the 'wk-' prefix.
+  Kid pages also sync once on open; Mom's board auto-refreshes every 60s, has a Refresh button and per-kid "answers" buttons. Mom's Corner shows the progress board;
   <kid>.html?view=1 shows a kid's synced answers (drawings stay on the tablet).
 
 ## Less writing: mix in multiple choice (Grace's request, Nov 2 2026)

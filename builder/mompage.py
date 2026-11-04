@@ -18,16 +18,16 @@ import mult, quest
 for i in range(5): mult.mult_page("x", i)
 
 DASH = """<div class="mhead" id="progress"><h2>📊 Progress this week</h2><div id="pg">Loading…</div>
-<p class="small">Updates a few seconds after the kids type. ✅ done · 🟡 started · ⬜ not started. Drawings save on the tablet only.</p></div>
+<p class="small">Updates a few seconds after the kids type. ✅ done · 🟡 started · ⬜ not started. Tap a name or a green button to see that kid's typed and tapped answers. Drawings stay on the kid's tablet. <button id="pgr" style="font:600 13px Poppins;border:0;border-radius:14px;padding:5px 12px;background:#4338ca;color:#fff">↻ Refresh</button></p></div>
 <style>#pg table{width:100%;border-collapse:collapse;font:14px Poppins,sans-serif}#pg td,#pg th{border:1px solid #d6d6e0;padding:6px;text-align:center}
 #pg th{background:#eef1fb}#pg .kid{font-weight:700;text-align:left}#pg details{text-align:left;margin:6px 0;font:13px Poppins}#pg summary{cursor:pointer;font-weight:600;color:#4338ca}
 #pg li{margin:2px 0}.c2{background:#e4f6e7}.c1{background:#fff4cc}</style>
 <script>
 (function(){var API='__API__',WEEK='__WK__',KIDS=['Nevaeh','Nylah','Naomi','Nariah','Titus','Nayeli'];
-fetch(API+'?action=all&week='+WEEK).then(function(r){return r.json()}).then(function(j){
+function load(){fetch(API+'?action=all&week='+WEEK+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
  var rows={};(j.rows||[]).forEach(function(r){rows[r.kid]=r});
  var h='<table><tr><th>Kid</th><th>Day 1</th><th>Day 2</th><th>Day 3</th><th>Day 4</th><th>Day 5</th></tr>',det='';
- KIDS.forEach(function(k){var r=rows[k];h+='<tr><td class="kid">'+k+'</td>';
+ KIDS.forEach(function(k){var r=rows[k];h+='<tr><td class="kid"><a href="'+k.toLowerCase()+'.html?view=1">'+k+'</a></td>';
   for(var d=1;d<=5;d++){if(!r){h+='<td>—</td>';continue}var tot=0,dn=0,st=0;
    for(var key in r.progress){if(key.indexOf('D'+d+'|')===0){tot++;if(r.progress[key]==2)dn++;else if(r.progress[key]==1)st++}}
    var cls=tot&&dn==tot?'c2':(dn||st?'c1':'');h+='<td class="'+cls+'">'+(tot?dn+'/'+tot:'—')+'</td>'}
@@ -35,9 +35,11 @@ fetch(API+'?action=all&week='+WEEK).then(function(r){return r.json()}).then(func
   if(r){var li='';Object.keys(r.progress).sort().forEach(function(key){var v=r.progress[key],p=key.split('|');
     li+='<li>'+(v==2?'✅':v==1?'🟡':'⬜')+' Day '+p[0].slice(1)+' · '+p[1]+' — '+p[2]+'</li>'});
    det+='<details><summary>'+k+' — last saved '+new Date(r.saved).toLocaleString()+' · <a href="'+k.toLowerCase()+'.html?view=1">see answers</a></summary><ul>'+li+'</ul></details>'}});
- document.getElementById('pg').innerHTML=h+'</table>'+det;
-}).catch(function(){document.getElementById('pg').textContent='Could not load progress right now — try refreshing.'});})();
-</script>""".replace("__API__", API).replace("__WK__", WK)
+ var sa='<div class="row" style="margin:10px 0">'+KIDS.map(function(k){return '<a class="mb" style="background:#2b8a3e" href="'+k.toLowerCase()+'.html?view=1">👀 '+k+'\'s answers</a>'}).join('')+'</div>';
+ document.getElementById('pg').innerHTML=h+'</table>'+sa+det;
+}).catch(function(){document.getElementById('pg').textContent='Could not load progress right now — try refreshing.'})}
+load();setInterval(load,60000);document.getElementById('pgr').onclick=function(){document.getElementById('pg').textContent='Loading…';load()};})();
+</script>""".replace("__API__", API).replace("__WK__", "wk-" + WK)
 
 M = build.build_mom()
 pages = "".join(p for p in M.pages if 'class="page blank"' not in p)

@@ -146,6 +146,7 @@ function schoolInit(){
     var wrap=document.createElement('span');wrap.className='drawwrap';sv.parentNode.insertBefore(wrap,sv);wrap.appendChild(sv);
     makeCanvas(wrap,'sv'+(n++),sv.getBoundingClientRect().height<120);
   });
+  if(!VIEW)setTimeout(sync,2500);
 }
 (function(){var C=window.SCHOOL||{};var view=/[?&]view=1/.test(location.search);
   var KEY='ans-'+document.title,has=false;try{has=!!localStorage.getItem(KEY)}catch(e){}
@@ -189,7 +190,7 @@ def web_html(kid, P):
             f"<title>{esc(title)}</title><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
             f"<style>{CSS}{WEBCSS}</style></head><body><div id='top'></div>{nav}"
             f"<div class='note'>Tap ▶ to watch a video. Tap 🔊 to hear a page read aloud. Tap an answer bubble to pick it. Tap a line to type your answer. Draw and trace right on the page with your finger. Your work saves on this tablet.</div>"
-            f"{''.join(out)}<script>window.SCHOOL={{api:'{API}',kid:'{kid}',week:'{WEEK}'}};</script>{JS}{JS2}{MODAL}</body></html>")
+            f"{''.join(out)}<script>window.SCHOOL={{api:'{API}',kid:'{kid}',week:'wk-{WEEK}'}};</script>{JS}{JS2}{MODAL}</body></html>")
 
 if __name__ == "__main__":
   os.makedirs("/home/claude/web", exist_ok=True)
