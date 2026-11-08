@@ -1,114 +1,117 @@
 from lib import *
 from core_common import mc, MC_HINT
 
-VERSE = ("Have I not commanded you? Be strong and courageous. Do not be frightened, and do not be "
-         "dismayed, for the LORD your God is with you wherever you go.")
-VERSE_SHORT = "Be strong and courageous… for the LORD your God is with you wherever you go."
-REF = "Joshua 1:9 (ESV)"
-SONG = yt("Joshua 1:9 ESV song Seeds Family Worship")
-STORYVID = yt("Gideon Bible story for kids")
+VERSE = ("And we know that for those who love God all things work together for good, for those who are "
+         "called according to his purpose.")
+VERSE_SHORT = "For those who love God all things work together for good."
+REF = "Romans 8:28 (ESV)"
+SONG = yt("Romans 8:28 ESV song")
+STORYVID = yt("Joseph Bible story for kids")
+THEME = "Joseph"
 
 D = [
- dict(ref="Judges 6:1–16", title="God Calls Gideon",
-  story="Israel had turned away from God, and every harvest the Midianites swarmed in like locusts and stole their food. "
-        "Gideon was hiding in a winepress, secretly threshing a little wheat. The angel of the LORD appeared and greeted him "
-        "as a “mighty man of valor.” Gideon argued that his clan was the weakest and he was the least in his family. "
-        "God answered with the promise that changed everything: “I will be with you.”",
-  kid="Gideon was hiding from the mean Midianites. God's angel came and said, “The LORD is with you, mighty man!” "
-      "Gideon felt small and scared. But God said, “I will be with you.”",
-  q_teen=["What was Gideon doing when the angel found him, and why was he doing it there?",
-          "Gideon described himself as “the least.” What did God call him instead?"],
-  q_mid=["Where was Gideon hiding?", "What did God promise Gideon in verse 16?"],
-  q_early="What did God promise Gideon?",
-  greek=("δύναμις", "dunamis", "power, strength, might", "Acts 1:8 — “you will receive power when the Holy Spirit has come upon you.”"),
-  word="COURAGE", wdef="being brave because God is with you",
-  theo="God's presence is what makes His people strong. Gideon didn't need to feel mighty — he needed God with him.",
-  j_teen="Gideon saw himself as weak and least. Where do you feel “least”? Write what changes when you remember God is with you.",
-  j_mid="Write about a time you felt scared. What could you remember about God next time?",
-  k_trace="God is with me", draw="Draw Gideon hiding in the winepress."),
- dict(ref="Judges 6:25–32", title="Tearing Down the False Altar",
-  story="Before Gideon ever fought an army, God gave him a harder first job: tear down his own father's altar to the false god Baal "
-        "and build an altar to the LORD. Gideon was afraid of his family and the town, so he did it at night with ten servants — "
-        "but he did it. The next morning the town was furious, but his father Joash told them that if Baal were really a god, he could defend himself. "
-        "Gideon learned that obeying God comes first.",
-  kid="God told Gideon to break the idol's altar. Gideon was scared, so he did it at night — but he obeyed! "
-      "Then he built an altar to worship the real God.",
-  q_teen=["Why did God start with Gideon's own family's altar instead of the Midianite army?",
-          "Gideon obeyed while afraid. Is that still courage? Explain."],
-  q_mid=["What did God tell Gideon to tear down?", "Why did Gideon do it at night?"],
-  q_early="Did Gideon obey God even though he was scared?",
-  greek=("ὑπακοή", "hupakoē", "obedience — literally “listening under”", "Romans 1:5 — “the obedience of faith.”"),
-  word="OBEY", wdef="doing what God says, right away and all the way",
-  theo="God wants our hearts before He wants our help. Gideon had to put away idols before he could lead Israel.",
-  j_teen="What “altar” (anything put before God) might He be asking you to tear down? What would obedience look like this week?",
-  j_mid="Write about a time you obeyed even when it was hard. How did it turn out?",
-  k_trace="I obey God", draw="Draw Gideon building an altar to God."),
- dict(ref="Judges 6:36–40", title="The Fleece",
-  story="The enemy armies gathered, and Gideon still wanted to be sure. He laid a wool fleece on the ground and asked God to make "
-        "only the fleece wet with dew and the ground dry. God did it — Gideon wrung out a whole bowl of water! Then Gideon asked "
-        "for the opposite: a dry fleece on wet ground. Again God did it. God was patient with Gideon's weak faith "
-        "and kindly helped him trust.",
-  kid="Gideon put a fluffy wool fleece on the ground. He asked God to make it wet while the ground stayed dry — and God did! "
-      "The next night: dry fleece, wet ground. God was so patient with Gideon.",
-  q_teen=["What two signs did Gideon ask for?", "God had already promised victory (6:16). What does this story show about God's patience with us?"],
-  q_mid=["What was the first sign Gideon asked for?", "How did God answer him?"],
-  q_early="Was the fleece wet or dry the first morning?",
-  greek=("πίστις", "pistis", "faith, trust, faithfulness", "Hebrews 11:32 names Gideon among the heroes of faith!"),
-  word="TRUST", wdef="believing God will do what He says",
-  theo="God is patient with weak faith. He doesn't throw Gideon away for doubting — He meets him and grows his trust.",
-  j_teen="Gideon asked for proof God had already given. What has God already shown you that you still struggle to trust?",
-  j_mid="Write one promise from God you can trust today.",
-  k_trace="I trust God", draw="Draw the wet fleece and the dry ground."),
- dict(ref="Judges 7:1–8", title="From 32,000 to 300",
-  story="Gideon gathered 32,000 men — but God said it was too many! If Israel won with a big army, they would brag that "
-        "they saved themselves. First, everyone who was afraid could go home: 22,000 left. Then God tested the 10,000 "
-        "at the water, and only the 300 who lapped water from their hands stayed. Three hundred against an army "
-        "“like locusts in abundance.” Now everyone would know the victory was God's.",
-  kid="Gideon had a BIG army. God said, “Too many!” Some went home… then more went home… until only 300 were left. "
-      "Now everyone would know God won the battle!",
-  q_teen=["Why did God say the army was too big? (7:2)", "How many men were left, and how were they chosen?"],
-  q_mid=["How many men did Gideon start with?", "How many were left at the end?"],
-  q_early="How many men were left in Gideon's army?",
-  greek=("δόξα", "doxa", "glory, honor, splendor", "1 Corinthians 10:31 — “do all to the glory of God.”"),
-  word="GLORY", wdef="showing how great God is",
-  theo="God makes sure He gets the glory. He often chooses small and weak things so everyone can see His power.",
-  j_teen="Where in your life is God working with “300” instead of “32,000”? How could that show His glory?",
-  j_mid="God used just 300 men. Write about something small God could use in your life.",
-  k_trace="God is great", draw="Draw 3 men drinking water from their hands."),
- dict(ref="Judges 7:15–22", title="Trumpets, Jars & Torches",
-  story="Gideon heard an enemy soldier describe a dream about a barley loaf flattening a tent — God was going to win! "
-        "Gideon worshiped, then gave each of his 300 men a trumpet and a jar with a torch hidden inside. In the middle "
-        "of the night they surrounded the camp, blew the trumpets, smashed the jars, held up the torches, and shouted, "
-        "“A sword for the LORD and for Gideon!” The Midianites panicked and ran. God gave the victory without "
-        "Israel swinging a sword first.",
-  kid="Gideon's 300 men had trumpets and jars with torches inside. In the night they blew the trumpets — TOOT! — "
-      "smashed the jars — CRASH! — and lifted the lights. The enemy ran away. God won!",
-  q_teen=["What three things did each man carry?", "Read Judges 7:22. Who actually defeated the Midianites?"],
-  q_mid=["What did Gideon's men carry?", "What did they shout?"],
-  q_early="What sound did the trumpets make?",
-  greek=("νίκη", "nikē", "victory", "1 John 5:4 — “this is the victory that has overcome the world — our faith.”"),
-  word="VICTORY", wdef="winning — and God always wins",
-  theo="Salvation belongs to the LORD. Gideon's men only obeyed and held up lights; God won the battle.",
-  j_teen="Look back at Gideon's whole story this week. Write the one thing God taught you through it.",
-  j_mid="Gideon's men held up lights. How can you shine God's light this week?",
-  k_trace="God wins", draw="Draw a trumpet, a jar, and a torch."),
+ dict(ref="Genesis 37:1–11", title="The Robe & the Dreams",
+  story="Joseph was seventeen, and his father Jacob loved him more than his other sons. Jacob made him a robe of many colors, "
+        "and his brothers hated him for it. Then Joseph had two dreams: his brothers' bundles of grain bowed down to his bundle, and "
+        "the sun, moon, and eleven stars bowed down to him. When he told the dreams, his brothers hated him even more — and they were jealous. "
+        "But his father kept the saying in mind. God was already at work in Joseph's story.",
+  kid="Jacob gave his son Joseph a beautiful robe of many colors. Joseph had dreams that his family would bow down to him. "
+      "His brothers got very jealous and angry.",
+  q_teen=["Why did Joseph's brothers hate him? Give two reasons from the passage.",
+          "What did the sun, moon, and eleven stars stand for in Joseph's second dream?"],
+  q_mid=["What special gift did Jacob give Joseph?", "How did Joseph's brothers feel about him?"],
+  q_early="What did Jacob give Joseph?",
+  greek=("ζῆλος", "zēlos", "jealousy; also zeal, strong feeling", "James 3:16 — “where jealousy and selfish ambition exist, there will be disorder.”"),
+  word="LOVE", wdef="caring for others the way God cares for us — not being jealous",
+  theo="Sin often starts in the heart. The brothers' jealousy grew quietly until it led to something terrible — so we bring our feelings to God early.",
+  j_teen="Jealousy grew in the brothers until it took over. Is there anyone you're tempted to be jealous of? Write a prayer giving that to God.",
+  j_mid="Write about a time you felt jealous. What could you do next time instead?",
+  k_trace="God loves me", draw="Draw Joseph's robe of many colors."),
+ dict(ref="Genesis 37:12–36", title="Sold by His Brothers",
+  story="Jacob sent Joseph to check on his brothers, who were far away with the sheep. When they saw him coming, they plotted to kill him. "
+        "Reuben talked them into throwing him into an empty pit instead, hoping to rescue him later. Then Judah said, “Let's sell him,” "
+        "and they sold Joseph to traders for twenty pieces of silver. They dipped his robe in goat's blood, and Jacob believed a wild animal had killed his son. "
+        "Joseph was taken to Egypt as a slave — but he was not forgotten by God.",
+  kid="Joseph's brothers threw him into a deep pit. Then they sold him to traders going to Egypt! "
+      "Joseph was far from home, but God was still with him.",
+  q_teen=["Which brother tried to save Joseph, and which brother suggested selling him?",
+          "How could Joseph have hope in Egypt even though everything went wrong? Explain."],
+  q_mid=["Where did the brothers throw Joseph?", "How much did the traders pay for Joseph?"],
+  q_early="Where did the brothers put Joseph?",
+  greek=("ἐλπίς", "elpis", "hope — a sure expectation of good from God", "Romans 5:5 — “hope does not put us to shame.”"),
+  word="HOPE", wdef="trusting that God will bring good, even when it's hard",
+  theo="Nothing that happens to God's children is outside His care. Joseph's worst day was still part of God's good plan.",
+  j_teen="Joseph's family turned against him. Write about how Romans 8:28 could help someone on their worst day.",
+  j_mid="Write about a hard day you had. How was God with you?",
+  k_trace="God is with me", draw="Draw Joseph in the pit."),
+ dict(ref="Genesis 39", title="Faithful in Egypt",
+  story="Joseph was bought by Potiphar, an officer of Pharaoh. “The LORD was with Joseph,” and everything he did went well, so Potiphar put him "
+        "in charge of his whole house. When Potiphar's wife tried again and again to get him to sin, Joseph refused: “How then can I do this great "
+        "wickedness and sin against God?” She lied about him, and Joseph was thrown into prison for doing right. But even in prison "
+        "the LORD was with him, and the keeper of the prison put Joseph in charge.",
+  kid="Joseph worked hard in Egypt and always did what was right. Someone told a lie about him, and he was put in jail. "
+      "But even in jail, the LORD was with Joseph!",
+  q_teen=["What did Joseph say when he was tempted to sin? (39:9)",
+          "Joseph did right and still ended up in prison. What does that teach about obeying God?"],
+  q_mid=["What was the name of the Egyptian officer who bought Joseph?", "Who was with Joseph even in prison?"],
+  q_early="Who was with Joseph in jail?",
+  greek=("πειρασμός", "peirasmos", "temptation, testing", "1 Corinthians 10:13 — “God is faithful, and he will not let you be tempted beyond your ability.”"),
+  word="FAITHFUL", wdef="doing what is right again and again, even when no one sees",
+  theo="Joseph saw sin as sin against God first. Faithfulness means pleasing God whether we are rewarded or not.",
+  j_teen="Joseph stayed faithful when it cost him. Where is it hardest for you to do right when no one is watching? What will you do?",
+  j_mid="Write one way you can be faithful at home this week, even when no one sees.",
+  k_trace="I do right", draw="Draw Joseph working hard."),
+ dict(ref="Genesis 41", title="Pharaoh's Dreams",
+  story="Pharaoh had two dreams no one could explain: seven fat cows eaten by seven thin cows, and seven full ears of grain swallowed by seven thin ones. "
+        "Joseph was brought from prison and said, “It is not in me; God will give Pharaoh a favorable answer.” God showed him the meaning: "
+        "seven years of plenty, then seven years of famine. Joseph told Pharaoh to store up grain in the good years. Pharaoh put Joseph — "
+        "now thirty years old — in charge of all Egypt.",
+  kid="Pharaoh, the king, had strange dreams about cows and grain. God helped Joseph tell what they meant: seven years of lots of food, "
+      "then seven years of no food. Pharaoh made Joseph a ruler to save the food!",
+  q_teen=["What did the seven fat cows and seven thin cows stand for?",
+          "Joseph said, “It is not in me.” Why is that answer important? What does it show about him?"],
+  q_mid=["What animals were in Pharaoh's first dream?", "What job did Pharaoh give Joseph?"],
+  q_early="Who helped Joseph know what the dreams meant?",
+  greek=("σοφία", "sophia", "wisdom", "James 1:5 — “If any of you lacks wisdom, let him ask God, who gives generously to all.”"),
+  word="WISDOM", wdef="knowing the right thing to do — a gift from God",
+  theo="Every good gift comes from God. Joseph gave God the credit, and God used Joseph's wisdom to save many lives.",
+  j_teen="Joseph pointed Pharaoh to God instead of himself. What gift or talent has God given you? How can you use it to point people to Him?",
+  j_mid="God gave Joseph wisdom. Write something you need wisdom for, and ask God for it.",
+  k_trace="God helps me", draw="Draw seven fat cows (or a big pile of grain)."),
+ dict(ref="Genesis 45:1–15; 50:20", title="God Meant It for Good",
+  story="The famine came, and Joseph's brothers went to Egypt to buy grain. They bowed before the ruler — not knowing it was Joseph! "
+        "Finally Joseph wept and said, “I am your brother, Joseph, whom you sold into Egypt.” He forgave them and brought the whole family to Egypt. Years later he told them, “As for you, you meant evil against me, but God meant it for good, "
+        "to bring it about that many people should be kept alive.”",
+  kid="Joseph's brothers came to Egypt for food. Joseph said, “I am your brother!” He hugged them and forgave them. "
+      "Joseph said, “God meant it for good!”",
+  q_teen=["What did Joseph say in Genesis 50:20?",
+          "How does Joseph's whole story show Romans 8:28 is true? Use at least two events from this week."],
+  q_mid=["Why did the brothers come to Egypt?", "What did Joseph do when he saw his brothers?"],
+  q_early="What did Joseph do for his brothers?",
+  greek=("ἄφεσις", "aphesis", "forgiveness — a sending away of a debt", "Ephesians 1:7 — “In him we have redemption through his blood, the forgiveness of our trespasses.”"),
+  word="FORGIVE", wdef="letting go of getting even, like God lets go of our sins",
+  theo="Joseph points us to Jesus: rejected by His brothers, He suffered, and God turned it into salvation for many. We forgive because we are forgiven.",
+  j_teen="Look back at Joseph's whole story. Write the one thing God taught you through it this week.",
+  j_mid="Is there someone you need to forgive? Write what you could say to them.",
+  k_trace="God is good", draw="Draw Joseph hugging his brothers."),
 ]
 
 # Multiple-choice versions (correct answer first; order is shuffled when built). Keyed by day, then question index.
-MC_TEEN = {0: {1: ["a mighty man of valor", "the least in his family", "a coward"]},
-           2: {0: ["a wet fleece on dry ground, then a dry fleece on wet ground", "fire from heaven, then rain", "a talking donkey, then a burning bush"]},
-           3: {1: ["300 — the men who lapped water from their hands", "10,000 — the ones who weren't afraid", "32,000 — everyone who came"]},
-           4: {0: ["a trumpet, an empty jar, and a torch", "a sword, a shield, and a spear", "a bow, arrows, and a sling"]}}
-MC_MID = [{0: ["in a winepress", "in a cave", "up a tree"], 1: ["“I will be with you.”", "“You will be king.”", "“You will be rich.”"]},
-          {0: ["his father's altar to Baal", "the city wall", "the Midianite tents"], 1: ["He was afraid of his family and the town.", "He liked the dark.", "God said to wait for the moon."]},
-          {0: ["a wet fleece on dry ground", "a burning bush", "rain on everything"], 1: ["He did exactly what Gideon asked — twice.", "He got angry and said no.", "He sent a storm."]},
-          {0: ["32,000", "300", "100"], 1: ["300", "10,000", "32,000"]},
-          {0: ["trumpets, jars, and torches", "swords and shields", "bows and arrows"], 1: ["“A sword for the LORD and for Gideon!”", "“Charge!”", "“We win!”"]}]
-MC_EARLY = [["“I will be with you.”", "“You will be rich.”", "“You can stay home.”"],
-            ["Yes", "No"],
-            ["wet", "dry"],
-            ["300", "3", "3,000"],
-            ["a loud blast — toot, toot!", "a quiet whisper", "no sound at all"]]
+MC_TEEN = {0: {1: ["his father, mother, and eleven brothers", "the kings of Egypt", "the twelve tribes' enemies"]},
+           1: {0: ["Reuben tried to save him; Judah suggested selling him", "Judah tried to save him; Reuben suggested selling him", "Benjamin tried to save him; Levi suggested selling him"]},
+           2: {0: ["“How then can I do this great wickedness and sin against God?”", "“No one will ever find out.”", "“I will ask Potiphar first.”"]},
+           3: {0: ["seven years of plenty, then seven years of famine", "seven good kings, then seven bad kings", "seven wars Egypt would win"]},
+           4: {0: ["“You meant evil against me, but God meant it for good.”", "“I will never forgive you.”", "“Go home and never come back.”"]}}
+MC_MID = [{0: ["a robe of many colors", "a golden crown", "a new sword"], 1: ["jealous and angry", "proud and happy", "they didn't care"]},
+          {0: ["into an empty pit", "into a river", "into a lion's den"], 1: ["twenty pieces of silver", "one gold coin", "a camel"]},
+          {0: ["Potiphar", "Pharaoh", "Pilate"], 1: ["the LORD", "nobody", "his brothers"]},
+          {0: ["cows", "lions", "camels"], 1: ["ruler over all Egypt", "baker for the king", "shepherd of Pharaoh's sheep"]},
+          {0: ["to buy grain (food)", "to visit the pyramids", "to fight Egypt"], 1: ["He forgave them.", "He threw them in prison forever.", "He sent them away hungry."]}]
+MC_EARLY = [["a robe of many colors", "a puppy", "a bike"],
+            ["in a pit", "in a boat", "in a tree"],
+            ["God", "nobody"],
+            ["God", "a cow", "Pharaoh"],
+            ["He forgave them.", "He got mad.", "He ran away."]]
 
 def _verse_block(short=False, copy_lines=0):
     v = VERSE_SHORT if short else VERSE
@@ -120,7 +123,7 @@ def _verse_block(short=False, copy_lines=0):
 
 def page_for(level, name, i):
     d = D[i]
-    t = f"Gideon · {d['title']}"
+    t = f"{THEME} · {d['title']}"
     if level == "teen":
         g = d["greek"]
         body = (_verse_block(copy_lines=0)
@@ -161,6 +164,6 @@ def page_for(level, name, i):
 
 def mom_notes():
     rows = "".join(f"<tr><td><b>Day {i+1}</b></td><td>{d['ref']}</td><td>{esc(d['title'])}</td><td>{d['greek'][1]} · {d['word'].title()}</td></tr>" for i, d in enumerate(D))
-    return (f'<p>Theme this week: <b>Gideon</b>. Memory verse for everyone: <b>{REF}</b> — the littles say the second half.</p>'
+    return (f'<p>Theme this week: <b>{THEME}</b>. Memory verse for everyone: <b>{REF}</b> — the littles say the shorter part.</p>'
             f'<table class="t"><tr><th>Day</th><th>Reading</th><th>Story</th><th>Greek · Word</th></tr>{rows}</table>'
-            f'<div class="qrrow" style="margin-top:6px">{qr_box(SONG,"Joshua 1:9 ESV song")}{qr_box(STORYVID,"Gideon story video")}</div>')
+            f'<div class="qrrow" style="margin-top:6px">{qr_box(SONG,"Romans 8:28 ESV song")}{qr_box(STORYVID,"Joseph story video")}</div>')

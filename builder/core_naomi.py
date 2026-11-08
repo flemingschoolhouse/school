@@ -5,204 +5,248 @@ import random
 K = "Naomi"
 
 def math():
-    S = Subject(K, "Math", "Week 2 · Big Numbers"); r = random.Random(44)
-    nums = [r.randint(10000, 999999) for _ in range(5)]
-    S.set(0, "Place Value & Rounding",
-        learnbox("<p>Our number system goes ones, tens, hundreds — then <b>thousands, ten thousands, hundred thousands</b>. A comma separates every three places. "
-                 "In <b>352,816</b> the 5 is in the ten-thousands place and is worth <b>50,000</b>. To <b>round</b>, look at the digit just to the right: "
-                 "5 or more rounds up, 4 or less stays. 352,816 → nearest thousand <b>353,000</b>; nearest ten thousand <b>350,000</b>.</p>", yt("place value to hundred thousands 4th grade"))
-        + fill_table(["Number", "Word form", "Nearest thousand"], [[f"{n:,}", "", ""] for n in nums], 36)
-        + qs([("Value of the 7 in 274,031? In 702,118?", ["70,000; 700,000", "7,000; 70,000", "7; 7"]), ("Write in standard form: 400,000 + 20,000 + 3,000 + 50 + 9", 1),
-              ("Compare: 46,209 __ 46,290 &nbsp;&nbsp; 108,000 __ 99,999", ["&lt;, &gt;", "&gt;, &lt;", "=, &gt;"]), ("Round 68,452 to the nearest ten thousand and the nearest hundred.", ["70,000; 68,500", "60,000; 68,400", "68,000; 68,450"])]),
-        "Nearest thousand: " + "; ".join(f"{n:,} → {(n+500)//1000*1000:,}" for n in nums) + ". 1) 70,000; 700,000. 2) 423,059. 3) <, >. 4) 70,000; 68,500.")
-    adds = [(r.randint(1200, 8999), r.randint(1100, 8999)) for _ in range(6)] + [(r.randint(20000, 79999), r.randint(10000, 19999)) for _ in range(4)]
-    S.set(1, "Adding Big Numbers",
-        learnbox("<p>Line up the places carefully — ones under ones. Add from right to left, and <b>regroup</b> (carry) whenever a place reaches 10 or more. "
-                 "Always <b>estimate first</b> so you know if your answer makes sense: 4,786 + 3,519 ≈ 5,000 + 4,000 = 9,000. Exact: <b>8,305</b>. Close! ✔</p>", yt("multi digit addition 4th grade"))
-        + vgrid([(a, b, "+") for a, b in adds], 5)
-        + qs([("Jacksonville's Fun Run had 12,486 runners this year and 9,758 last year. How many runners in both years?", 1)], 11),
-        ", ".join(f"{n+1}) {a+b:,}" for n, (a, b) in enumerate(adds)) + ", 11) 22,244")
-    subs = [(r.randint(5000, 9999), r.randint(1200, 4999)) for _ in range(6)] + [(6000, 2347), (10000, 4826), (40302, 18765), (70050, 26384)]
-    S.set(2, "Subtracting Big Numbers",
-        learnbox("<p>Subtract from right to left. When the top digit is smaller, <b>regroup</b> from the next place. For zeros, keep moving left until you find a digit "
-                 "to borrow from: 6,000 − 2,347 → the 6 becomes 5, and the zeros become 9, 9, 10. Then 10 − 7 = 3, 9 − 4 = 5, 9 − 3 = 6, 5 − 2 = 3 → <b>3,653</b>. "
-                 "<b>Check</b> by adding your answer to the number you subtracted.</p>", yt("subtracting across zeros 4th grade"))
-        + vgrid([(a, b, "−") for a, b in subs], 5)
-        + qs([("A library had 25,000 books and gave away 7,684. How many are left?", 1)], 11),
-        ", ".join(f"{n+1}) {a-b:,}" for n, (a, b) in enumerate(subs)) + ", 11) 17,316")
-    wp = [("A farmer picked 3,456 oranges on Monday and 2,879 on Tuesday. He sold 4,000. How many are left?", "2,335"),
-          ("Naomi's family drove 1,248 miles to Texas and the same distance home. How many miles in all?", "2,496"),
-          ("A stadium has 67,814 seats. 49,526 are filled. How many seats are empty?", "18,288"),
-          ("The church raised $2,375 in May and $1,980 in June. Their goal is $5,000. How much more do they need?", "$645"),
-          ("A school has 486 students. 129 are in 4th grade and 158 are in 5th. How many are in other grades?", "199")]
-    S.set(3, "Two-Step Word Problems",
-        learnbox("<p>Two-step problems need <b>two operations</b>. Read carefully, ask “What do I need to find first?”, solve that, then use it for step 2. "
-                 "Underline the question, circle the numbers, and write a sentence answer.</p>", yt("two step word problems 4th grade"))
-        + "".join(f'<div class="box"><b>{n+1}.</b> {q}<div class="grid2" style="margin-top:4px"><div>Step 1:<div class="ln"></div></div><div>Step 2:<div class="ln"></div></div></div></div>' for n, (q, a) in enumerate(wp)),
-        ", ".join(f"{n+1}) {a}" for n, (q, a) in enumerate(wp)))
-    cp = ["Value of the 3 in 538,104", "Round 47,862 to the nearest thousand", "Write 300,000 + 6,000 + 400 + 2 in standard form", "Compare: 61,047 __ 60,947",
-          "5,678 + 2,945", "38,406 + 17,859", "9,000 − 3,462", "52,031 − 28,756", "A truck carried 4,250 pounds, then 3,875 more. How many pounds?",
-          "Estimate 6,812 − 2,195 (nearest thousand)"]
-    cpa = ["30,000", "48,000", "306,402", ">", "8,623", "56,265", "5,538", "23,275", "8,125", "7,000 − 2,000 = 5,000"]
+    S = Subject(K, "Math", "Week 3 · Multiplying by One Digit"); r = random.Random(53)
+    facts = [(r.randint(3, 9), r.randint(3, 9)) for _ in range(15)]
+    tens = [(r.randint(2, 9), r.choice([10, 20, 30, 40, 50, 60, 70, 80, 90])) for _ in range(6)] + [(r.randint(2, 9), r.choice([100, 200, 300, 400, 500, 600, 700, 800, 900])) for _ in range(6)]
+    S.set(0, "Facts, 10s & 100s",
+        learnbox("<p>Strong <b>facts</b> make big multiplication easy, so warm up first! To multiply by a <b>multiple of 10 or 100</b>, multiply the "
+                 "<b>basic fact</b>, then write the <b>zeros</b> on the end. 6 × 40: 6 × 4 = 24, add one zero → <b>240</b>. 7 × 300: 7 × 3 = 21, add two "
+                 "zeros → <b>2,100</b>. Careful with 5s: 5 × 400 → 5 × 4 = 20, plus two zeros → <b>2,000</b> (three zeros in all!).</p>", yt("NM multiplying by multiples of 10 and 100"))
+        + '<div class="lab">Part A · Facts warm-up. Write each answer.</div>'
+        + hgrid([f"{a} × {b} = <span class='blank-ln' style='min-width:44px'></span>" for a, b in facts], 5, "13pt")
+        + '<div class="lab">Part B · Multiply by 10s and 100s.</div>'
+        + hgrid([f"{a} × {b} = <span class='blank-ln' style='min-width:70px'></span>" for a, b in tens], 3, "13.5pt", 4)
+        + '<div class="lab">Part C</div>' + qs([("What is 8 × 50?", ["400", "40", "4,000"]), ("Which is the same as 9 × 600?", ["9 × 6, then add two zeros", "9 × 6, then add one zero", "9 + 600"]),
+              ("A pack has 30 crackers. How many crackers are in 7 packs? Show your fact.", 2), ("Which is greater: 4 × 900 or 6 × 500?", ["4 × 900 (3,600 is more than 3,000)", "6 × 500", "They are equal."])]),
+        "A: " + ", ".join(f"{n+1}) {a*b}" for n, (a, b) in enumerate(facts)) + ". B: " + ", ".join(f"{n+1}) {a*b:,}" for n, (a, b) in enumerate(tens))
+        + ". C: 1) 400. 2) 9 × 6, then add two zeros (5,400). 3) 7 × 3 = 21 → 210 crackers. 4) 4 × 900 = 3,600 > 6 × 500 = 3,000.")
+    easy = []
+    while len(easy) < 5:
+        a, b = r.randint(11, 44), r.randint(2, 4)
+        if (a % 10) * b < 10 and (a // 10) * b < 10 and (a, b) not in easy: easy.append((a, b))
+    hard = []
+    while len(hard) < 10:
+        a, b = r.randint(13, 98), r.randint(3, 9)
+        if (a % 10) * b >= 10 and (a, b) not in hard: hard.append((a, b))
+    p2 = easy + hard
+    S.set(1, "2-Digit × 1-Digit",
+        learnbox("<p>Write the bigger number on top and line up the ones. Multiply the <b>ones first</b>, then the tens. If the ones answer is 10 or more, "
+                 "<b>carry</b>: write the ones digit and carry the tens digit to the top of the tens column. Multiply the tens, then <b>add</b> the carried number. "
+                 "Example 47 × 6: 6 × 7 = 42 → write 2, carry 4. 6 × 4 = 24, + 4 = 28 → <b>282</b>. Problems 1–5 need no carrying.</p>", yt("NM 2 digit times 1 digit with carrying"))
+        + vgrid([(a, b, "×") for a, b in p2], 5)
+        + qs([("Each Sunday school class has 24 chairs. How many chairs are in 4 classes?", 1), ("When do you carry in multiplication?", ["when a place's answer is 10 or more", "every time", "only when multiplying by 9"]),
+              ("In 38 × 5, after 5 × 8 = 40, what do you write and what do you carry?", ["write 0, carry 4", "write 4, carry 0", "write 40, carry nothing"]), ("Which answer makes sense for 52 × 4? (Hint: 50 × 4 = 200)", ["208", "28", "2,008"])], 16),
+        ", ".join(f"{n+1}) {a*b:,}" for n, (a, b) in enumerate(p2)) + f". 16) 96 chairs. 17) when a place's answer is 10 or more. 18) write 0, carry 4 (38 × 5 = 190). 19) {52*4}.")
+    p3 = [(r.randint(112, 989), r.randint(2, 9)) for _ in range(12)] + [(406, 7), (705, 4), (380, 6)]
+    S.set(2, "3-Digit × 1-Digit",
+        learnbox("<p>Same steps, one more place: <b>ones, tens, hundreds</b>. After each step, add the number you carried. Watch out for <b>zeros</b>: in 406 × 7, "
+                 "7 × 6 = 42 → write 2, carry 4. 7 × 0 = 0, + 4 = <b>4</b> (don't forget the carry!). 7 × 4 = 28 → <b>2,842</b>. "
+                 "Check: 406 is about 400, and 400 × 7 = 2,800 — close! ✔</p>", yt("NM 3 digit by 1 digit multiplication"))
+        + vgrid([(a, b, "×") for a, b in p3], 5)
+        + qs([("A church van drives 245 miles each month. How many miles in 6 months?", 1), ("Estimate 512 × 8 by rounding 512 to the nearest hundred.", ["500 × 8 = 4,000", "600 × 8 = 4,800", "512 + 8 = 520"]), ("A farm packs 168 strawberries in each crate. How many strawberries are in 5 crates?", 1), ("For 274 × 3, what is the first step?", ["3 × 4 = 12: write 2, carry 1", "3 × 2 = 6: write 6", "3 × 7 = 21: write 21"])], 16),
+        ", ".join(f"{n+1}) {a*b:,}" for n, (a, b) in enumerate(p3)) + f". 16) {245*6:,} miles. 17) 500 × 8 = 4,000 (exact {512*8:,}). 18) {168*5} strawberries. 19) 3 × 4 = 12: write 2, carry 1 (274 × 3 = {274*3}).")
+    wp = [("A box holds 24 crayons. How many crayons are in 6 boxes?", f"{24*6} crayons"),
+          ("Each pew at church seats 8 people. There are 37 pews. How many people can sit down?", f"{8*37} people"),
+          ("A pelican flies 128 miles a week along the coast. How many miles in 4 weeks?", f"{128*4} miles"),
+          ("Mom buys 7 bags of oranges. Each bag has 15 oranges. How many oranges?", f"{7*15} oranges"),
+          ("<b>Two steps:</b> Museum tickets cost $14 each. Dad buys 6 tickets and pays with a $100 bill. How much change does he get?", f"6 × $14 = ${6*14}; $100 − ${6*14} = ${100-6*14}")]
+    S.set(3, "Word Problems",
+        learnbox("<p>Multiply when you have <b>equal groups</b> and want the total. Clue words: <b>each, every, per, in all, times</b>. Read the problem, "
+                 "circle the numbers, underline the question, solve with the standard steps, and write your answer with a <b>label</b> (crayons, miles, $). "
+                 "In a <b>two-step</b> problem, solve step 1 first, then use that answer in step 2.</p>", yt("NM multiplication word problems"))
+        + "".join(f'<div class="box"><b>{n+1}.</b> {q}<div class="grid2" style="margin-top:4px"><div>Work:<div class="ln" style="height:34px"></div></div><div>Answer (with label):<div class="ln" style="height:34px"></div></div></div></div>' for n, (q, a) in enumerate(wp))
+        + qs([("Which clue words usually mean multiply?", ["each, every, in all", "left, fewer, take away", "share equally"]), ("A pack of gum has 5 pieces. Which number sentence finds the pieces in 9 packs?", ["9 × 5", "9 + 5", "9 − 5"])], 6),
+        ", ".join(f"{n+1}) {a}" for n, (q, a) in enumerate(wp)) + ". 6) each, every, in all. 7) 9 × 5 = 45.")
+    cp = ["7 × 8", "9 × 6", "40 × 7", "6 × 300", "32 × 3", "47 × 6", "253 × 4", "608 × 5",
+          "A bookshelf has 5 shelves with 126 books on each. How many books?", "Naomi buys 4 packs of stickers with 25 in each. She gives away 18. How many are left?"]
+    cpa = [f"{7*8}", f"{9*6}", f"{40*7}", f"{6*300:,}", f"{32*3}", f"{47*6}", f"{253*4:,}", f"{608*5:,}", f"{5*126} books", f"4 × 25 = {4*25}; {4*25} − 18 = {4*25-18} stickers"]
     S.set(4, "Week Review",
-        learnbox("<p><b>Review quiz!</b> 10 problems. Show your work. Goal: 8 or more.</p>")
-        + hgrid([e + "<div class='ln' style='height:34px'></div>" for e in cp], 2, "13pt", 6) + '<div class="big">Score: ______ / 10</div>',
+        learnbox("<p><b>Review quiz!</b> 10 problems. Write problems 5–8 up and down and show your carrying. Goal: 8 of 10 (80%).</p>")
+        + hgrid([e + "<div class='ln' style='height:84px'></div>" for e in cp], 2, "13pt", 6) + '<div class="big">Score: ______ / 10</div>',
         ", ".join(f"{n+1}) {a}" for n, a in enumerate(cpa)))
     return S
 
 def english():
-    S = Subject(K, "English", "Week 2 · All About Nouns")
-    S.set(0, "Common & Proper Nouns",
-        learnbox("<p>A <b>noun</b> names a person, place, thing, or idea. A <b>common noun</b> is a general name: <i>girl, city, river, church</i>. "
-                 "A <b>proper noun</b> is the name of a specific one and always starts with a <b>capital letter</b>: <i>Naomi, Jacksonville, St. Johns River, "
-                 "Bethel Church</i>. Days, months, holidays, and book titles are proper nouns too.</p>", yt("common and proper nouns for kids"))
-        + '<div class="lab">Circle C for common or P for proper.</div>'
-        + mark_list(["dog", "Florida", "Tuesday", "teacher", "Bible", "ocean", "Atlantic Ocean", "November"], ["C", "P"], cols=2)
-        + '<div class="lab">Write a proper noun for each common noun.</div>'
-        + fill_table(["Common noun", "Proper noun"], [["state", ""], ["sister", ""], ["holiday", ""], ["street", ""], ["book", ""]], 26)
-        + qs([("Which sentence has the capitals right?", ["On Thanksgiving, Aunt Maria drove from Georgia to Jacksonville.", "On thanksgiving, aunt Maria drove from Georgia to jacksonville.", "On Thanksgiving, Aunt maria drove From Georgia to Jacksonville."])], 9),
-        "C, P, P, C, P, C, P, P. Proper nouns vary. 9) On Thanksgiving, Aunt Maria drove from Georgia to Jacksonville.")
-    pl = ["cat", "box", "baby", "leaf", "child", "dish", "toy", "mouse", "city", "tooth", "bus", "sheep"]
-    S.set(1, "Plural Nouns",
-        learnbox("<p><b>Plural</b> means more than one. Most nouns add <b>-s</b> (cats). Nouns ending in <b>s, x, z, ch, sh</b> add <b>-es</b> (boxes, dishes). "
-                 "Consonant + <b>y</b>: change y to i and add -es (baby → babies), but vowel + y just adds -s (toy → toys). Some <b>f/fe</b> words change to -ves "
-                 "(leaf → leaves). And some are <b>irregular</b> — they change completely or not at all: child → children, mouse → mice, tooth → teeth, sheep → sheep.</p>",
-                 yt("plural nouns rules for kids"))
-        + '<div class="lab">Write the plural.</div><div class="grid3">' + "".join(f'<div class="prob">{w} → <span class="blank-ln" style="min-width:110px"></span></div>' for w in pl[:6]) + '</div>'
-        + '<div class="lab">Circle the correct plural.</div><div class="grid2">' + "".join(f'<div class="prob">{w} → {pick(*o)}</div>' for w, o in
-            [("toy", ("toys", "toies")), ("mouse", ("mouses", "mice")), ("city", ("citys", "cities")), ("tooth", ("teeth", "tooths")), ("bus", ("buses", "bus's")), ("sheep", ("sheeps", "sheep"))]) + '</div>'
-        + qs([("Write a sentence using two plural nouns from above.", 2), ("Naomi lost a tooth in August. If she loses two more, she will have lost three ______.", ["teeth", "tooths", "toothes"]),
-              ("Which rule do <i>fox</i>, <i>church</i>, and <i>glass</i> follow?", ["add -es", "change y to i and add -es", "change f to v and add -es"])]),
-        "cats, boxes, babies, leaves, children, dishes, toys, mice, cities, teeth, buses, sheep. 1) varies. 2) teeth. 3) add -es.")
-    S.set(2, "Possessive Nouns",
-        learnbox("<p>A <b>possessive noun</b> shows who owns something. For one owner, add <b>'s</b>: <i>the dog's bone, Naomi's book</i>. For a plural noun "
-                 "that ends in s, add just an <b>apostrophe</b>: <i>the girls' room</i> (more than one girl). For irregular plurals, add 's: "
-                 "<i>the children's toys</i>. Don't use an apostrophe just to make a plural!</p>", yt("possessive nouns for kids"))
-        + '<div class="lab">Write it (or circle it) using a possessive noun.</div>'
-        + qs([("the hat that belongs to Dad", 1), ("the bikes that belong to the boys", ["the boys' bikes", "the boy's bikes", "the boys bikes'"]), ("the leash of the puppy", 1),
-              ("the toys of the children", ["the children's toys", "the childrens' toys", "the childrens toys"]), ("the nest of the birds", ["the birds' nest", "the bird's nest's", "the birds nest"]), ("the Bible of Grandma", 1)])
-        + '<div class="lab">Circle the correct word.</div>'
-        + ol([f"My {pick('sisters', 'sister’s')} bed is next to mine.", f"All three {pick('sisters', 'sisters’')} shoes were by the door.", f"We have two {pick('cats', 'cat’s')}.", f"The {pick('teachers', 'teacher’s')} desk is clean."], 7),
-        "1) Dad's hat 2) the boys' bikes 3) the puppy's leash 4) the children's toys 5) the birds' nest 6) Grandma's Bible. 7) sister's 8) sisters' 9) cats 10) teacher's")
-    S.set(3, "Writing with Nouns",
-        learnbox("<p>Strong writers choose <b>specific nouns</b>. Instead of “a bird,” say “a <b>pelican</b>.” Instead of “food,” say “<b>Papa John's pizza</b>.” "
-                 "Today you'll write a paragraph about your family using specific common and proper nouns. Remember: a paragraph has a <b>topic sentence</b>, "
-                 "3–4 <b>detail sentences</b>, and a <b>closing sentence</b>.</p>")
-        + '<div class="lab">Make these nouns more specific.</div>'
-        + fill_table(["Plain noun", "Specific noun"], [["a tree", ""], ["a car", ""], ["a game", ""], ["a song", ""]], 26)
-        + '<div class="lab">Write a paragraph: “My Family.” Use at least 3 proper nouns, 2 plural nouns, and 1 possessive noun. Underline them!</div>' + lines(10, 28)
-        + '<div class="small">Checklist: <span class="chk"></span>topic sentence <span class="chk"></span>3 proper nouns <span class="chk"></span>2 plural <span class="chk"></span>1 possessive <span class="chk"></span>capitals & periods</div>',
-        "Answers vary — check for capitalized proper nouns, correct plurals/possessives, and a topic + closing sentence.")
+    S = Subject(K, "English", "Week 3 · All About Verbs")
+    S.set(0, "Action Verbs",
+        learnbox("<p>Every sentence needs a <b>verb</b>. An <b>action verb</b> tells what the subject <b>does</b>: <i>run, swim, sing, bake</i>. Some actions happen "
+                 "inside your mind — <i>think, know, remember, love, pray</i> — and those are action verbs too! Test: can you put “I” or “they” in front of it? "
+                 "<i>They jump</i> ✔ <i>They table</i> ✘. Strong writers pick <b>vivid</b> verbs: instead of “went,” try <i>raced, tiptoed, wandered</i>.</p>", yt("NE action verbs part 1"))
+        + '<div class="lab">Is it an action verb? Circle Yes or No.</div>'
+        + mark_list(["climb", "pillow", "whisper", "happy", "remember", "Jacksonville", "splash", "under"], ["Yes", "No"], cols=2)
+        + '<div class="lab">Which word is the action verb?</div>'
+        + qs([("The manatee nibbled the seagrass.", ["nibbled", "manatee", "seagrass"]), ("Naomi and Titus raced to the mailbox.", ["raced", "Titus", "mailbox"]),
+              ("We pray before every meal.", ["pray", "every", "meal"]), ("Grandpa remembered the old hymn.", ["remembered", "Grandpa", "hymn"])], 9)
+        + '<div class="lab">Replace the weak verb with a vivid one. Rewrite the sentence.</div>'
+        + qs([("The dog <u>went</u> across the yard.", 1), ("The baby <u>said</u> something.", 1), ("Write a sentence about your morning with two action verbs. Underline them.", 2)], 13),
+        "1) Yes 2) No 3) Yes 4) No 5) Yes 6) No 7) Yes 8) No. 9) nibbled 10) raced 11) pray 12) remembered. 13–14) vary (e.g., dashed, giggled). 15) varies — check for two underlined action verbs.")
+    S.set(1, "Linking Verbs",
+        learnbox("<p>A <b>linking verb</b> doesn't show action. It <b>links</b> the subject to a word that names or describes it. The most common are forms of "
+                 "<b>be</b>: <i>am, is, are, was, were, be, being, been</i>. Others: <i>become, seem</i>, and the sense verbs <i>look, feel, taste, smell, sound</i>. "
+                 "<i>The soup <b>tastes</b> salty</i> (linking). <i>Naomi <b>tastes</b> the soup</i> (action!). Trick: if you can swap in <b>is</b> and it still makes sense, it's linking.</p>",
+                 yt("NE linking verbs part 5"))
+        + '<div class="lab">Circle A for action verb or L for linking verb.</div>'
+        + mark_list(["The gopher tortoise <u>is</u> slow.", "Mom <u>smelled</u> the roses.", "The roses <u>smelled</u> sweet.", "My sisters <u>were</u> excited.",
+                     "Titus <u>became</u> sleepy.", "Dad <u>felt</u> the cold water.", "The music <u>sounds</u> beautiful.", "We <u>painted</u> the fence."], ["A", "L"], cols=1)
+        + qs([("In “The alligator looks hungry,” which word does <i>looks</i> link to <i>alligator</i>?", ["hungry", "the", "looks"]), ("Which list has only linking verbs?", ["am, is, were, seem", "run, is, were, jump", "sing, look, kick, was"]),
+              ("Write a sentence with a linking verb. Circle the linking verb and underline the word it links to.", 2), ("Use <i>feel</i> two ways: once as an action verb and once as a linking verb.", 2), ("Which sentence uses a sense verb as a <b>linking</b> verb?", ["The bread smells fresh.", "Titus smells the bread.", "Mom sniffs the bread."])], 9),
+        "1) L 2) A 3) L 4) L 5) L 6) A 7) L 8) A. 9) hungry. 10) am, is, were, seem. 11) varies. 12) e.g., I feel the soft blanket (action); I feel tired (linking). 13) The bread smells fresh.")
+    S.set(2, "Helping Verbs",
+        learnbox("<p>A <b>helping verb</b> comes before the <b>main verb</b> and helps it. Together they make a <b>verb phrase</b>: <i>Naomi <b>is reading</b>. We <b>will visit</b> Grandma. "
+                 "The kids <b>have finished</b>.</i> Learn the helping verbs in groups: <b>am, is, are, was, were, be, being, been · has, have, had · do, does, did · "
+                 "can, could · will, would · shall, should · may, might, must</b>. The <b>main verb is always last</b> in the verb phrase.</p>", yt("NE helping verbs part 4"))
+        + '<div class="lab">Write the helping verb and the main verb.</div>'
+        + fill_table(["Sentence", "Helping verb", "Main verb"], [["The birds are singing.", "", ""], ["Mom has baked bread.", "", ""], ["We should clean our room.", "", ""],
+                                                                 ["Titus can whistle.", "", ""], ["The river was rising.", "", ""]], 28)
+        + '<div class="lab">Circle the helping verb that fits.</div>'
+        + ol([f"Naomi {pick('is', 'are')} learning her verses.", f"They {pick('have', 'has')} gone to church.", f"I {pick('am', 'is')} helping Dad.", f"She {pick('does', 'do')} not like spiders."], 6)
+        + qs([("Which sentence has a verb phrase?", ["The pelicans were diving.", "The pelicans dove.", "Pelicans eat fish."]), ("In a verb phrase, where is the main verb?", ["last", "first", "it can be anywhere"]),
+              ("Write a sentence with a helping verb from the <i>can, could, should</i> group. Underline the whole verb phrase.", 2)], 10),
+        "1) are / singing 2) has / baked 3) should / clean 4) can / whistle 5) was / rising. 6) is 7) have 8) am 9) does. 10) The pelicans were diving. 11) last. 12) varies.")
+    vt = [("walk", "walked", "walks", "will walk"), ("jump", "jumped", "jumps", "will jump"), ("hurry", "hurried", "hurries", "will hurry"),
+          ("run", "ran", "runs", "will run"), ("eat", "ate", "eats", "will eat"), ("write", "wrote", "writes", "will write")]
+    S.set(3, "Verb Tenses",
+        learnbox("<p>A verb's <b>tense</b> tells <b>when</b>. <b>Past</b> = already happened: most verbs add <b>-ed</b> (<i>walked</i>); if it ends in consonant + y, change y to i "
+                 "(<i>hurried</i>). <b>Irregular</b> verbs change their spelling (<i>run → ran, eat → ate, go → went</i>). <b>Present</b> = now (<i>walks, walk</i>). "
+                 "<b>Future</b> = will happen: use the helping verb <b>will</b> (<i>will walk</i>). Keep one tense in a story unless the time changes.</p>", yt("NE simple verb tenses part 3"))
+        + '<div class="lab">Fill in the chart. (Present: use he or she.)</div>'
+        + fill_table(["Verb", "Past", "Present (she…)", "Future"], [[v, "", "", ""] for v, *_ in vt], 28)
+        + '<div class="lab">Circle the correct verb. Look for time clues!</div>'
+        + ol([f"Yesterday we {pick('picked', 'will pick')} strawberries.", f"Tomorrow Dad {pick('will grill', 'grilled')} burgers.", f"Last week Naomi {pick('wrote', 'writes')} a letter.", f"Right now the baby {pick('sleeps', 'slept')}."], 1)
+        + qs([("Which sentence is in future tense?", ["We will sing at church.", "We sang at church.", "We sing at church."]), ("Which past-tense verb is irregular?", ["went", "jumped", "played"]),
+              ("Write three sentences about a trip to the beach: one past, one present, one future.", 3)], 5),
+        "Chart: " + "; ".join(f"{v}: {a}, {b}, {c}" for v, a, b, c in vt) + ". 1) picked 2) will grill 3) wrote 4) sleeps. 5) We will sing at church. 6) went. 7) varies.")
     S.set(4, "Week Review",
-        learnbox("<p><b>Review quiz</b> — nouns. Goal: 8 of 10.</p>")
-        + qs([("What is a noun?", ["a person, place, thing, or idea", "an action word", "a describing word"]), ("Which are ALL proper nouns?", ["Tuesday, Pastor Mike, Jacksonville", "girl, river, Tuesday", "girl, Pastor Mike, river"]),
-              ("Plural of: berry ______ bench ______ goose ______", 1), ("Plural of: knife ______ day ______ fox ______", 1),
-              ("Make it possessive: the wings of the butterfly", ["the butterfly's wings", "the butterflies wings", "the butterfly wings's"]), ("Make it possessive: the coats of the women", ["the women's coats", "the womens' coats", "the woman's coats"]),
-              ("Fix it: <i>The dog's are barking at the mailman.</i>", ["The dogs are barking at the mailman.", "The dogs' are barking at the mailman.", "The dog's are barking at the mailmans."]), ("Write a sentence with a plural possessive noun.", 1),
-              ("Fix the capitals: <i>my brother titus was born in july.</i>", ["My brother Titus was born in July.", "My Brother titus was born in July.", "my brother Titus was Born in july."]), ("Replace the plain noun with a specific one: <i>We ate food at the place.</i>", 1)]),
-        "1) person, place, thing, or idea. 2) Tuesday, Pastor Mike, Jacksonville. 3) berries, benches, geese. 4) knives, days, foxes. 5) the butterfly's wings. 6) the women's coats. "
-        "7) The dogs are barking at the mailman. 8) varies (e.g., the girls' room). 9) My brother Titus was born in July. 10) varies.")
+        learnbox("<p><b>Review quiz</b> — verbs. Goal: 8 of 10.</p>")
+        + qs([("What does an action verb tell?", ["what the subject does", "what the subject looks like", "where something is"]), ("Write the action verb: <i>The osprey snatched a fish.</i>", 1),
+              ("In “The pie smells delicious,” <i>smells</i> is a…", ["linking verb", "action verb", "helping verb"]), ("Name four forms of the verb <i>be</i>.", 1),
+              ("Find the verb phrase: <i>The children have planted a garden.</i>", ["have planted", "children have", "planted a garden"]), ("Write a sentence with a helping verb and underline the main verb.", 1),
+              ("Past tense of <i>carry</i>:", ["carried", "carryed", "carries"]), ("Write the past and future of <i>sing</i>.", 1),
+              ("Fix the tense: <i>Tomorrow I swam in the pool.</i>", ["Tomorrow I will swim in the pool.", "Tomorrow I swims in the pool.", "Tomorrow I swimmed in the pool."]), ("Use <i>taste</i> as an action verb in one sentence and as a linking verb in another.", 2)]),
+        "1) what the subject does. 2) snatched. 3) linking verb. 4) any four: am, is, are, was, were, be, being, been. 5) have planted. 6) varies. 7) carried. 8) sang, will sing. "
+        "9) Tomorrow I will swim in the pool. 10) e.g., I taste the cake (action); The cake tastes sweet (linking).")
     return S
 
 def science():
-    S = Subject(K, "Science", "Week 2 · Food Chains & Food Webs")
-    S.set(0, "Producers & Consumers",
-        learnbox("<p>Every living thing needs energy. <b>Producers</b> make their own food from sunlight — plants, algae, and seagrass. <b>Consumers</b> eat other living things. "
-                 "<b>Herbivores</b> eat only plants (manatee, deer). <b>Carnivores</b> eat only animals (alligator, osprey). <b>Omnivores</b> eat both (raccoon, bear, people!). "
-                 "God designed it so that all the energy in a food chain starts with the <b>sun</b>.</p>", yt("producers and consumers for kids"))
-        + '<div class="lab">Circle: P (producer), H (herbivore), C (carnivore), O (omnivore).</div>'
-        + mark_list(["oak tree", "manatee", "alligator", "raccoon", "seagrass", "white-tailed deer", "osprey", "black bear", "algae", "bobcat"], ["P", "H", "C", "O"], cols=2)
-        + qs([("Where does all the energy in a food chain start?", ["the sun", "the soil", "the water"]), ("Why are plants called producers?", ["They make their own food from sunlight.", "They produce seeds.", "They eat bugs."]), ("Are you a herbivore, carnivore, or omnivore? How do you know?", 2)], 11),
-        "oak P, manatee H, alligator C, raccoon O, seagrass P, deer H, osprey C, bear O, algae P, bobcat C. 11) the sun. 12) they make their own food from sunlight. 13) omnivore — eat plants and animals.")
-    S.set(1, "Food Chains",
-        learnbox("<p>A <b>food chain</b> shows who eats whom. The arrows point in the direction the <b>energy moves</b> — from the thing being eaten to the thing that eats it. "
-                 "Example from a Florida pond: <b>algae → mosquito larva → small fish → largemouth bass → alligator</b>. The first link is always a producer. "
-                 "The animal at the end with no predators is the <b>top predator</b>.</p>", yt("food chains for kids"))
-        + '<div class="lab">Put each chain in order with arrows (#1), then circle the right order (#2–3).</div>'
-        + qs([("snake · grass · hawk · grasshopper · frog", 2), ("tiger shark · seagrass · sea turtle", ["seagrass → sea turtle → tiger shark", "tiger shark → sea turtle → seagrass", "sea turtle → seagrass → tiger shark"]),
-              ("acorn · owl · mouse", ["acorn → mouse → owl", "owl → mouse → acorn", "mouse → acorn → owl"])])
-        + '<div class="lab">Draw your own Florida food chain with at least 4 links. Label the producer and the top predator.</div><div class="answer-space" style="min-height:170px"></div>'
-        + qs([("What would happen to the hawk if all the grass died? Explain.", 2)], 4),
-        "1) grass → grasshopper → frog → snake → hawk. 2) seagrass → sea turtle → tiger shark. 3) acorn → mouse → owl. 4) the hawk would lose food because every animal below it depends on the grass.")
-    S.set(2, "Food Webs",
-        learnbox("<p>In real life, animals eat more than one thing, so food chains overlap into a <b>food web</b>. In Florida's wetlands, a <b>raccoon</b> might eat crayfish, "
-                 "eggs, fish, and berries. If one living thing disappears, it can affect the whole web. Look at the web below and answer the questions.</p>", yt("food web for kids"))
-        + '<svg width="640" height="250" style="align-self:center">'
-          + "".join(f'<rect x="{x-58}" y="{y-16}" width="116" height="32" rx="8" fill="#fff" stroke="#4338ca" stroke-width="2"/><text x="{x}" y="{y+5}" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2a5c">{t}</text>'
-                    for t, x, y in [("alligator", 320, 26), ("great blue heron", 140, 110), ("raccoon", 500, 110), ("bass (fish)", 320, 130),
-                                    ("crayfish", 120, 200), ("small fish", 320, 220), ("berries", 520, 220)])
-          + "".join(f'<line x1="{a}" y1="{b}" x2="{c}" y2="{d}" stroke="#4338ca" stroke-width="2" marker-end="url(#ar)"/>' for a, b, c, d in
-                    [(120, 184, 135, 128), (300, 204, 160, 128), (330, 204, 325, 148), (140, 186, 470, 128), (500, 204, 500, 128), (320, 114, 320, 44), (160, 94, 290, 40), (480, 94, 350, 40)])
-          + '<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#4338ca"/></marker></defs></svg>'
-        + qs([("Name everything the heron eats in this web.", 1), ("What eats the raccoon?", ["alligator", "heron", "bass"]), ("Which living thing is the producer?", ["berries", "crayfish", "small fish"]),
-              ("Write one complete food chain from this web.", 1), ("If all the crayfish disappeared, which two animals would be affected first?", ["the heron and the raccoon", "the alligator and the bass", "the berries and the small fish"]),
-              ("Why is a food web more realistic than a food chain?", 2)]),
-        "1) crayfish, small fish. 2) alligator. 3) berries. 4) e.g., small fish → bass → alligator. 5) heron and raccoon — they eat crayfish. 6) animals eat many things, so energy paths overlap.")
-    S.set(3, "Decomposers",
-        learnbox("<p>When plants and animals die, who cleans up? <b>Decomposers</b>! Bacteria, fungi (mushrooms and mold), and helpers like earthworms break down dead things and "
-                 "waste and return nutrients to the soil. Then producers use those nutrients to grow, and the cycle starts again. Without decomposers, the earth "
-                 "would be piled with dead leaves and the soil would run out of nutrients. Try it: look under a log or in the leaf pile in the backyard!</p>", yt("decomposers for kids"))
-        + qs([("Which are all decomposers?", ["bacteria, mushrooms, earthworms", "hawks, owls, snakes", "grass, algae, oak trees"]), ("What do decomposers give back to the soil?", ["nutrients", "sunlight", "seeds"]), ("What would happen if there were no decomposers?", 2)])
-        + '<div class="lab">Backyard hunt: look under a log, rock, or leaf pile (with Mom). Draw and label what you find.</div><div class="answer-space" style="min-height:190px"></div>'
-        + '<div class="lab">Draw the cycle: sun → producer → consumer → decomposer → soil → producer</div><div class="answer-space" style="min-height:150px"></div>',
-        "1) bacteria, fungi/mushrooms, earthworms (also mold). 2) nutrients. 3) dead things would pile up and soil would lose nutrients.")
+    S = Subject(K, "Science", "Week 3 · Habitats & Adaptations")
+    S.set(0, "Habitats",
+        learnbox("<p>A <b>habitat</b> is the home where a plant or animal lives. It gives four things: <b>food, water, shelter, and space</b>. "
+                 "<b>Forests</b> have many trees (deer, owls, squirrels). <b>Deserts</b> get less than 10 inches of rain a year (camels, lizards, cactus). "
+                 "<b>Oceans</b> are salt water (sea turtles, dolphins, coral). <b>Wetlands</b> are land soaked with water, like marshes and swamps (herons, alligators). "
+                 "<b>Grasslands</b> are wide open fields of grass (bison, zebras, prairie dogs). Last week's food webs all live inside habitats!</p>", yt("NS habitats polar desert forest grassland aquatic"))
+        + '<div class="lab">Circle the habitat: F forest · D desert · O ocean · W wetland · G grassland.</div>'
+        + mark_list(["camel", "bison", "sea turtle", "great blue heron", "black bear", "dolphin", "saguaro cactus", "zebra", "alligator", "woodpecker"], ["F", "D", "O", "W", "G"], cols=2)
+        + qs([("What four things does every habitat give?", ["food, water, shelter, space", "toys, food, water, sun", "only food and water"]), ("Which habitat gets less than 10 inches of rain a year?", ["desert", "wetland", "forest"]),
+              ("Why couldn't a dolphin live in a desert?", 2)], 11)
+        + '<div class="lab">Your backyard is a habitat! Draw it and label one source of food, water, shelter, and space.</div><div class="answer-space" style="min-height:140px"></div>',
+        "camel D, bison G, sea turtle O, heron W, bear F, dolphin O, cactus D, zebra G, alligator W, woodpecker F. 11) food, water, shelter, space. 12) desert. 13) it needs water to live/breathe and swim; no water or fish to eat.")
+    S.set(1, "Physical Adaptations",
+        learnbox("<p>An <b>adaptation</b> is a feature that helps a living thing survive in its habitat. <b>Physical adaptations</b> are body parts or body features: "
+                 "a duck's <b>webbed feet</b> paddle; a camel's <b>hump</b> stores fat and its long eyelashes block sand; a polar bear's thick fur and <b>blubber</b> keep it warm; "
+                 "a cactus's <b>spines</b> protect it and its waxy stem holds water. <b>Camouflage</b> is coloring that blends in (a flounder on sand). "
+                 "<b>Mimicry</b> means looking like something dangerous — Florida's harmless scarlet kingsnake looks like a venomous coral snake!</p>", yt("NS physical adaptations in animals"))
+        + '<div class="lab">How does each adaptation help?</div>'
+        + fill_table(["Animal", "Adaptation", "How it helps"], [["duck", "webbed feet", ""], ["owl", "big eyes", ""], ["porcupine", "sharp quills", ""], ["polar bear", "white fur", ""]], 32)
+        + qs([("Which is a physical adaptation?", ["a pelican's pouch", "a bird flying south", "a bear sleeping all winter"]), ("What does a camel's hump store?", ["fat", "water", "sand"]),
+              ("What is mimicry?", ["looking like something dangerous", "changing habitats", "eating plants"]), ("Why do many desert plants have thick, waxy stems?", ["to hold water", "to catch fish", "to stay warm in snow"])], 5)
+        + '<div class="lab">Invent an animal for a wetland. Draw it and label 3 physical adaptations.</div><div class="answer-space" style="min-height:150px"></div>',
+        "duck: paddles in water; owl: sees at night; porcupine: protects from predators; polar bear: camouflage in snow. 5) a pelican's pouch. 6) fat. 7) looking like something dangerous. 8) to hold water.")
+    S.set(2, "Behavioral Adaptations",
+        learnbox("<p><b>Behavioral adaptations</b> are things an animal <b>does</b> to survive. <b>Migration</b>: moving to a new place each season — monarch butterflies fly to Mexico, "
+                 "and American white pelicans spend the winter in Florida. <b>Hibernation</b>: a deep winter sleep where the body slows way down (groundhogs, some bats). "
+                 "Opossums <b>play dead</b>; fish swim in <b>schools</b>; many animals hunt at night (<b>nocturnal</b>). Camouflage works best with a behavior: "
+                 "a rabbit <b>freezes</b> so its brown fur hides it. Many behaviors are <b>instincts</b> — God built them in, no one teaches them.</p>", yt("NS behavioral adaptations in animals"))
+        + '<div class="lab">Circle P (physical) or B (behavioral).</div>'
+        + mark_list(["a monarch flies to Mexico", "a duck's webbed feet", "a groundhog hibernates", "an opossum plays dead", "a turtle's hard shell",
+                     "a bat hunts at night", "a fish swims in a school", "an alligator's strong jaws"], ["P", "B"], cols=1)
+        + qs([("Why do some birds migrate south in fall?", ["to find warmer weather and food", "to visit other birds", "to lay eggs in snow"]), ("What happens to an animal's body during hibernation?", ["it slows way down", "it grows a new tail", "it speeds up"]),
+              ("What is an instinct?", ["a behavior an animal is born knowing", "a trick an animal is taught", "a kind of habitat"]), ("Pick one animal. Describe one physical AND one behavioral adaptation it has.", 3)], 9),
+        "1) B 2) P 3) B 4) B 5) P 6) B 7) B 8) P. 9) to find warmer weather and food. 10) it slows way down. 11) a behavior it is born knowing. 12) varies.")
+    S.set(3, "Florida Habitats",
+        learnbox("<p>Florida is full of habitats! The <b>St. Johns River</b> is Florida's longest river (about 310 miles) and one of the few that flows <b>north</b> — "
+                 "right through Jacksonville to the Atlantic. Its <b>wetlands</b> clean water and are nurseries for fish. The <b>manatee</b> is a gentle herbivore that eats seagrass; "
+                 "cold water below about 68°F can make it sick, so in winter it <b>migrates</b> to warm springs like Blue Spring on the St. Johns. The <b>alligator</b> has eyes and "
+                 "nostrils on <b>top</b> of its head so it can hide underwater and still see and breathe. The <b>gopher tortoise</b> lives in dry, sandy uplands and uses shovel-like "
+                 "front legs to dig burrows about <b>15 feet long</b> — more than 350 other kinds of animals use them!</p>", yt("NS exploring Florida's wetlands"))
+        + fill_table(["Animal", "Habitat", "Physical adaptation", "Behavioral adaptation"], [["manatee", "", "", ""], ["alligator", "", "", ""], ["gopher tortoise", "", "", ""]], 62)
+        + qs([("Which way does the St. Johns River flow?", ["north", "south", "west"]), ("Why do manatees gather at warm springs in winter?", ["cold water can make them sick", "to find sand to dig in", "to hunt fish"]),
+              ("How does the alligator's head help it hunt?", ["eyes and nostrils on top let it hide underwater", "it has a beak", "it has a long neck"]), ("Why is the gopher tortoise's burrow important to other animals?", 2),
+              ("Name a Florida habitat near your home and one animal you have seen there.", 2)]),
+        "Table: manatee — river/springs/coast; flippers/paddle tail, thick body; migrates to warm springs. Alligator — wetlands/rivers; eyes + nostrils on top, strong jaws; basks in sun, hides underwater. "
+        "Gopher tortoise — dry sandy uplands; shovel-like legs, hard shell; digs burrows. 1) north. 2) cold water can make them sick. 3) eyes and nostrils on top. 4) 350+ animals use it for shelter. 5) varies.")
     S.set(4, "Week Review",
-        learnbox("<p><b>Review quiz</b> — food chains and webs. Goal: 8 of 10.</p>")
-        + qs([("What is a producer? Give an example.", 1), ("What is a consumer? Give an example.", 1), ("Manatee, osprey, raccoon — which list is right?", ["herbivore, carnivore, omnivore", "carnivore, herbivore, omnivore", "omnivore, carnivore, herbivore"]),
-              ("In a food chain, which way do the arrows point?", ["toward the eater — the way energy moves", "toward the thing being eaten", "up toward the sun"]), ("Put in order: fish · algae · pelican", ["algae → fish → pelican", "pelican → fish → algae", "fish → algae → pelican"]), ("What is a food web?", ["overlapping food chains", "a spider's web", "one single food chain"]),
-              ("What do decomposers do?", 1), ("Name a decomposer.", 1), ("Where does the energy in every food chain begin?", ["the sun", "the producer's roots", "the top predator"]),
-              ("Psalm 104:27 says all creatures look to God “to give them their food in due season.” How does a food web show God's care?", 2)]),
-        "1) makes its own food (plant). 2) eats other living things (animal). 3) herbivore, carnivore, omnivore. 4) direction energy moves (toward the eater). 5) algae → fish → pelican. "
-        "6) overlapping food chains. 7) break down dead things, return nutrients. 8) e.g., fungi. 9) the sun. 10) opinion.")
+        learnbox("<p><b>Review quiz</b> — habitats and adaptations. Goal: 8 of 10.</p>")
+        + qs([("What is a habitat?", ["the home where a living thing lives", "a kind of food", "an animal's body part"]), ("Name the four things a habitat gives.", 1),
+              ("Which habitat is land soaked with water?", ["wetland", "desert", "grassland"]), ("What is an adaptation?", 1),
+              ("A duck's webbed feet are a…", ["physical adaptation", "behavioral adaptation", "habitat"]), ("Migration means…", ["moving to a new place each season", "sleeping all winter", "blending in"]),
+              ("Give one example of camouflage.", 1), ("Why do manatees swim to warm springs in winter?", ["cold water can make them sick", "to lay eggs", "to find gopher tortoises"]),
+              ("Where does the gopher tortoise live?", ["dry, sandy uplands", "the deep ocean", "the Arctic"]), ("Job 12:7 says, “Ask the beasts, and they will teach you.” What has an animal taught you about God's design?", 2)]),
+        "1) the home where a living thing lives. 2) food, water, shelter, space. 3) wetland. 4) a feature or behavior that helps it survive. 5) physical adaptation. 6) moving to a new place each season. "
+        "7) e.g., a flounder on sand, a rabbit's brown fur. 8) cold water can make them sick. 9) dry, sandy uplands. 10) opinion.")
     return S
 
 def fl_history():
-    S = Subject(K, "Florida History", "Week 2 · Florida's First Peoples")
-    S.set(0, "The First Floridians",
-        learnbox("<p>People have lived in Florida for a very long time — archaeologists believe more than <b>12,000 years</b>. Back then Florida was cooler and drier, the "
-                 "coastline stretched much farther out, and giant animals like <b>mammoths</b> and <b>mastodons</b> roamed. The first Floridians hunted, fished, and "
-                 "gathered plants. Over thousands of years they built villages, made pottery, and piled up huge mounds of shells called <b>middens</b> — some are still "
-                 "standing today! By the time Europeans arrived, about <b>350,000</b> Native people lived in Florida.</p>", yt("Florida first people history for kids"))
-        + qs([("About how long have people lived in Florida?", ["more than 12,000 years", "about 500 years", "about 100 years"]), ("Which two giant animals might the first Floridians have seen?", ["mammoths and mastodons", "dinosaurs and dragons", "elephants and giraffes"]),
-              ("What is a shell midden?", ["a big mound of shells people left behind", "a kind of canoe", "a seashell necklace"]), ("How was Florida different long ago?", 2), ("How do archaeologists learn about people who didn't leave written records?", 2)])
-        + '<div class="lab">Draw a village of Florida\'s first people.</div><div class="answer-space" style="min-height:150px"></div>',
-        "1) more than 12,000 years. 2) mammoths, mastodons. 3) a large mound of discarded shells. 4) cooler, drier, bigger coastline, giant animals. 5) by studying things they left behind — tools, pottery, mounds.")
-    S.set(1, "The Timucua — Our Neighbors!",
-        learnbox("<p>The <b>Timucua</b> (tee-MOO-kwah) lived in northeast and north-central Florida — right where <b>Jacksonville</b> is today! They lived in villages of round "
-                 "houses made of poles and palm thatch, with a large council house in the center. They <b>farmed</b> corn, beans, and squash, and also fished, hunted "
-                 "deer, and gathered oysters along the St. Johns River in <b>dugout canoes</b>. Timucua leaders often had elaborate tattoos to show their rank. "
-                 "Sadly, after Europeans arrived, war and new diseases caused the Timucua population to shrink until they disappeared by the 1700s.</p>", yt("Timucua people Florida for kids"))
-        + qs([("Where did the Timucua live?", ["northeast Florida — right where Jacksonville is", "the Florida Keys", "the panhandle near Tallahassee"]), ("Describe a Timucua house.", 2), ("Which three foods did the Timucua eat?", ["corn, beans, and squash", "rice, wheat, and apples", "pizza, bread, and cheese"]),
-              ("What did they use to travel on the river?", ["dugout canoes", "sailboats", "rafts made of shells"]), ("What happened to the Timucua after Europeans came?", 2),
-              ("Jacksonville has a preserve named after them — the Timucuan Ecological and Historic Preserve. Why do you think it's important to remember them?", 2)]),
-        "1) northeast/north-central Florida incl. Jacksonville. 2) round, poles + palm thatch. 3) corn, beans, squash (also fish, deer, oysters). 4) dugout canoes. 5) war and disease made them disappear by the 1700s. 6) opinion.")
-    S.set(2, "Calusa & Apalachee",
-        learnbox("<p>The <b>Calusa</b> (kah-LOO-sah) lived in southwest Florida. They were called “the shell people” because they built whole islands and canals out of shells. "
-                 "Unlike most tribes, the Calusa didn't need to farm — the rich waters gave them plenty of fish, shellfish, and turtles. They were powerful, and many "
-                 "other tribes paid them tribute. The <b>Apalachee</b> (ap-uh-LATCH-ee) lived in the panhandle near today's Tallahassee. They were skilled "
-                 "<b>farmers</b> with large fields of corn, and they played a rough ball game with a small deerskin ball.</p>", yt("Calusa and Apalachee for kids"))
-        + fill_table(["", "Timucua", "Calusa", "Apalachee"], [["Part of Florida", "", "", ""], ["Farmed or not?", "", "", ""], ["Main foods", "", "", ""], ["One interesting fact", "", "", ""]], 40)
-        + qs([("Why didn't the Calusa need to farm?", ["The sea gave them plenty of food.", "They bought food from Spain.", "Nothing grows in south Florida."]), ("Which tribe lived closest to Tallahassee?", ["Apalachee", "Calusa", "Timucua"]), ("Which of the three would you most like to learn more about? Why?", 2)]),
-        "Timucua: NE Florida, farmed, corn/beans/squash/fish; Calusa: SW, did not farm, fish/shellfish; Apalachee: panhandle, farmed, corn. 1) the sea gave plenty of food. 2) Apalachee. 3) opinion.")
-    S.set(3, "Europeans Arrive",
-        learnbox("<p>In <b>1513</b>, Spanish explorer <b>Juan Ponce de León</b> landed on the east coast and named the land <b>La Florida</b> — “land of flowers.” "
-                 "In <b>1564</b>, French Protestants (Huguenots) built <b>Fort Caroline</b> on the St. Johns River — in what is now <b>Jacksonville</b>! Spain wanted Florida "
-                 "for itself, so in <b>1565</b> <b>Pedro Menéndez de Avilés</b> founded <b>St. Augustine</b> and soon destroyed Fort Caroline. St. Augustine is the "
-                 "<b>oldest continuously inhabited city</b> founded by Europeans in the United States — older than Jamestown by 42 years!</p>", yt("St Augustine history for kids"))
-        + '<div class="lab">Make a timeline.</div>'
+    S = Subject(K, "Florida History", "Week 3 · Spanish & French Florida")
+    S.set(0, "Ponce de León, 1513",
+        learnbox("<p><b>Juan Ponce de León</b> sailed with Christopher Columbus on his second voyage in <b>1493</b> and later ruled Puerto Rico. In <b>April 1513</b> "
+                 "he landed on Florida's east coast — no one knows the exact spot. It was the <b>Easter season</b>, called <i>Pascua Florida</i> (“flowery Easter”) in Spanish, "
+                 "and the land was full of flowers, so he named it <b>La Florida</b>. The “Fountain of Youth” story was mostly added <b>later</b>."
+                 " In <b>1521</b> he came back to start a colony on the southwest coast, but the <b>Calusa</b> fought back and he was wounded by an arrow. "
+                 "He died soon after in Cuba.</p>", yt("NF learning about Ponce de Leon"))
+        + '<div class="lab">Fact or legend? Circle F (fact) or L (legend).</div>'
+        + mark_list(["Ponce de León reached Florida in 1513.", "He drank from a magic Fountain of Youth.", "He named the land La Florida.", "He sailed with Columbus in 1493.", "He was wounded fighting the Calusa."], ["F", "L"], cols=1)
+        + qs([("Why did he choose the name La Florida?", ["It was the Easter season and full of flowers.", "He found gold there.", "His ship was named Florida."]), ("Which country did Ponce de León sail for?", ["Spain", "France", "England"]),
+              ("What happened when he returned in 1521?", ["The Calusa fought back and he was wounded.", "He founded St. Augustine.", "He built a stone fort."]), ("How can you tell the difference between a fact and a legend in history?", 2)], 6)
+        + '<div class="lab">Draw Ponce de León\'s ship arriving at a flowery Florida coast.</div><div class="answer-space" style="min-height:60px"></div>',
+        "1) F 2) L 3) F 4) F 5) F. 6) Easter season (Pascua Florida) and flowers. 7) Spain. 8) Calusa fought back; wounded, died in Cuba. 9) facts can be proven with records/evidence; legends are stories added later.")
+    S.set(1, "Fort Caroline — French in Jacksonville",
+        learnbox("<p>France wanted a piece of the New World too. In <b>1562</b> <b>Jean Ribault</b> sailed into the mouth of the St. Johns River, called it the <i>River May</i>, "
+                 "and set up a stone column to claim the land for France. In <b>June 1564</b> <b>René de Laudonnière</b> brought about 200 settlers and built <b>Fort Caroline</b>, "
+                 "a triangle-shaped fort of earth and wood on the St. Johns — in today's <b>Jacksonville</b>! Many were <b>Huguenots</b> (French Protestants) hoping for a place to "
+                 "worship freely. The Timucua chief <b>Saturiwa</b> helped them at first, but the settlers ran short of food and struggled. Today you can visit "
+                 "<b>Fort Caroline National Memorial</b> on the river (the fort there is a model — the real spot has never been found).</p>", yt("NF Fort Caroline National Memorial virtual tour"))
+        + fill_table(["Question", "Answer"], [["Who claimed the river for France in 1562?", ""], ["Who built Fort Caroline, and when?", ""], ["What shape was the fort?", ""], ["Which Timucua chief helped the French?", ""]], 30)
+        + qs([("Who were the Huguenots?", ["French Protestants", "Spanish soldiers", "a Florida tribe"]), ("What did the French call the St. Johns River?", ["River May", "River of Flowers", "Saint Augustine River"]),
+              ("Why did many Huguenots want to come to Florida?", ["to worship God freely", "to find the Fountain of Youth", "to trade with England"]), ("What problem did the Fort Caroline settlers have?", ["They ran short of food.", "It snowed too much.", "They had no river nearby."]),
+              ("Fort Caroline was built more than 450 years ago! If you visited the Memorial, what would you want to see? Why?", 2)], 5),
+        "1) Jean Ribault. 2) René de Laudonnière, June 1564. 3) triangle. 4) Saturiwa. 5) French Protestants. 6) River May. 7) to worship freely. 8) ran short of food. 9) opinion.")
+    S.set(2, "Menéndez & St. Augustine",
+        learnbox("<p>King Philip II of Spain was angry that France was building in Florida, so he sent <b>Pedro Menéndez de Avilés</b>. Menéndez sighted land on <b>August 28, 1565</b> — "
+                 "the feast day of <b>St. Augustine</b>, so that became the town's name. On <b>September 8, 1565</b>, he came ashore near a Timucua village, held a church service, and "
+                 "shared a meal — 56 years before the Pilgrims' Thanksgiving. The French under Ribault sailed south to attack, but a <b>hurricane</b> wrecked their ships. Menéndez "
+                 "marched his soldiers about 40 miles north through the storm and captured <b>Fort Caroline</b> on <b>September 20, 1565</b>, renaming it <b>San Mateo</b>. Many "
+                 "French were killed, and Spain took control of Florida.</p>", yt("NF St Augustine 1565 Pedro Menendez"))
+        + '<div class="lab">Number the events in order (1–5).</div>'
+        + "".join(f'<div class="prob"><span class="blank-ln" style="min-width:40px"></span> {e}</div>' for e in
+                  ["A hurricane wrecks the French ships.", "Menéndez sights land on St. Augustine's feast day.", "French Huguenots build Fort Caroline.", "Menéndez captures Fort Caroline.", "Menéndez comes ashore and founds St. Augustine."])
+        + qs([("Why was the city named St. Augustine?", ["Land was sighted on the feast day of St. Augustine.", "Menéndez's son was named Augustine.", "A Timucua chief chose it."]), ("On what date was St. Augustine founded?", ["September 8, 1565", "April 2, 1513", "July 4, 1776"]),
+              ("What helped Menéndez defeat the French?", ["A hurricane wrecked the French fleet.", "The French gave up without a fight.", "England sent help."]), ("What did Spain rename Fort Caroline?", ["San Mateo", "San Marcos", "La Florida"]),
+              ("St. Augustine is the oldest continuously lived-in European city in the continental U.S. Why do you think it lasted when Fort Caroline didn't?", 2)], 6),
+        "Order (top to bottom): 4, 2, 1, 5, 3 — Fort Caroline built 1564 → land sighted Aug 28 → St. Augustine founded Sept 8 → hurricane → Fort Caroline captured Sept 20. "
+        "6) feast day of St. Augustine. 7) September 8, 1565. 8) a hurricane wrecked the French fleet. 9) San Mateo. 10) opinion (Spain was stronger, more soldiers/supplies, a good harbor, help from Spain).")
+    S.set(3, "Missions & the Castillo",
+        learnbox("<p>In the 1600s, Spanish <b>Franciscan friars</b> built <b>missions</b> across north Florida to teach the Timucua, Guale, and Apalachee people about Christianity "
+                 "(you can visit rebuilt <b>Mission San Luis</b> in Tallahassee). St. Augustine had only wooden forts, and in <b>1668</b> the English pirate <b>Robert Searles</b> raided the town. "
+                 "So Spain built a stone fort: the <b>Castillo de San Marcos</b>, from <b>1672 to 1695</b>. It is made of <b>coquina</b> — a rock of tiny shells stuck together — dug on "
+                 "Anastasia Island. Cannonballs sank into the soft stone instead of cracking it! In <b>1702</b> English soldiers from Carolina burned the town, but about 1,500 people "
+                 "sheltered inside for nearly two months and the Castillo never fell. It is the oldest masonry (stone) fort in the continental U.S.</p>", yt("NF Castillo de San Marcos castle made of coquina"))
         + '<svg width="640" height="80" style="align-self:center"><line x1="20" y1="40" x2="620" y2="40" stroke="#8a3ab9" stroke-width="3"/>'
-          + "".join(f'<circle cx="{x}" cy="40" r="7" fill="#8a3ab9"/><text x="{x}" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2a5c">{y}</text>' for x, y in [(80, 1513), (300, 1564), (430, 1565), (590, 1607)])
+          + "".join(f'<circle cx="{x}" cy="40" r="7" fill="#8a3ab9"/><text x="{x}" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2a5c">{y}</text>' for x, y in [(40, 1513), (130, 1564), (220, 1565), (380, 1668), (450, 1672), (530, 1695), (600, 1702)])
           + '</svg>'
-        + fill_table(["Year", "What happened?"], [["1513", ""], ["1564", ""], ["1565", ""], ["1607", "(Hint: last week Nevaeh learned this one!)"]], 32)
-        + qs([("What does “La Florida” mean?", ["land of flowers", "land of sunshine", "land of water"]), ("Why did Spain attack Fort Caroline?", ["Spain wanted to control Florida.", "The French stole Spanish gold.", "Fort Caroline attacked St. Augustine first."]), ("Why is St. Augustine special?", 2)]),
-        "1513 Ponce de León names La Florida; 1564 French build Fort Caroline (Jacksonville); 1565 Menéndez founds St. Augustine; 1607 Jamestown. 1) land of flowers. 2) Spain wanted to control Florida. 3) oldest continuously inhabited European-founded city in the U.S.")
+        + fill_table(["Year", "What happened?"], [["1668", ""], ["1672", ""], ["1695", ""], ["1702", ""]], 30)
+        + qs([("What is coquina?", ["rock made of tiny shells stuck together", "a kind of wood", "Spanish for brick"]), ("Why did Spain build a stone fort?", ["The wooden forts weren't strong enough after a pirate raid.", "They had too much stone.", "France asked them to."]),
+              ("What happened when cannonballs hit the coquina walls?", ["They sank into the stone instead of cracking it.", "They bounced back at the ship.", "The walls fell down."]), ("What was the purpose of the Spanish missions?", 2)], 1),
+        "1668 pirate Robert Searles raids St. Augustine; 1672 Castillo construction begins; 1695 Castillo finished; 1702 English siege — town burned, Castillo holds. 1) rock of tiny shells. "
+        "2) wooden forts weren't strong enough after the raid. 3) they sank in. 4) to teach Native people about Christianity (and to strengthen Spain's hold on Florida).")
     S.set(4, "Week Review",
-        learnbox("<p><b>Review quiz</b> — Florida's first peoples. Goal: 8 of 10.</p>")
-        + qs([("About how long have people lived in Florida?", ["12,000+ years", "1,000 years", "200 years"]), ("What is a midden?", ["a mound of shells", "a village", "a fort"]), ("Which tribe lived where Jacksonville is today?", ["Timucua", "Calusa", "Apalachee"]),
-              ("Name three crops the Timucua grew.", 1), ("Which tribe was known as “the shell people”?", ["Calusa", "Timucua", "Apalachee"]), ("Which tribe lived in the panhandle?", ["Apalachee", "Calusa", "Timucua"]),
-              ("Who named Florida, and when?", 1), ("What was Fort Caroline, and where was it?", 1), ("Who founded St. Augustine, and when?", 1),
-              ("Explain one way life changed for Florida's Native peoples after Europeans arrived.", 2)]),
-        "1) 12,000+ years. 2) a mound of shells. 3) Timucua. 4) corn, beans, squash. 5) Calusa. 6) Apalachee. 7) Ponce de León, 1513. 8) French fort on the St. Johns River (Jacksonville), 1564. 9) Pedro Menéndez de Avilés, 1565. 10) disease, war, loss of land/population.")
+        learnbox("<p><b>Review quiz</b> — Spanish & French Florida. Goal: 8 of 10.</p>")
+        + qs([("Who named La Florida, and in what year?", ["Ponce de León, 1513", "Menéndez, 1565", "Ribault, 1562"]), ("What does <i>Pascua Florida</i> mean?", 1),
+              ("Who built Fort Caroline in 1564?", ["French Huguenots", "Spanish friars", "English pirates"]), ("Where was Fort Caroline?", 1),
+              ("Who founded St. Augustine, and on what date?", 1), ("How did a hurricane help Spain in 1565?", ["It wrecked the French ships.", "It destroyed St. Augustine.", "It blew Menéndez home."]),
+              ("What did Spanish friars build across north Florida?", ["missions", "railroads", "lighthouses"]), ("The Castillo de San Marcos was built from ___ to ___.", 1),
+              ("What is coquina made of?", ["tiny shells", "sand and wood", "red clay"]), ("Explain why the Castillo was never captured.", 2)]),
+        "1) Ponce de León, 1513. 2) flowery Easter. 3) French Huguenots. 4) on the St. Johns River in today's Jacksonville. 5) Pedro Menéndez de Avilés, September 8, 1565. 6) it wrecked the French ships. "
+        "7) missions. 8) 1672 to 1695. 9) tiny shells. 10) strong coquina walls absorbed cannonballs; people sheltered inside during sieges.")
     return S
 
 def build():

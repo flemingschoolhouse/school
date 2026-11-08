@@ -1,136 +1,220 @@
 from lib import *
-from core_common import mc
-from worldmap import world_map, CONT_LABEL, OCEAN_LABEL
+from core_common import mc, qs, mark_list, MC_HINT
+from worldmap import world_map, proj
 
-CONTS = list(CONT_LABEL)   # 7
-OCEANS = list(OCEAN_LABEL) # 5
+WK = 3
 JAX = (-81.66, 30.33)
-NUM = {k: str(i + 1) for i, k in enumerate(CONTS)}
-LET = {k: chr(65 + i) for i, k in enumerate(OCEANS)}
 VID = {
- 0: yt("seven continents song for kids"), 1: yt("five oceans song for kids"),
- 2: yt("hemispheres equator prime meridian for kids"), 3: yt("latitude and longitude for kids"),
- 4: yt("Florida geography for kids"),
+ 0: yt("GEO landforms for kids"), 1: yt("GEO bodies of water for kids"),
+ 2: yt("GEO island peninsula isthmus"), 3: yt("GEO world rivers for kids"),
+ 4: yt("GEO land and water song"),
 }
-TITLES = ["The 7 Continents", "The 5 Oceans", "Hemispheres", "Latitude & Longitude", "Where in the World Is Jacksonville?"]
+TITLES = ["Landforms", "Bodies of Water", "Islands, Peninsulas & Isthmuses", "Great Rivers & Mountains", "Florida's Land & Water + Review"]
 TIER = {"Titus": "A", "Nariah": "A", "Naomi": "B", "Nevaeh": "C", "Nylah": "C"}
+
+WATER = "#cfe0ff"   # light blue (blue is the largest channel)
+LAND = "#ffffff"
+ST = 'stroke="#1f2a5c" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"'
+
+def _svg(inner, w):
+    return f'<svg width="{w}" height="{w*0.66:.0f}" viewBox="0 0 120 80">{inner}</svg>'
+
+def landform(name, w=120):
+    pics = {
+     "mountain": f'<polygon points="10,74 60,8 110,74" fill="{LAND}" {ST}/><polyline points="44,30 52,34 60,28 68,34 76,30" fill="none" {ST}/>',
+     "hill": f'<path d="M4,74 C30,36 90,36 116,74 Z" fill="{LAND}" {ST}/>',
+     "plain": f'<line x1="4" y1="60" x2="116" y2="60" {ST}/>' + "".join(f'<path d="M{10+k*14},60 l3,-8 M{14+k*14},60 l-2,-7" fill="none" {ST} stroke-width="1.6"/>' for k in range(8)),
+     "valley": f'<polygon points="2,74 30,10 60,62 90,10 118,74" fill="{LAND}" {ST}/><path d="M48,74 C56,66 64,66 72,74" fill="{WATER}" {ST} stroke-width="1.6"/>',
+     "plateau": f'<polygon points="8,74 26,24 94,24 112,74" fill="{LAND}" {ST}/>',
+     "river": f'<path d="M0,20 C30,10 40,50 70,40 C95,32 100,62 120,58 L120,74 C96,78 92,48 70,56 C40,66 30,26 0,36 Z" fill="{WATER}" {ST}/>',
+     "lake": f'<ellipse cx="60" cy="42" rx="44" ry="24" fill="{WATER}" {ST}/>',
+     "ocean": f'<rect x="4" y="18" width="112" height="56" fill="{WATER}" {ST}/>' + "".join(f'<path d="M{12+k*26},{40+(k%2)*14} q6,-6 12,0 q6,6 12,0" fill="none" {ST} stroke-width="1.6"/>' for k in range(4)),
+     "bay": f'<rect x="4" y="4" width="112" height="72" fill="{WATER}" {ST}/><path d="M4,4 L116,4 L116,60 C96,60 92,28 60,28 C28,28 24,60 4,60 Z" fill="{LAND}" {ST}/>',
+     "island": f'<rect x="4" y="4" width="112" height="72" fill="{WATER}" {ST}/><path d="M40,40 C40,22 82,20 84,38 C86,56 46,60 40,40 Z" fill="{LAND}" {ST}/>',
+     "peninsula": f'<rect x="4" y="4" width="112" height="72" fill="{WATER}" {ST}/><path d="M4,4 L116,4 L116,22 L70,22 C76,40 72,70 56,70 C42,70 44,40 50,22 L4,22 Z" fill="{LAND}" {ST}/>',
+     "isthmus": f'<rect x="4" y="4" width="112" height="72" fill="{WATER}" {ST}/><path d="M8,14 L46,14 C50,34 70,34 74,14 L112,14 L112,66 L74,66 C70,46 50,46 46,66 L8,66 Z" fill="{LAND}" {ST}/>',
+    }
+    return _svg(pics[name], w)
+
+def card(name, label=True, w=120, num=None):
+    lab = f'<div class="big" style="font-weight:600">{name}</div>' if label else (f'<div class="big"><b>{num}.</b> <span class="blank-ln" style="min-width:100px"></span></div>' if num else "")
+    return f'<div class="box center" style="padding:4px">{landform(name, w)}{lab}</div>'
 
 def wordbank(words):
     return '<div>' + "".join(f'<span class="pill">{esc(w)}</span>' for w in words) + '</div>'
 
-def label_lines(keys, cols=2):
-    cells = "".join(f'<div><b>{k}.</b> <span class="blank-ln" style="min-width:210px"></span></div>' for k in keys)
-    return f'<div class="grid{cols}">{cells}</div>'
+def head(text, v):
+    return f'<div class="flexrow"><div class="learn grow">{text}</div>{v}</div>'
+
+# rough Florida outline (lon, lat)
+FL = [(-87.6, 31.0), (-85.0, 31.0), (-84.9, 30.7), (-82.2, 30.57), (-82.0, 30.8), (-81.45, 30.71), (-81.3, 29.9), (-80.6, 28.6),
+      (-80.5, 28.2), (-80.05, 26.7), (-80.1, 25.8), (-80.4, 25.2), (-81.1, 25.1), (-81.8, 26.1), (-82.2, 26.7), (-82.8, 27.9),
+      (-82.7, 28.7), (-83.7, 29.9), (-84.3, 30.0), (-85.4, 29.7), (-86.5, 30.4), (-87.4, 30.3)]
+def florida_map(W=300, H=300, labels=False, star=True):
+    x0, x1, y0, y1 = -88.0, -79.5, 31.4, 24.6
+    P = lambda lo, la: ((lo - x0) / (x1 - x0) * W, (la - y0) / (y1 - y0) * H)
+    pts = " ".join(f"{a:.1f},{b:.1f}" for a, b in (P(*p) for p in FL))
+    # St. Johns River (rough): rises in the marshes of east-central Florida and flows NORTH, then east to the Atlantic at Jacksonville
+    sj = [(-80.75, 27.75), (-80.85, 28.3), (-81.05, 28.8), (-81.35, 29.1), (-81.6, 29.6), (-81.65, 30.0), (-81.65, 30.3), (-81.5, 30.4), (-81.4, 30.4)]
+    sjp = " ".join(f"{a:.1f},{b:.1f}" for a, b in (P(*p) for p in sj))
+    ox, oy = P(-80.83, 26.95)
+    o = [f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" style="background:{WATER};border:1.5px solid #9aa6cc;border-radius:6px">',
+         f'<polygon points="{pts}" fill="#fff" {ST}/>',
+         f'<polyline points="{sjp}" fill="none" stroke="#2f5bd3" stroke-width="3"/>',
+         f'<ellipse cx="{ox:.0f}" cy="{oy:.0f}" rx="{W*0.03:.0f}" ry="{W*0.035:.0f}" fill="{WATER}" stroke="#2f5bd3" stroke-width="2"/>']
+    if star:
+        sx, sy = P(*JAX); o.append(f'<text x="{sx:.0f}" y="{sy+6:.0f}" text-anchor="middle" font-size="20" fill="#a21caf">★</text>')
+    if labels:
+        for t, x, y in [("A", W - 22, P(0, 29.0)[1]), ("B", P(-85.2, 0)[0], P(0, 27.0)[1]), ("C", ox + 22, oy + 4), ("D", P(-82.15, 0)[0], P(0, 29.35)[1])]:
+            o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="11" fill="#fff" stroke="#6d28d9" stroke-width="1.6"/>'
+                     f'<text x="{x:.0f}" y="{y+4.5:.0f}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#6d28d9">{t}</text>')
+    o.append('</svg>')
+    return "".join(o)
+
+WORLD_MARKS = [("4", "Nile River", 31, 22), ("2", "Amazon River", -60, -3), ("6", "Mississippi River", -90, 35),
+               ("1", "Himalayas (Mount Everest)", 86.9, 28), ("5", "Andes Mountains", -70, -22), ("3", "Rocky Mountains", -110, 45)]
+def world_marks(W, H):
+    s = ""
+    for t, n, lo, la in WORLD_MARKS:
+        x, y = proj(lo, la, W, H)
+        if "River" in n:
+            s += f'<path d="M{x-10},{y} q5,-6 10,0 q5,6 10,0" fill="none" stroke="#2f5bd3" stroke-width="2.5"/>'
+        else:
+            s += f'<polygon points="{x-9},{y+7} {x},{y-9} {x+9},{y+7}" fill="#fff" stroke="#1f2a5c" stroke-width="2"/>'
+        s += (f'<circle cx="{x+16}" cy="{y-10}" r="10" fill="#fff" stroke="#6d28d9" stroke-width="1.6"/>'
+              f'<text x="{x+16}" y="{y-5.5}" text-anchor="middle" font-size="12" font-weight="700" fill="#6d28d9">{t}</text>')
+    return s
 
 def geo_page(name, i):
     T = TIER[name]; v = qr_box(VID[i], "Watch first", 64)
     if i == 0:
+        five = ["mountain", "hill", "plain", "valley", "plateau"]
         if T == "A":
-            body = (f'<div class="flexrow"><div class="learn grow"><p class="big">A <b>continent</b> is a HUGE piece of land. The world has <b>7</b> of them! '
-                    'We live on <b>North America</b>.</p></div>' + v + '</div>' + world_map(660, 315, cont_marks=NUM)
-                    + '<div class="lab">Mom points and says each name. Put a dot-marker dot (or sticker) on each continent as you count!</div>'
-                    + '<div class="big">How many continents? Trace it:</div>' + trace_line("7", 60, 3)
-                    + '<div class="lab">Color the continent where WE live (#1).</div>')
+            body = (head('<p class="big">A <b>landform</b> is a shape of the land. God made mountains tall, hills small, and plains flat!</p>', v)
+                    + '<div class="grid5">' + "".join(card(n, True, 108) for n in five) + '</div>'
+                    + '<div class="lab">Mom reads. Circle (or tap) the answer.</div>'
+                    + mc("Which landform is the tallest?", ["mountain", "hill", "plain"], 1)
+                    + mc("Which landform is flat?", ["plain", "mountain", "valley"], 2)
+                    + mc("Which is low land between two mountains?", ["valley", "plateau"], 3)
+                    + '<div class="lab">Put a dot-marker dot on the top of every mountain and hill. Then trace:</div>' + trace_line("hill", 52, 4))
         else:
-            body = (f'<div class="flexrow"><div class="learn grow"><p>A <b>continent</b> is one of Earth\'s 7 great land masses: North America, South America, Europe, Asia, '
-                    'Africa, Australia, and Antarctica. Europe and Asia actually share one big land mass — the dashed line shows the usual border.</p></div>' + v + '</div>'
-                    + world_map(700, 330, cont_marks=NUM) + '<div class="lab">Label each numbered continent.</div>' + wordbank(sorted(CONTS))
-                    + label_lines(range(1, 8)))
+            body = (head('<p>A <b>landform</b> is a natural shape on Earth\'s surface. <b>Mountains</b> rise high with steep sides and a peak. <b>Hills</b> are lower and rounded. '
+                         '<b>Plains</b> are wide, flat land — great for farming. A <b>valley</b> is low land between hills or mountains, often with a river. '
+                         'A <b>plateau</b> is high land with a flat top and steep sides.</p>', v)
+                    + '<div class="grid5">' + "".join(card(n, False, 112, k + 1) for k, n in enumerate(["valley", "plateau", "mountain", "plain", "hill"])) + '</div>'
+                    + '<div class="lab">Label each picture.</div>' + wordbank(sorted(five))
+                    + qs([("Which landform has a flat top and steep sides?", ["plateau", "valley", "hill"]),
+                          ("Where would a river most likely run?", ["through a valley", "on a mountain peak", "on top of a plateau"]),
+                          ("Why do many farms sit on plains?", ["The land is flat with good soil.", "Plains are the coldest places.", "Plains are always near volcanoes."])], 6))
             if T == "B":
-                body += ('<div class="grid2">' + mc("Which continent do we live on?", ["North America", "Europe", "Africa"])
-                         + mc("Which continent is covered in ice?", ["Antarctica", "Asia", "Australia"]) + '</div>')
+                body += qs([("Is Florida mostly plains or mountains? How can you tell when we drive around?", 2)], 9)
             else:
-                body += ('<table class="t"><tr><th>Fast fact</th><th>Continent</th></tr>'
-                         '<tr><td>Largest continent and most people</td><td></td></tr><tr><td>Smallest continent (also a country)</td><td></td></tr>'
-                         '<tr><td>Coldest, with no permanent towns</td><td></td></tr><tr><td>Has the Sahara Desert and the Nile River</td><td></td></tr>'
-                         '<tr><td>Has the Amazon rainforest</td><td></td></tr></table>')
+                body += ('<table class="t"><tr><th>U.S. example</th><th>Which landform?</th></tr>'
+                         + "".join(f"<tr><td>{x}</td><td></td></tr>" for x in ["The Rocky Mountains", "The Great Plains", "The Colorado Plateau", "Death Valley"]) + '</table>'
+                         + qs([("How can a river make a valley over a long time? Explain.", 2)], 9))
     elif i == 1:
         if T == "A":
-            body = (f'<div class="flexrow"><div class="learn grow"><p class="big">An <b>ocean</b> is a giant body of salty water. The world has <b>5</b> oceans. '
-                    'The ocean by our house is the <b>Atlantic</b>!</p></div>' + v + '</div>' + world_map(660, 315, ocean_marks=LET)
-                    + '<div class="lab">Color all the water BLUE. Mom says each ocean name as you point to the letters.</div>'
-                    + '<div class="big">Trace:</div>' + trace_line("ocean", 52, 2))
+            body = (head('<p class="big">Water comes in different shapes too! A <b>river</b> flows like a long road of water. A <b>lake</b> has land all around it. '
+                         'The <b>ocean</b> is huge and salty.</p>', v)
+                    + '<div class="grid3">' + "".join(card(n, True, 170) for n in ["river", "lake", "ocean"]) + '</div>'
+                    + '<div class="lab">Color all the water BLUE.</div>'
+                    + mc("Which water is salty?", ["the ocean", "a river", "a lake"], 1)
+                    + mc("Which water has land all around it?", ["a lake", "the ocean"], 2)
+                    + mc("We live by the St. Johns. Is it a river or a mountain?", ["a river", "a mountain"], 3)
+                    + '<div class="lab">Trace:</div>' + trace_line("lake", 52, 4))
         else:
-            body = (f'<div class="flexrow"><div class="learn grow"><p>Oceans cover about <b>71%</b> of Earth. The 5 oceans are the Pacific, Atlantic, Indian, Arctic, '
-                    'and Southern. They are all connected — one world ocean with 5 names.</p></div>' + v + '</div>'
-                    + world_map(700, 330, ocean_marks=LET, cont_marks=NUM) + '<div class="lab">Label each lettered ocean.</div>'
-                    + wordbank(sorted(OCEANS)) + label_lines("ABCDE"))
-            if T == "B":
-                body += mc("Which ocean touches Jacksonville, Florida?", ["Atlantic Ocean", "Pacific Ocean", "Indian Ocean"]) + '<div>Color the oceans blue when you finish.</div>'
+            body = (head('<p>A <b>body of water</b> is any large area of water. <b>Oceans</b> are the largest and are salt water. A <b>river</b> is fresh water flowing in a channel '
+                         'from a <b>source</b> to its <b>mouth</b>, where it empties into a bigger body of water. A <b>lake</b> is water surrounded by land (most are fresh). '
+                         'A <b>bay</b> is part of an ocean or lake that curves into the land; a <b>gulf</b> is like a bay, but usually larger.</p>', v)
+                    + '<div class="grid4">' + "".join(card(n, False, 120, k + 1) for k, n in enumerate(["lake", "bay", "river", "ocean"])) + '</div>'
+                    + '<div class="lab">Label each picture.</div>' + wordbank(["bay", "lake", "ocean", "river"])
+                    + '<div class="lab">Fresh water (F) or salt water (S)?</div>'
+                    + mark_list(["Atlantic Ocean", "Lake Okeechobee", "Pacific Ocean", "Mississippi River", "Tampa Bay", "Lake Michigan"], ["F", "S"], 5, cols=2)
+                    + qs([("Where a river empties into the ocean is called its…", ["mouth", "source", "peak"])], 11))
+            if T == "C":
+                body += qs([("The Great Salt Lake in Utah is salty even though it's a lake. Rivers flow in, but no river flows out. Explain why that could make it salty.", 2)], 12)
             else:
-                body += ('<table class="t"><tr><th>Fast fact</th><th>Ocean</th></tr><tr><td>Largest and deepest (Mariana Trench)</td><td></td></tr>'
-                         '<tr><td>Smallest and shallowest; frozen much of the year</td><td></td></tr><tr><td>Between Africa and Australia</td><td></td></tr>'
-                         '<tr><td>Circles Antarctica</td><td></td></tr><tr><td>Between the Americas and Europe/Africa</td><td></td></tr></table>')
+                body += qs([("Which body of water would you most like to visit? Why?", 2)], 12)
     elif i == 2:
         if T == "A":
-            body = (f'<div class="flexrow"><div class="learn grow"><p class="big">The <b>equator</b> is a pretend line around the middle of the Earth, like a belt. '
-                    'The top half is the <b>North</b>. The bottom half is the <b>South</b>.</p></div>' + v + '</div>'
-                    + '<svg width="300" height="300" viewBox="0 0 300 300" style="align-self:center"><circle cx="150" cy="150" r="130" fill="#fff" stroke="#1f2a5c" stroke-width="3"/>'
-                    '<text x="150" y="95" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2a5c">NORTH</text>'
-                    '<text x="150" y="225" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2a5c">SOUTH</text>'
-                    '<line x1="20" x2="280" y1="150" y2="150" stroke="#9a9aa8" stroke-width="5" stroke-dasharray="2,10" stroke-linecap="round"/></svg>'
-                    + '<div class="lab">Trace the equator belt with a marker. Color the NORTH half blue and the SOUTH half purple.</div>'
-                    + '<div class="big">We live in the: &nbsp; <span class="chk"></span>North &nbsp;&nbsp; <span class="chk"></span>South</div>')
+            body = (head('<p class="big">An <b>island</b> has water all the way around. A <b>peninsula</b> has water on 3 sides. '
+                         '<b>Florida is a peninsula!</b> Look — water on 3 sides!</p>', v)
+                    + '<div class="grid2">' + card("island", True, 190) + card("peninsula", True, 190) + '</div>'
+                    + f'<div class="flexrow" style="align-items:center;justify-content:center;gap:20px">{florida_map(250, 250)}'
+                    '<div class="big" style="max-width:300px">Color Florida. Color the water around it blue. Find the ★ — that\'s Jacksonville!</div></div>'
+                    + mc("Florida has water on 3 sides. It is a…", ["peninsula", "island", "mountain"], 1)
+                    + mc("Water all the way around is an…", ["island", "plain"], 2))
         else:
-            body = (f'<div class="flexrow"><div class="learn grow"><p>The <b>equator</b> (0° latitude) splits Earth into the <b>Northern</b> and <b>Southern Hemispheres</b>. '
-                    'The <b>prime meridian</b> (0° longitude) runs through Greenwich, England, and splits Earth into the <b>Eastern</b> and <b>Western Hemispheres</b>. '
-                    'Every place is in two hemispheres at once — one north/south and one east/west.</p></div>' + v + '</div>'
-                    + world_map(700, 330, cont_marks=NUM, eq="label", pm="label", star=JAX)
-                    + '<div class="lab">Write N or S and E or W for each place.</div>'
-                    '<table class="t"><tr><th>Place</th><th>N or S?</th><th>E or W?</th></tr>'
-                    + "".join(f"<tr><td>{p}</td><td></td><td></td></tr>" for p in ["Jacksonville, Florida (★)", "Australia", "Europe", "South America (mostly)"]
-                              + (["Japan", "Most of Africa is in which N/S hemisphere? (trick: it's in both!)"] if T == "C" else [])) + '</table>')
+            body = (head('<p>An <b>island</b> is land surrounded by water on all sides; a group of islands is an <b>archipelago</b> (like Hawaii). '
+                         'A <b>peninsula</b> is land surrounded by water on three sides — Florida is one of the most famous peninsulas in the world! '
+                         'An <b>isthmus</b> is a narrow strip of land that connects two larger land areas, with water on both sides (the Isthmus of Panama joins North and South America).</p>', v)
+                    + '<div class="grid4">' + "".join(card(n, False, 118, k + 1) for k, n in enumerate(["peninsula", "isthmus", "island", "bay"])) + '</div>'
+                    + '<div class="lab">Label each picture.</div>' + wordbank(["bay", "island", "isthmus", "peninsula"])
+                    + qs([("Hawaii is a chain of islands. What is that called?", ["an archipelago", "an isthmus", "a plateau"]),
+                          ("Which country is a boot-shaped peninsula in Europe?", ["Italy", "Japan", "Egypt"]),
+                          ("Which connects North and South America?", ["the Isthmus of Panama", "the Nile River", "the Andes"]),
+                          ("Florida touches water on three sides. Name two of those bodies of water.", 1)], 5))
             if T == "C":
-                body += '<div>Explain why some continents are in more than one hemisphere.' + lines(2) + '</div>'
+                body += qs([("Being a peninsula affects life in Florida. Give two ways (think beaches, weather, ships, fishing).", 3)], 9)
+            else:
+                body += '<div class="lab">Bonus: draw your own island and give it a name.</div><div class="answer-space" style="min-height:80px"></div>'
     elif i == 3:
         if T == "A":
-            cells = ""
-            marks = {(1, 2): "★", (3, 4): "♥", (4, 1): "●", (2, 3): "▲"}
-            for r in range(5):
-                for c in range(5):
-                    cells += f'<rect x="{40+c*60}" y="{10+r*60}" width="60" height="60" fill="#fff" stroke="#1f2a5c" stroke-width="2"/>'
-                    if (r, c) in marks:
-                        cells += f'<text x="{70+c*60}" y="{52+r*60}" text-anchor="middle" font-size="30" fill="#2f5bd3">{marks[(r,c)]}</text>'
-            for r in range(5):
-                cells += f'<text x="22" y="{48+r*60}" text-anchor="middle" font-size="20" font-weight="700" fill="#6d28d9">{"ABCDE"[r]}</text>'
-            for c in range(5):
-                cells += f'<text x="{70+c*60}" y="335" text-anchor="middle" font-size="20" font-weight="700" fill="#6d28d9">{c+1}</text>'
-            body = (f'<div class="flexrow"><div class="learn grow"><p class="big">Maps have <b>lines</b> that help us find places — like a treasure map! '
-                    'Find the row letter, then the column number.</p></div>' + v + '</div>'
-                    f'<svg width="360" height="345" style="align-self:center">{cells}</svg>'
-                    '<div class="big">Mom asks: “What is in box B3?” Point to it! Then find: D5, E2, C4.</div>'
-                    '<div class="big">Draw a ☺ in box E5 and a circle in box A1.</div>')
+            body = (head('<p class="big">The tallest mountain in the world is <b>Mount Everest</b>. The longest river is the <b>Nile</b> in Africa. '
+                         'Rivers are wavy lines ∿ and mountains are triangles ▲ on this map.</p>', v)
+                    + world_map(660, 315, extra=world_marks(660, 315))
+                    + '<div class="lab">Put a dot-marker dot on every ▲ mountain. Trace every ∿ river with a blue crayon.</div>'
+                    + mc("What is the tallest mountain in the world?", ["Mount Everest", "a little hill", "our backyard"], 1)
+                    + '<div class="big">Draw a tall mountain with a river running down it:</div><div class="answer-space"></div>')
         else:
-            body = (f'<div class="flexrow"><div class="learn grow"><p><b>Latitude</b> lines run east–west (like rungs on a ladder) and measure how far north or south of the '
-                    'equator a place is (0° to 90°). <b>Longitude</b> lines run north–south, pole to pole, and measure how far east or west of the prime meridian '
-                    'a place is (0° to 180°). Write latitude first: Jacksonville is about <b>30°N, 82°W</b>.</p></div>' + v + '</div>'
-                    + world_map(700, 330, grid=True, lat_labels=True, eq=True, pm=True,
-                                extra="".join(f'<text x="{(lon+180)/360*600}" y="{(84-lat)/168*290+5}" text-anchor="middle" font-size="13" font-weight="700" fill="#a21caf">{t}</text>'
-                                              for t, lon, lat in [("A", -90, 30), ("B", 30, 0), ("C", 150, -30), ("D", 90, 60), ("E", -60, -30)]))
-                    + '<div class="lab">Write the latitude and longitude of each letter (they sit right on grid lines).</div>'
-                    + "".join(f'<div><b>{k}.</b> <span class="blank-ln" style="min-width:110px"></span> , <span class="blank-ln" style="min-width:110px"></span></div>' for k in "ABCDE"))
+            body = (head('<p><b>Mount Everest</b> in the Himalayas (Asia) is the highest mountain above sea level — about 29,032 feet (8,849 m). '
+                         'The <b>Nile</b> (Africa, about 4,130 miles) is usually called the longest river, and the <b>Amazon</b> (South America) carries the most water. '
+                         'The <b>Andes</b> are the longest mountain range on land. In North America, the <b>Mississippi River</b> flows south to the Gulf, and the '
+                         '<b>Rocky Mountains</b> run through the West.</p>', v)
+                    + world_map(700, 330, extra=world_marks(700, 330))
+                    + '<div class="lab">Match each place to its number on the map. (▲ = mountains, ∿ = river)</div>'
+                    + mark_list(["Nile River", "Amazon River", "Mississippi River", "Himalayas", "Andes Mountains", "Rocky Mountains"], ["1", "2", "3", "4", "5", "6"], 1, cols=1))
             if T == "C":
-                body += '<div>Which letter is in the Southern and Eastern Hemispheres? <span class="blank-ln"></span>&nbsp; Which continent is it on? <span class="blank-ln" style="min-width:150px"></span></div>'
+                body += qs([("Which continent are the Himalayas on?", ["Asia", "Africa", "Europe"]),
+                            ("Why do you think so many big cities are built on rivers? Give two reasons.", 2)], 7)
+            else:
+                body += qs([("Which river carries the most water?", ["the Amazon", "the Nile", "the St. Johns"])], 7)
     else:
         if T == "A":
-            body = (f'<div class="flexrow"><div class="learn grow"><p class="big">We live in <b>Jacksonville</b>, in the state of <b>Florida</b>, in the country of the '
-                    '<b>United States</b>, on the continent of <b>North America</b>!</p></div>' + v + '</div>'
-                    + world_map(660, 315, star=JAX) + '<div class="lab">Color North America. Find the ★ — that\'s us!</div>'
-                    + '<div class="big">Trace:</div>' + trace_line("Florida", 50, 1)
-                    + '<div class="big">Show Mom on the globe: a continent · an ocean · the equator · Florida <span class="star">☆☆☆☆</span></div>')
+            body = (head('<p class="big">Florida has lots of water: the <b>Atlantic Ocean</b>, the <b>St. Johns River</b> (it runs right through Jacksonville!), and a big lake — '
+                         '<b>Lake Okeechobee</b>. Florida is very flat — no mountains!</p>', v)
+                    + f'<div class="flexrow" style="align-items:center;justify-content:center;gap:16px">{florida_map(240, 240)}'
+                    '<div class="big" style="max-width:320px">Trace the blue St. Johns River with your finger — it ends near the ★! Dot the big lake.</div></div>'
+                    + '<div class="lab">Review! Mom reads. Circle (or tap) the answer.</div>'
+                    + '<div class="grid4">' + "".join(card(n, True, 110) for n in ["mountain", "island", "river", "plain"]) + '</div>'
+                    + mc("Which one has water all around the land?", ["island", "mountain", "plain"], 1)
+                    + mc("Which is the tallest?", ["mountain", "plain", "river"], 2)
+                    + '<div class="big">Show Mom on the globe: a mountain · a river · an island · Florida <span class="star">☆☆☆☆</span></div>')
         else:
-            body = (f'<div class="flexrow"><div class="learn grow"><p>Put it all together! Use what you learned this week (and your atlas or globe) to describe exactly where we live.</p></div>{v}</div>'
-                    + world_map(660, 315, star=JAX, eq=True, pm=True)
-                    + '<table class="t">' + "".join(f"<tr><td style='width:55%'>{q}</td><td></td></tr>" for q in
-                        ["City and state", "Country", "Continent", "Nearest ocean", "Hemispheres (N/S and E/W)", "Approximate latitude, longitude"]
-                        + (["A continent in the Southern AND Eastern Hemispheres", "The ocean you would cross to fly from Florida to Japan", "Is Jacksonville closer to the equator or the North Pole? How do you know?"] if T == "C" else ["The river that runs through Jacksonville (ask Mom or check the atlas!)"])) + '</table>')
-    return page(name, i, "Geography", f"Week 2 · {TITLES[i]}", body)
+            body = (head('<p><b>Florida\'s land & water:</b> Florida is a low, flat peninsula — its highest point, Britton Hill, is only 345 feet high, the lowest high point '
+                         'of any state. The <b>St. Johns River</b> (about 310 miles) is Florida\'s longest river and flows <b>north</b>, '
+                         'emptying into the Atlantic near Jacksonville. <b>Lake Okeechobee</b> is Florida\'s largest lake.</p>', v)
+                    + f'<div class="flexrow" style="gap:14px">{florida_map(220, 220, labels=True)}<div class="grow"><div class="lab">Match each letter on the map.</div>'
+                    + mark_list(["St. Johns River", "Lake Okeechobee", "Atlantic Ocean", "the Gulf"], ["A", "B", "C", "D"], 1)
+                    + '</div></div>'
+                    + '<div class="lab">Week review — 8 of 10 to pass (the 4 map letters count too).</div>'
+                    + qs([("High land with a flat top and steep sides:", ["plateau", "valley", "plain"]),
+                          ("Land with water on three sides:", ["peninsula", "island", "isthmus"]),
+                          ("Where a river begins:", ["its source", "its mouth", "its bay"]),
+                          ("Which way does the St. Johns River flow?", ["north", "south", "west"])], 5))
+            if T == "C":
+                body += qs([("Name the tallest mountain on Earth and the continent it's on.", 1),
+                            ("Explain the difference between a bay and a peninsula.", 2)], 9)
+            else:
+                body += qs([("Name the largest lake in Florida.", 1), ("What is a valley?", 1)], 9)
+    return page(name, i, "Geography", f"Week {WK} · {TITLES[i]}", body)
 
-KEY = ("<b>Continents:</b> 1 North America, 2 South America, 3 Europe, 4 Asia, 5 Africa, 6 Australia, 7 Antarctica. "
-       "Fast facts: Asia · Australia · Antarctica · Africa · South America.<br>"
-       "<b>Oceans:</b> A Pacific, B Atlantic, C Indian, D Arctic, E Southern. Fast facts: Pacific · Arctic · Indian · Southern · Atlantic. Jacksonville → Atlantic.<br>"
-       "<b>Hemispheres:</b> Jacksonville N/W · Australia S/E · Europe N/E (a sliver W) · South America S/W (mostly) · Japan N/E · Africa: both N and S.<br>"
-       "<b>Lat/Long:</b> A 30°N, 90°W · B 0°, 30°E · C 30°S, 150°E · D 60°N, 90°E · E 30°S, 60°W. S+E = C, on Australia.<br>"
-       "<b>Tier A grid:</b> B3 ★ · D5 ♥ · E2 ● · C4 ▲.<br>"
-       "<b>Jacksonville:</b> United States · North America · Atlantic · Northern & Western · ~30°N, 82°W · St. Johns River. "
-       "Southern+Eastern: Australia (or Antarctica, part of Africa). Florida → Japan: Pacific. Closer to the equator (30° vs 60° to the pole).")
+KEY = ("<b>Day 1 Landforms:</b> Tier A: mountain · plain · valley. Tier B/C pictures: 1 valley, 2 plateau, 3 mountain, 4 plain, 5 hill; 6 plateau; 7 through a valley; 8 flat land with good soil; "
+       "9 (B) mostly plains — it's flat everywhere we drive; (C) table: Rockies = mountains, Great Plains = plain, Colorado Plateau = plateau, Death Valley = valley; 9 (C) flowing water wears away (erodes) rock and soil and carries it off, cutting the land lower.<br>"
+       "<b>Day 2 Water:</b> Tier A: the ocean · a lake · a river. B/C pictures: 1 lake, 2 bay, 3 river, 4 ocean. Fresh/salt: 5 Atlantic S, 6 Okeechobee F, 7 Pacific S, "
+       "8 Mississippi F, 9 Tampa Bay S, 10 Lake Michigan F. 11 mouth. 12 (C) water evaporates and leaves the salt behind; with no outlet the salt builds up.<br>"
+       "<b>Day 3 Islands etc.:</b> Tier A: peninsula · island. B/C: 1 peninsula, 2 isthmus, 3 island, 4 bay; 5 an archipelago, 6 Italy, 7 the Isthmus of Panama, 8 the Atlantic Ocean and the Gulf (also the Straits of Florida). "
+       "9 (C) e.g. long coastline & beaches, hurricanes can come from both sides, ports & shipping, fishing, ocean-warmed weather.<br>"
+       "<b>Day 4 Rivers & Mountains:</b> Tier A: Mount Everest. B/C: 1 Nile = 4, 2 Amazon = 2, 3 Mississippi = 6, 4 Himalayas = 1, 5 Andes = 5, 6 Rockies = 3. B 7: the Amazon. C 7: Asia; 8: water for drinking & farming, boats for travel and trade, food.<br>"
+       "<b>Day 5 Florida & review:</b> Tier A: island · mountain. B/C map: 1 St. Johns River = D, 2 Lake Okeechobee = C, 3 Atlantic = A, 4 the Gulf = B. 5 plateau, 6 peninsula, 7 its source, 8 north; "
+       "C 9 Mount Everest, Asia; 10 a bay is water curving into the land; a peninsula is land reaching out into the water. B 9 Lake Okeechobee; 10 low land between hills or mountains.")

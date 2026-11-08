@@ -4,7 +4,8 @@ from lib import *
 from render import render
 import morning, geography, mult, speech, electives, plans
 import core_nevaeh, core_nylah, core_naomi
-from core_young import *
+from core_nariah import nariah_math, nariah_english, nariah_science, nariah_ss
+from core_titus import titus_math, titus_letters, titus_science, nayeli_pages
 
 OUT = "/home/claude/out"; os.makedirs(OUT, exist_ok=True)
 
@@ -38,7 +39,7 @@ def cover(kid, cfg, subjects):
     rows = "".join(f"<tr><td style='height:40px'><b>{s}</b></td>" + "".join("<td class='center'><span class='chk' style='width:22px;height:22px'></span></td>" for _ in DAYS) + "</tr>" for s in subjects)
     return (f'<div class="page" style="--ac:#1f2a5c"><div style="text-align:center;margin-top:40px">'
             f'<div style="font-size:44pt;font-weight:700;color:#1f2a5c">{kid}</div>'
-            f'<div style="font-size:16pt;color:#6d28d9;font-weight:600">{cfg["grade"]} · Week of November 3–7, 2026</div>'
+            f'<div style="font-size:16pt;color:#6d28d9;font-weight:600">{cfg["grade"]} · Week of {WEEK_LONG}</div>'
             f'<div style="margin:14px auto 22px;width:70%;border-top:3px solid #6d28d9"></div></div>'
             f'<div class="lab" style="font-size:14pt;margin-bottom:6px">My week — check it off when it\'s done!</div>'
             f'<table class="t" style="font-size:13pt"><tr><th></th>{head}</tr>{rows}</table>'
@@ -58,7 +59,7 @@ def build_kid(kid, cfg):
 # ---------------- MOM PACKET ----------------
 def mom_page(title, body, sub="Mom's Guide"):
     return (f'<div class="page" style="--ac:#1f2a5c;font-size:10pt"><div class="hdr"><div class="dayblk"><div class="d" style="font-size:22pt">{esc(sub)}</div>'
-            f'<div class="w">Week of Nov 3–7, 2026</div></div><div class="subj"><span class="s">Mom</span><div class="t">{esc(title)}</div></div></div>'
+            f'<div class="w">Week of {WEEK_RANGE}</div></div><div class="subj"><span class="s">Mom</span><div class="t">{esc(title)}</div></div></div>'
             f'<div class="body" style="gap:7px">{body}</div><div class="foot"><span>Mom\'s Guide</span><span>All For His Glory</span></div></div>')
 
 def build_mom():
@@ -69,32 +70,38 @@ def build_mom():
               "<p><b>Printing:</b> print double-sided, “flip on long edge.” Nothing uses yellow ink. To save ALL color ink, choose “Grayscale” in your printer settings — "
               "every page still works in black and white.</p>")
     t = ("<table class='t'><tr><th>Kid</th><th>What's in the packet</th></tr>"
-         "<tr><td><b>Nevaeh</b> (8th)</td><td>Morning (Gideon) · <b>Math Crash Course Week 1 of 12</b> (whole numbers & order of operations) · English: building better sentences · "
-         "Science: atoms & periodic table · History: Thirteen Colonies · Multiplication W2 · Geography W2 (Tier C) · Electives W3 (Tier C)</td></tr>"
-         "<tr><td><b>Nylah</b> (7th)</td><td>Morning · <b>Math Crash Course Level 2</b> (place value, regrouping, rounding) · English: parts of speech · Science: cells · "
-         "Civics: three branches · Multiplication W2 · Geography (Tier C) · Electives (Tier C)</td></tr>"
-         "<tr><td><b>Naomi</b> (4th)</td><td>Morning · Math: big numbers · English: nouns · Science: food chains & webs · Florida History: first peoples · Multiplication W2 · "
-         "Geography (Tier B) · Electives (Tier B)</td></tr>"
-         "<tr><td><b>Nariah</b> (2nd)</td><td>Morning · Math Level 1 continued (regrouping + time) · English: short vowels, nouns, verbs · Science: butterfly life cycle · "
-         "Social Studies: first Thanksgiving · Multiplication W2 · Speech Stars W2 (cont.) · Geography (Tier A) · Electives (Tier A)</td></tr>"
-         "<tr><td><b>Titus</b> (K)</td><td>Morning · Math: numbers to 20, add & take away · Letters: Mm & Ss · Science: 5 senses · Skip Count Stars W2 · Speech Stars W2 (cont.) · "
+         "<tr><td><b>Nevaeh</b> (8th)</td><td>Morning (Joseph) · <b>Math Crash Course Week 2 of 12</b> (fractions: all four operations) · English: punctuation power · "
+         "Science: matter & its changes · History: the road to Revolution · Multiplication W3 (3s & 4s) · Geography W3 (Tier C) · Electives (Tier C)</td></tr>"
+         "<tr><td><b>Nylah</b> (7th)</td><td>Morning · <b>Math Crash Course Level 3</b> (multiplication & division) · English: sentence building · Science: human body systems · "
+         "Civics: the Bill of Rights · Multiplication W3 · Geography (Tier C) · Electives (Tier C)</td></tr>"
+         "<tr><td><b>Naomi</b> (4th)</td><td>Morning · Math: multiplying by one digit · English: verbs · Science: habitats & adaptations · Florida History: Spanish & French Florida "
+         "(Fort Caroline!) · Multiplication W3 · Geography (Tier B) · Electives (Tier B)</td></tr>"
+         "<tr><td><b>Nariah</b> (2nd)</td><td>Morning · Math Level 2 (money & time to 5 minutes, with a regrouping warm-up daily) · English: long vowels & describing words · "
+         "Science: how plants grow · Social Studies: American symbols (Veterans Day on Wed) · Multiplication W3 · Speech Stars W3 (TH) · Geography (Tier A) · Electives (Tier A)</td></tr>"
+         "<tr><td><b>Titus</b> (K)</td><td>Morning · Math: more, less & shapes · Letters: Aa & Pp · Science: animal homes · Skip Count Stars W3 (2s) · Speech Stars W3 (TH) · "
          "Geography (Tier A) · Electives (Tier A)</td></tr>"
-         "<tr><td><b>Nayeli</b> (Pre-K)</td><td>Mini morning sheet · Pre-K shape of the day (dot marker, trace, sticker) · her own Skip Count Stars & Speech Stars pages</td></tr></table>")
+         "<tr><td><b>Nayeli</b> (Pre-K)</td><td>Mini morning sheet · Pre-K animal of the day (dot marker, trace, sticker — matches Titus's animal homes) · her own Skip Count Stars & Speech Stars pages</td></tr></table>")
     P.add(mom_page("This Week at a Glance", glance + t +
-        "<h3>Supplies</h3><p><b>All week:</b> dot markers, stickers, crayons/colored pencils, counting bears, a small mirror (speech), globe/atlas (geography). "
-        + electives.MATERIALS + " <b>Science:</b> Naomi's backyard hunt (Day 4), Titus's taste test foods (Day 3: banana/apple, lemon, pretzel, pickle) and a "
-        "mystery bag (Day 4). <b>Nevaeh & Nylah:</b> a periodic table (online is fine) for Nevaeh on Day 3.</p>"))
+        "<h3>Supplies</h3><p><b>All week:</b> dot markers, stickers, crayons/colored pencils, counting bears (3 colors), a small mirror (speech — TH “tongue peek”), globe/atlas. "
+        "<b>Geography:</b> play-dough (Day 1–3), a cup of salt water (Day 2), a shallow pan of water (Day 3), yarn (Day 4). "
+        + electives.MATERIALS + " <b>Science:</b> Nariah's bean sprout bag starts Day 2 (2–3 dry beans, a paper towel, a zip bag, tape for a sunny window). "
+        "Titus: a short walk to look for nests (Day 1) and a blanket over a table for a “bear den” (Day 3). Nevaeh (optional): baking soda + vinegar demo for Days 3–4. "
+        "<b>Social Studies:</b> Nariah makes a thank-you card for a veteran on Veterans Day (Wed) — you write the words. "
+        "<b>Optional field trip:</b> Fort Caroline National Memorial is right here in Jacksonville (Naomi's Day 2).</p>"))
     for i in range(5):
         P.add(mom_page("Teaching Together — Lesson Plans", plans.day_plan(i), sub=f"{DAYS[i][0].upper()} · {DAYS[i][1]}"))
     P.add(mom_page("Morning Work",
-        "<h3>Morning Work — Gideon</h3>" + morning.mom_notes()
+        f"<h3>Morning Work — {morning.THEME}</h3>" + morning.mom_notes()
         + "<h3>Speech Stars</h3>" + speech.MOM))
     P.add(mom_page("Math Crash Course Plans",
-        "<h3>Nevaeh's Math Crash Course — 12-week roadmap</h3><p>No pre-test — she starts at Week 1 and each Saturday checkpoint (80% to pass) decides whether we "
-          "move on or re-teach. Her Core Studies math is now this crash course.</p>"
+        "<h3>Nevaeh's Math Crash Course — 12-week roadmap</h3><p>This is <b>Week 2: fractions</b>. Saturday's checkpoint is 15 problems — 12 right (80%) passes. "
+          "If she scores under 12, re-teach the missed skills at the start of next week before Week 3 (decimals & money).</p>"
         + ol([f"<b>Week {n+1}:</b> {t}" for n, t in enumerate(core_nevaeh.ROADMAP)])
-        + "<h3>Nylah's Math Crash Course</h3><p>Picking up her 7-level ladder (K → 7th) at <b>Level 2</b> (2nd–3rd grade skills: place value, regrouping, rounding). "
-          "No placement test — if she passes Saturday's checkpoint (10 of 12), Level 3 is multiplication & division. Her Core Studies math is now this crash course.</p>"))
+        + "<h3>Nylah's Math Crash Course</h3><p>Her 7-level ladder (K → 7th) moves up to <b>Level 3: multiplication & division</b> (standard methods only — carrying and long division). "
+          "Every lesson starts with a worked example. Saturday's Level 3 Checkpoint is 12 problems — 10 right passes, and Level 4 (fractions) is next. If not, we re-teach Level 3. "
+          "(If she didn't pass last week's Level 2 checkpoint, tell me and I'll swap in a Level 2 review week.)</p>"
+        + "<h3>Naomi & Nariah</h3><p><b>Naomi:</b> multiplying by one digit with the standard algorithm (carrying). <b>Nariah:</b> Level 2 — coins and time to 5 minutes, "
+          "with a short regrouping warm-up every day so Level 1 stays fresh. Her Saturday checkpoint is 8 of 10.</p>"))
     # answer keys
     entries = []
     for kid, cfg in KIDS.items():
@@ -105,7 +112,8 @@ def build_mom():
     entries.append("<div class='box' style='padding:5px 9px'><div class='lab'>Multiplication Mastery (Nevaeh, Nylah, Naomi, Nariah)</div>"
                    + "".join(f"<div><b>Day {i+1}:</b> {mult.KEYS[i]}</div>" for i in range(5)) + "</div>")
     entries.append(f"<div class='box' style='padding:5px 9px'><div class='lab'>Skip Count Stars (Titus, Nayeli)</div>{mult.SC_KEY}</div>")
-    entries.append(f"<div class='box' style='padding:5px 9px'><div class='lab'>Geography Week 2</div>{geography.KEY}</div>")
+    entries.append(f"<div class='box' style='padding:5px 9px'><div class='lab'>Geography Week {geography.WK}</div>{geography.KEY}</div>")
+    entries.append(f"<div class='box' style='padding:5px 9px'><div class='lab'>Fun Electives</div>{electives.KEY}</div>")
     # paginate by size
     pages, cur, size = [], [], 0
     for e in entries:
@@ -124,7 +132,7 @@ if __name__ == "__main__":
     for kid in order:
         P = build_kid(kid, KIDS[kid])
         h = f"{OUT}/{kid}.html"; open(h, "w").write(P.html())
-        jobs.append((h, f"{OUT}/{kid} - Week of Nov 3.pdf"))
+        jobs.append((h, f"{OUT}/{kid} - Week of {WEEK_SHORT}.pdf"))
     M = build_mom(); h = f"{OUT}/Mom.html"; open(h, "w").write(M.html())
-    jobs.append((h, f"{OUT}/Mom's Guide - Week of Nov 3.pdf"))
+    jobs.append((h, f"{OUT}/Mom's Guide - Week of {WEEK_SHORT}.pdf"))
     render(jobs)

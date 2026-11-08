@@ -162,7 +162,7 @@ function schoolInit(){
 """
 
 API = "https://script.google.com/macros/s/AKfycbzgvfEOWoBFQHBeHmbvklVpT-UCOSJUHCx3rcUvQVwzFDg9CfIY0UC6UlDvA9kr3ZeIaQ/exec"
-WEEK = "2026-11-03"
+WEEK = "2026-11-10"
 
 MODAL = r"""
 <div class="vmodal" id="vmodal"><div class="frame"><iframe id="vframe" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
@@ -185,7 +185,7 @@ def web_html(kid, P):
             seen.add(m.group(1)); p = f'<div id="day-{m.group(1)}"></div>' + p
         out.append(p)
     nav = '<div class="nav"><a href="#top">My Week</a>' + "".join(f'<a href="#day-{n}">Day {n}</a>' for n in range(1, 6)) + '</div>'
-    title = f"{kid} · School Week of Nov 3"
+    title = f"{kid} · School Week of Nov 10"
     return (f"<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
             f"<title>{esc(title)}</title><link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
             f"<style>{CSS}{WEBCSS}</style></head><body><div id='top'></div>{nav}"

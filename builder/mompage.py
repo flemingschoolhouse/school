@@ -5,13 +5,13 @@ import build, web
 from web import API, WEEK as WK
 from lib import CSS, esc
 
-WEEK, LABEL = "2026-11-03", "November 3–7, 2026"
+WEEK, LABEL = "2026-11-10", "November 10–14, 2026"
 REPO = "/home/claude/school"
 KIDS = ["Nevaeh", "Nylah", "Naomi", "Nariah", "Titus", "Nayeli"]
 pdfdir = f"{REPO}/weeks/{WEEK}/pdf"; os.makedirs(pdfdir, exist_ok=True)
 names = {}
 for k in KIDS + ["Mom's Guide"]:
-    src = f"/home/claude/out/{k} - Week of Nov 3.pdf"; dst = k.lower().replace("'", "").replace(" ", "-") + ".pdf"
+    src = f"/home/claude/out/{k} - Week of Nov 10.pdf"; dst = k.lower().replace("'", "").replace(" ", "-") + ".pdf"
     shutil.copy(src, f"{pdfdir}/{dst}"); names[k] = dst
 
 import mult, quest
@@ -21,7 +21,7 @@ DASH = """<div class="mhead" id="progress"><h2>📊 Progress this week</h2><div 
 <p class="small">Updates a few seconds after the kids type. ✅ done · 🟡 started · ⬜ not started. Tap a name or a green button to see that kid's typed and tapped answers. Drawings stay on the kid's tablet. <button id="pgr" style="font:600 13px Poppins;border:0;border-radius:14px;padding:5px 12px;background:#4338ca;color:#fff">↻ Refresh</button></p></div>
 <style>#pg table{width:100%;border-collapse:collapse;font:14px Poppins,sans-serif}#pg td,#pg th{border:1px solid #d6d6e0;padding:6px;text-align:center}
 #pg th{background:#eef1fb}#pg .kid{font-weight:700;text-align:left}#pg details{text-align:left;margin:6px 0;font:13px Poppins}#pg summary{cursor:pointer;font-weight:600;color:#4338ca}
-#pg li{margin:2px 0}.c2{background:#e4f6e7}.c1{background:#fff4cc}</style>
+#pg li{margin:2px 0}.c2{background:#dcecff}.c1{background:#f1ebfd}</style>
 <script>
 (function(){var API='__API__',WEEK='__WK__',KIDS=['Nevaeh','Nylah','Naomi','Nariah','Titus','Nayeli'];
 function load(){fetch(API+'?action=all&week='+WEEK+'&t='+Date.now()).then(function(r){return r.json()}).then(function(j){
@@ -52,7 +52,7 @@ MCSS = """.mhead{max-width:816px;margin:0 auto;padding:16px;font-family:Poppins,
 .mhead h1{margin:6px 0 0;font-size:32px}.mhead h2{font-size:18px;margin:18px 0 8px}.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .mb{color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:20px;font-size:15px}"""
 html = (f"<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
-        f"<meta name='robots' content='noindex'><title>Mom's Corner · Week of Nov 3</title>"
+        f"<meta name='robots' content='noindex'><title>Mom's Corner · Week of Nov 10</title>"
         f"<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;500;600;700&display=swap'>"
         f"<style>{CSS}{web.WEBCSS}{MCSS}</style></head><body>{top}{pages}{web.MODAL}"
         "<script>function fit(){var w=Math.min(window.innerWidth-12,816);document.querySelectorAll('.page').forEach(function(p){p.style.zoom=(w/816)})}window.addEventListener('resize',fit);fit();</script></body></html>")

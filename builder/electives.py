@@ -1,16 +1,17 @@
 from lib import *
+from core_common import mc, qs, mark_list
 
 TIER = {"Titus": "A", "Nariah": "A", "Naomi": "B", "Nevaeh": "C", "Nylah": "C"}
 NAMES = ["Kitchen Science Lab", "Artist Study", "Musician Study", "Life Skills Club", "PE Day"]
-TOPIC = ["Magic Milk", "Henri Matisse · Painting with Scissors", "Tchaikovsky · The Nutcracker", "Thank-You Notes & Envelopes", "Animal Walk Olympics"]
-VID = [yt("magic milk experiment for kids"), yt("Matisse cut outs art lesson for kids"),
-       yt("Dance of the Sugar Plum Fairy Tchaikovsky"), yt("how to address an envelope for kids"), yt("animal walks exercise for kids")]
-VID2 = [None, yt("Henri Matisse for kids biography"), yt("Nutcracker story for kids"), yt("how to write a thank you note for kids"), None]
+TOPIC = ["Dancing Raisins", "Claude Monet · Water Lilies", "J. S. Bach · Soli Deo Gloria", "Emergency Ready: 9-1-1", "Backyard Relay Races"]
+VID = [yt("EL dancing raisins experiment"), yt("EL how to draw Monet water lilies"),
+       yt("EL Bach Jesu Joy of Man's Desiring"), yt("EL learn about 911 Emergency Ernie"), yt("EL PE relay races")]
+VID2 = [None, yt("EL Claude Monet for kids"), yt("EL meet Bach for kids"), yt("EL kids safety when to call 911"), None]
 
 def qrs(i):
-    q = qr_box(VID[i], ["Experiment video", "Art lesson", "Listen here", "How-to video", "Animal walks"][i], 64)
+    q = qr_box(VID[i], ["Experiment video", "Draw-along", "Listen here", "911 video", "Relay ideas"][i], 64)
     if VID2[i]:
-        q += qr_box(VID2[i], ["", "Matisse's story", "Nutcracker story", "Thank-you notes", ""][i], 64)
+        q += qr_box(VID2[i], ["", "Monet's story", "Bach's story", "When to call", ""][i], 64)
     return f'<div class="qrrow">{q}</div>'
 
 def el_page(name, i):
@@ -18,96 +19,112 @@ def el_page(name, i):
     head = f'<div class="flexrow"><div class="learn grow">{{}}</div>{qrs(i)}</div>'
     if i == 0:
         if T == "A":
-            body = (head.format('<p class="big">Pour milk on a plate. Add drops of food coloring. Touch the middle with a soapy cotton swab… what happens?!</p>')
-                    + '<div class="grid2"><div><div class="lab">1. I think the colors will…</div><div class="answer-space" style="min-height:300px"></div></div>'
-                      '<div><div class="lab">2. Draw what REALLY happened!</div><div class="answer-space" style="min-height:300px"></div></div></div>'
-                    + '<div class="big">The colors moved: &nbsp; <span class="chk"></span>slow &nbsp; <span class="chk"></span>FAST &nbsp; <span class="chk"></span>not at all</div>'
-                    + '<div class="lab">Trace:</div>' + trace_line("milk", 50, 2))
+            body = (head.format('<p class="big">Drop raisins into a cup of clear soda. Watch… do they sink, float, or DANCE?! Then try raisins in plain water.</p>')
+                    + '<div class="grid2"><div><div class="lab">1. Raisins in WATER — draw it!</div><div class="answer-space" style="min-height:280px"></div></div>'
+                      '<div><div class="lab">2. Raisins in SODA — draw it!</div><div class="answer-space" style="min-height:280px"></div></div></div>'
+                    + mc("In the soda, the raisins…", ["went up and down — they danced!", "stayed still", "turned into grapes"], 1)
+                    + mc("What do you see on the raisins in the soda?", ["little bubbles", "nothing"], 2)
+                    + '<div class="lab">Trace:</div>' + trace_line("bubbles", 50, 1))
         else:
-            sci = ('<p><b>Why it works:</b> milk is mostly water with tiny bits of fat and protein floating in it. The surface of the milk is pulled tight '
-                   'like a stretched skin — that\'s <b>surface tension</b>. Soap weakens that pull right where it touches, so the tighter surface around it '
-                   'yanks outward, dragging the colors. Soap molecules also grab onto fat, and as they chase the fat around, the swirling keeps going.</p>')
-            body = (head.format('<p><b>Materials:</b> a shallow plate, milk (whole works best), food coloring, dish soap, cotton swabs.</p>'
-                                + (sci if T == "C" else '<p>Soap breaks the milk\'s <b>surface tension</b> — the invisible “skin” on top — and the colors race away!</p>'))
-                    + '<div><span class="lab">Question:</span> What will happen when soap touches the milk?</div>'
+            sci = ('<p><b>Why it works:</b> soda is full of dissolved <b>carbon dioxide</b> gas. A raisin is denser than the soda, so it sinks. But its wrinkly surface gives the gas '
+                   'lots of spots to form bubbles. When enough bubbles stick, they act like tiny life jackets — the raisin\'s overall density drops below the soda\'s and it rises '
+                   '(<b>buoyancy</b>). At the top the bubbles pop into the air, the raisin gets denser again, and down it goes. It keeps “dancing” until the soda goes flat.</p>')
+            body = (head.format('<p><b>Materials:</b> 2 clear glasses, clear soda (lemon-lime or club soda), plain water, 6–8 raisins per glass.</p>'
+                                + (sci if T == "C" else '<p>Bubbles of <b>carbon dioxide</b> gas stick to the wrinkly raisins and lift them up like balloons. At the top the bubbles pop, and the raisins sink again!</p>'))
+                    + '<div><span class="lab">Question:</span> What will raisins do in soda compared with water?</div>'
                     + '<div><span class="lab">Hypothesis:</span> I think…' + lines(2) + '</div>'
-                    + '<div><span class="lab">Observations:</span> draw and describe what you saw.</div><div class="answer-space" style="min-height:150px"></div>'
-                    + ('<div><span class="lab">Test a variable:</span> try skim milk or water instead of whole milk. Which swirled the most? Why do you think so?' + lines(3) + '</div>'
-                       if T == "C" else '<div><span class="lab">Conclusion:</span> Why did the colors move?' + lines(2) + '</div>'))
+                    + '<div><span class="lab">Observations:</span> draw both glasses after 2 minutes.</div><div class="answer-space" style="min-height:130px"></div>'
+                    + qs([("What gas makes the bubbles in soda?", ["carbon dioxide", "oxygen", "steam"]),
+                          ("Why did the raisins in plain water stay on the bottom?", ["There were no gas bubbles to lift them.", "The water was too cold.", "Raisins hate water."])], 1)
+                    + ('<div><span class="lab">Test a variable:</span> try a smooth food (a corn kernel or a piece of pasta) next to a raisin. Which danced more? Use the word <i>density</i> to explain.' + lines(3) + '</div>'
+                       if T == "C" else '<div><span class="lab">Conclusion:</span> Why did the raisins dance?' + lines(2) + '</div>'))
     elif i == 1:
-        bio = ('<p><b>Henri Matisse</b> (1869–1954) was a French artist famous for bold, bright colors. Late in life, after a serious illness, he often '
-               'couldn\'t stand at an easel — so he invented a new way to make art. Assistants painted big sheets of paper, and Matisse “drew with scissors,” '
-               'cutting out leaves, stars, swirls and wavy shapes, then arranging them on the wall. He called them <b>cut-outs</b>. One famous one, '
-               '<i>The Snail</i> (1953), is a spiral of colorful paper rectangles.</p>')
+        bio = ('<p><b>Claude Monet</b> (1840–1926) was a French painter and a leader of <b>Impressionism</b> — painting quick, loose brushstrokes to capture light and color in a '
+               'moment instead of every tiny detail. His painting <i>Impression, Sunrise</i> (1872) gave the movement its name. At his home in Giverny he dug a pond, built a '
+               'Japanese-style bridge, and planted <b>water lilies</b> — then painted them about 250 times, in morning light, afternoon light, and evening light!</p>')
         if T == "A":
-            body = (head.format('<p class="big">Matisse was an artist who made pictures with <b>scissors</b>! He cut out fun shapes and glued them down.</p>')
-                    + '<div class="lab">Cut out shapes from colored paper (leaves, stars, squiggles!) and glue them in the box. Make a snail spiral if you want!</div>'
-                    + '<div class="answer-space" style="min-height:560px"></div>')
+            body = (head.format('<p class="big">Monet loved to paint his pond full of <b>water lilies</b> — flat round leaves (lily pads) with flowers on top. Let\'s draw them with the video!</p>')
+                    + '<div class="lab">Draw-along: blue and purple water first, then green lily pads, then pink flowers. Use crayons or oil pastels and smudge with your finger like Monet\'s soft colors!</div>'
+                    + '<div class="answer-space" style="min-height:520px"></div>'
+                    + mc("What did Monet love to paint?", ["water lilies", "race cars", "dinosaurs"]))
         else:
             body = (head.format(bio)
-                    + '<div class="grid2"><div>Why did Matisse start making cut-outs?' + lines(2) + '</div><div>What is an “organic” shape (like a leaf) vs. a “geometric” shape (like a square)? Draw one of each.<div class="answer-space" style="min-height:60px"></div></div></div>'
-                    + '<div class="lab">Your cut-out: use painted or colored paper, cut at least 8 shapes, arrange them before you glue. Glue it here or on cardstock.</div>'
-                    + '<div class="answer-space" style="min-height:300px"></div>'
-                    + ('<div>Title your piece and explain one choice you made about color or placement:' + lines(2) + '</div>' if T == "C" else '<div>My art is called: <span class="blank-ln" style="min-width:250px"></span></div>'))
+                    + qs([("What does an Impressionist painter try to capture?", ["light and color in a moment", "every tiny detail, like a photo", "only people's faces"]),
+                          ("Why did Monet paint the same pond again and again?", 2)], 1)
+                    + '<div class="lab">Draw-along: your own water-lily pond. Water first (blues and purples, side-to-side strokes), then lily pads, then flowers. '
+                      'Smudge or blend for soft light. Add the bridge if you like.</div>'
+                    + '<div class="answer-space" style="min-height:330px"></div>'
+                    + ('<div>Title your piece. What time of day is your light, and how did you show it with color?' + lines(2) + '</div>' if T == "C" else '<div>My art is called: <span class="blank-ln" style="min-width:250px"></span></div>'))
     elif i == 2:
-        bio = ('<p><b>Pyotr Ilyich Tchaikovsky</b> (1840–1893) was a Russian composer. His ballet <b>The Nutcracker</b> (1892) tells of a girl named Clara '
-               'whose Christmas gift, a nutcracker, comes to life, defeats the Mouse King, and takes her to the Land of Sweets. In the “Dance of the Sugar Plum '
-               'Fairy” you hear the <b>celesta</b> — a keyboard instrument whose hammers strike metal bars for a twinkly, music-box sound. '
-               'Tchaikovsky discovered it in Paris and kept it secret so other composers wouldn\'t use it first!</p>')
+        bio = ('<p><b>Johann Sebastian Bach</b> (1685–1750) was a German composer of the <b>Baroque</b> era and one of the greatest musicians who ever lived. For his last 27 years he '
+               'led the music at St. Thomas Church in Leipzig, writing new music for worship almost every week. Bach often wrote <b>“S.D.G.”</b> at the end of his music — '
+               '<i>Soli Deo Gloria</i>, “To God alone be the glory.” His “Jesu, Joy of Man\'s Desiring” comes from a church cantata (1723). Bach and his two wives had 20 children, '
+               'and several of his sons became famous composers too.</p>')
         if T == "A":
-            body = (head.format('<p class="big">Tchaikovsky wrote music for <b>The Nutcracker</b>. Listen to the “Sugar Plum Fairy” — it sounds like twinkly bells!</p>')
-                    + '<div class="lab">Draw what the music makes you think of while it plays.</div><div class="answer-space" style="min-height:420px"></div>'
+            body = (head.format('<p class="big">Bach wrote beautiful music for church. He wrote <b>S.D.G.</b> on his music — it means “To God alone be the glory!”</p>')
+                    + '<div class="lab">Draw what the music makes you think of while it plays.</div><div class="answer-space" style="min-height:360px"></div>'
                     + '<div class="big">The music was: <span class="chk"></span>fast <span class="chk"></span>slow &nbsp;&nbsp; <span class="chk"></span>loud <span class="chk"></span>soft</div>'
-                    + '<div class="big">Tiptoe like a fairy while it plays again! <span class="star">☆</span></div>')
+                    + '<div class="lab">Trace Bach\'s letters:</div>' + trace_line("S.D.G.", 52, 3))
         else:
             body = (head.format(bio)
                     + '<table class="t"><tr><th>Listen to</th><th>Fast or slow?</th><th>Loud or soft?</th><th>Instruments I hear / how it makes me feel</th></tr>'
-                    + "".join(f"<tr><td>{s}</td><td></td><td></td><td style='height:52px'></td></tr>" for s in ["Dance of the Sugar Plum Fairy", "Russian Dance (Trepak)", "Waltz of the Flowers"]) + '</table>'
-                    + '<div>What is a celesta, and why did Tchaikovsky keep it a secret?' + lines(2) + '</div>'
-                    + ('<div>A ballet tells a story without words. How does the music help tell the story? Give one example.' + lines(3) + '</div>' if T == "C"
-                       else '<div>Draw the Land of Sweets.<div class="answer-space" style="min-height:120px"></div></div>'))
+                    + "".join(f"<tr><td>{s}</td><td></td><td></td><td style='height:52px'></td></tr>" for s in ["Jesu, Joy of Man's Desiring", "Air (from Orchestral Suite No. 3)", "Brandenburg Concerto No. 3, 1st movement"]) + '</table>'
+                    + qs([("What does “Soli Deo Gloria” mean?", ["To God alone be the glory", "Music is my life", "The end of the song"]),
+                          ("Bach lived during which era of music?", ["Baroque", "Romantic", "Modern"])], 1)
+                    + ('<div>Bach did his work for God\'s glory. What would it look like to do your schoolwork “for God\'s glory” (1 Corinthians 10:31)?' + lines(3) + '</div>' if T == "C"
+                       else '<div>Write S.D.G. at the bottom of your best paper today! What could you do this week to give God the glory?' + lines(2) + '</div>'))
     elif i == 3:
-        env = ('<svg width="460" height="230" style="align-self:center"><rect x="2" y="2" width="456" height="226" rx="6" fill="#fff" stroke="#1f2a5c" stroke-width="2"/>'
-               '<rect x="388" y="14" width="56" height="62" fill="none" stroke="#a21caf" stroke-dasharray="4,3" stroke-width="2"/><text x="416" y="50" font-size="11" text-anchor="middle" fill="#a21caf">stamp</text>'
-               + "".join(f'<line x1="16" x2="170" y1="{24+k*20}" y2="{24+k*20}" stroke="#9aa0bb"/>' for k in range(3))
-               + '<text x="16" y="88" font-size="10" fill="#555566">your (return) address</text>'
-               + "".join(f'<line x1="150" x2="380" y1="{124+k*28}" y2="{124+k*28}" stroke="#9aa0bb"/>' for k in range(3))
-               + '<text x="150" y="210" font-size="10" fill="#555566">who it goes to: name · street · city, state ZIP</text></svg>')
+        card = ('<div class="box"><div class="lab">My Emergency Card (fill in with Mom — keep it by the phone, not on the tablet)</div>'
+                + "".join(f'<div style="margin:5px 0">{t} <span class="blank-ln" style="min-width:360px"></span></div>' for t in
+                          ["My full name:", "My parents' names:", "My street address:", "City, state, ZIP:", "Mom's or Dad's phone:", "Our family meeting spot outside:"]) + '</div>')
         if T == "A":
-            body = (head.format('<p class="big">When someone is kind to us, we say <b>thank you</b>! Let\'s make a thank-you card for someone special.</p>')
-                    + '<div class="lab">Trace:</div>' + trace_line("Thank you", 50, 1)
-                    + '<div class="lab">Who is your card for? Mom writes their name:</div><div class="ln"></div>'
-                    + '<div class="lab">Draw a picture for them!</div><div class="answer-space" style="min-height:360px"></div>'
-                    + '<div class="lab">Trace your name to sign it:</div>' + trace_line(name, 46, 1))
+            body = (head.format('<p class="big">In a real emergency — a fire, or someone is hurt and can\'t wake up — a grown-up (or you!) calls <b>9-1-1</b>. '
+                                'Never call 9-1-1 for fun. Let\'s learn our address so helpers can find us!</p>')
+                    + '<div class="lab">Trace the numbers:</div>' + trace_line("911", 64, 4)
+                    + '<div class="lab">Mom reads. Is it a 9-1-1 emergency?</div>'
+                    + mc("The house is on fire!", ["Yes — call 9-1-1", "No"], 1)
+                    + mc("My toy is lost.", ["No — tell Mom", "Yes — call 9-1-1"], 2)
+                    + mc("Grandpa fell and won't wake up.", ["Yes — call 9-1-1", "No"], 3)
+                    + mc("I scraped my knee.", ["No — tell Mom", "Yes — call 9-1-1"], 4)
+                    + '<div class="big">Practice with Mom: say your full name <span class="star">☆</span> &nbsp; your street <span class="star">☆</span> &nbsp; Mom\'s name <span class="star">☆</span></div>'
+                    + '<div class="lab">Draw a helper who comes when you call 9-1-1 (firefighter, paramedic, police officer):</div><div class="answer-space"></div>')
         else:
-            parts = ["Greeting — Dear ___,", "Thank them for the specific gift or kindness", "Say how you used it or why it mattered",
-                     "Add a kind sentence about them", "Closing — Love, / Sincerely, and your name"]
-            body = (head.format('<p>A handwritten thank-you note is a lost art — and people keep them for years! A good note has five parts and fits on one small card.</p>'
-                                + ('<p>Addresses go in the center of the envelope; your return address goes top left; the stamp goes top right. '
-                                   'Use the two-letter state abbreviation (FL) and the ZIP code. Formal titles: Mr., Mrs., Ms., Dr., Pastor.</p>' if T == "C" else ''))
-                    + '<div class="lab">The 5 parts:</div>' + ol([esc(p) for p in parts])
-                    + '<div class="lab">Draft your note here, then copy it onto a real card:</div>' + lines(7)
-                    + '<div class="lab">Practice addressing this envelope (use a real person!):</div>' + env)
+            body = (head.format('<p>9-1-1 is for emergencies only: a fire, someone badly hurt or not breathing, a crime or danger happening right now. On the call: stay calm, say '
+                                '<b>what</b> is happening and <b>where</b> (your address), answer the dispatcher\'s questions, and <b>don\'t hang up</b> until they tell you to. '
+                                'If there\'s a fire: get out, stay out, and go to the family meeting spot.</p>'
+                                + ('<p>Some areas also let you text 9-1-1 if it isn\'t safe to talk — but calling is always best when you can.</p>' if T == "C" else ''))
+                    + '<div class="lab">Emergency (E) or not an emergency (N)?</div>'
+                    + mark_list(["Smoke is coming from the kitchen.", "The internet is down.", "A sibling is choking and can't breathe.", "A stranger is trying to break in.",
+                                 "I can't find my shoes.", "Someone fell and is bleeding a lot."], ["E", "N"], 1)
+                    + qs([("What should you do before you hang up?", ["Wait until the dispatcher says it's OK.", "Hang up right after saying “help.”", "Call a friend first."])], 7)
+                    + card
+                    + ('<div>Plan it: what are two ways out of our house if there is a fire?' + lines(2) + '</div>' if T == "C" else ''))
     else:
-        moves = [("Bear crawl", "hands & feet, hips high", "across the yard"), ("Crab walk", "tummy up, walk on hands & feet", "across the yard"),
-                 ("Frog jumps", "squat low, leap forward", "10 jumps"), ("Inchworm", "walk hands out to plank, walk feet in", "5 times"),
-                 ("Flamingo balance", "stand on one foot", "count how long!"), ("Kangaroo hops", "feet together, big hops", "15 hops"),
-                 ("Bunny hops", "tiny quick hops", "20 hops"), ("Gorilla shuffle", "squat, knuckles down, shuffle sideways", "across & back")]
+        races = [("Running relay", "run to the cone and back, tag the next runner"), ("Spoon relay", "carry a potato or ball on a spoon — drop it, start over"),
+                 ("Sack hop", "hop inside a pillowcase"), ("Crab-walk relay", "tummy up, hands and feet"), ("Wheelbarrow", "partner holds your ankles; walk on your hands"),
+                 ("Backwards walk", "walk backwards — no peeking!"), ("Ball-between-knees", "squeeze a ball between your knees and waddle")]
         if T == "A":
-            body = (head.format('<p class="big">Today we move like ANIMALS! Mom calls out an animal — you do the walk. Color a medal when you finish each one!</p>')
-                    + '<table class="t" style="font-size:14pt">' + "".join(f"<tr><td><b>{m}</b><div class='small'>{h}</div></td><td>{d}</td><td class='center'><span class='star' style='font-size:24pt'>✪</span></td></tr>" for m, h, d in moves) + '</table>'
-                    + '<div class="lab">My favorite animal walk was:</div><div class="ln"></div>')
+            body = (head.format('<p class="big">Relay race day! Run your part, then <b>tag</b> your teammate. Cheer for everybody! Color a medal when you finish each race.</p>')
+                    + '<table class="t" style="font-size:14pt">' + "".join(f"<tr><td><b>{m}</b><div class='small'>{h}</div></td><td class='center'><span class='star' style='font-size:24pt'>✪</span></td></tr>" for m, h in races) + '</table>'
+                    + mc("When your turn is done, you…", ["tag your teammate", "sit down and stop", "run away"], 1)
+                    + '<div class="lab">My favorite race was:</div><div class="ln"></div>')
         else:
-            body = (head.format('<p>Animal walks build strength, balance, and coordination — no equipment needed. Run the Olympics in the backyard: each event, try to beat your first score '
-                                'on round 2. Water break between rounds!' + (' Take your pulse (count 15 seconds × 4) before and after the round.' if T == "C" else '') + '</p>')
-                    + '<table class="t"><tr><th>Event</th><th>How</th><th>Goal</th><th>Round 1</th><th>Round 2</th></tr>'
-                    + "".join(f"<tr><td><b>{m}</b></td><td>{h}</td><td>{d}</td><td style='width:70px'></td><td style='width:70px'></td></tr>" for m, h, d in moves) + '</table>'
-                    + ('<div class="grid2"><div>Heart rate before: ______ bpm</div><div>Heart rate after: ______ bpm</div></div>'
-                       '<div>Which animal walk was hardest? Which muscles did it work?' + lines(2) + '</div>' if T == "C" else
-                       '<div>Which animal walk was hardest? Why?' + lines(2) + '</div>'))
+            body = (head.format('<p>Make two teams (big kids pair up with littles). Each race: one runner at a time goes to the cone and back, then tags the next teammate. '
+                                'Time each team. Water break between races!' + (' Good sportsmanship counts: “let us run with endurance the race that is set before us” (Hebrews 12:1).' if T == "C" else '') + '</p>')
+                    + '<table class="t"><tr><th>Race</th><th>How</th><th>Team 1 time</th><th>Team 2 time</th></tr>'
+                    + "".join(f"<tr><td><b>{m}</b></td><td>{h}</td><td style='width:80px'></td><td style='width:80px'></td></tr>" for m, h in races) + '</table>'
+                    + qs([("What makes a relay team fast?", ["quick, clean tags and everyone doing their part", "one fast runner doing everything", "skipping the hard races"])], 1)
+                    + ('<div>Which race was hardest for your team, and what would you change next time? How did you show good sportsmanship?' + lines(3) + '</div>' if T == "C" else
+                       '<div>Which race was hardest? Why?' + lines(2) + '</div>'))
     return page(name, i, "Fun Electives", f"{NAMES[i]} · {TOPIC[i]}", body)
 
-MATERIALS = ("<b>Tue:</b> milk (whole is best), shallow plates, food coloring, dish soap, cotton swabs. "
-             "<b>Wed:</b> colored or kid-painted paper, scissors, glue sticks, cardstock. "
-             "<b>Thu:</b> just the QR music. <b>Fri:</b> blank cards or folded paper, envelopes, stamps if mailing. "
-             "<b>Sat:</b> backyard, timer, water bottles.")
+MATERIALS = ("<b>Tue:</b> clear soda (lemon-lime or club soda), raisins, 2 clear glasses per group, water (Tier C: a few corn kernels or pasta pieces). "
+             "<b>Wed:</b> white paper or cardstock, crayons or oil pastels (blues, purples, greens, pinks). "
+             "<b>Thu:</b> just the QR music. <b>Fri:</b> nothing to buy — fill in the Emergency Cards together. "
+             "<b>Sat:</b> backyard, 2 cones or shoes for markers, a spoon + potato/ball, pillowcases, a ball, timer, water bottles.")
+
+KEY = ("<b>Tue:</b> A: they danced · little bubbles. B/C: 1 carbon dioxide, 2 there were no gas bubbles to lift them. "
+       "<b>Wed:</b> A: water lilies. B/C: 1 light and color in a moment; 2 to capture how the light and colors changed at different times/seasons. "
+       "<b>Thu:</b> B/C: 1 To God alone be the glory, 2 Baroque. "
+       "<b>Fri:</b> A: yes, no (tell Mom), yes, no (tell Mom). B/C: E, N, E, E, N, E; 7 wait until the dispatcher says it's OK. "
+       "<b>Sat:</b> A: tag your teammate. B/C: 1 quick, clean tags and everyone doing their part.")

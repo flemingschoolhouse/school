@@ -38,3 +38,11 @@ and the tablet web pages published on this site.
 - index.html has a "🎮 Daily Quest" row linking each kid's quest page — keep it when updating the week lines.
 - mompage.py imports quest.MOM_BOARD (Chore Quest scoreboard + "Inspection passed" buttons) into Mom's Corner — keep that import.
 - Saves through the same Apps Script API (kid/week rows "quest-stats" and "questmom"); no script changes needed.
+
+## Week of Nov 10, 2026 notes
+- Week dates/labels now live in ONE place: DAYS + WEEK_ISO/WEEK_SHORT/WEEK_RANGE/WEEK_LONG in lib.py (build.py uses them for covers, headers, PDF names).
+  Still also set WEEK in web.py and WEEK/LABEL (+ PDF names) in mompage.py.
+- Nariah's subjects are in core_nariah.py, Titus's + Nayeli's Pre-K pages in core_titus.py (both import small helpers from core_young.py, which holds the Nov 3 week).
+- test_core.py renders one module to PNGs and reports OVERFLOW / missing videos / answer keys:
+  `python3 test_core.py core_nevaeh` or `python3 test_core.py core_titus titus_math --nayeli`.
+- While building, new video ids can go in /home/claude/vids_<name>.py (V = {...}); fold them into videos.py before committing.

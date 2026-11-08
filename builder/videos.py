@@ -120,3 +120,141 @@ V.update({
 "how to write a thank you note for kids": "3kSniQj_LP8",
 "animal walks exercise for kids": "XbV5tZ98JoA",
 })
+
+# Week of Nov 10, 2026 — vids_naomi.py
+V.update({
+"NM multiplying by multiples of 10 and 100": "lY7q52L3yN0",
+"NM 2 digit times 1 digit with carrying": "SfxULALs_u8",
+"NM 3 digit by 1 digit multiplication": "od-tHGrudcA",
+"NM multiplication word problems": "fYpxGvswB7w",
+"NE action verbs part 1": "eG9wOSM2eoQ",
+"NE linking verbs part 5": "B2r4LBm6RZU",
+"NE helping verbs part 4": "pefM8yrKyqg",
+"NE simple verb tenses part 3": "4Rm9l6y3-WY",
+"NS habitats polar desert forest grassland aquatic": "PyO8XbFrde4",
+"NS physical adaptations in animals": "r05jJRjLVEA",
+"NS behavioral adaptations in animals": "kMOmfgfs1tE",
+"NS exploring Florida's wetlands": "g_9WY-I8PSI",
+"NF learning about Ponce de Leon": "D95r3s-iobg",
+"NF Fort Caroline National Memorial virtual tour": "YdTQHWl4zyM",
+"NF St Augustine 1565 Pedro Menendez": "QV7VB8u_mV0",
+"NF Castillo de San Marcos castle made of coquina": "9Qir7AhwymE",
+})
+
+# Week of Nov 10, 2026 — vids_nariah.py
+V.update({
+"N2 coin values song": "RVpcZ5obmsM",
+"N2 counting coins 2nd grade": "ICy1Xkj-CRg",
+"N2 telling time to 5 minutes song": "h6RNkQ7lU8Y",
+"N2 money word problems 2nd grade": "wy9CCvKbk8E",
+"N2 magic e song a_e i_e": "bZhl6YcrxZQ",
+"N2 magic e long o o_e": "r_yWJQzDhxY",
+"N2 adjectives song for kids": "MThSRemKKCk",
+"N2 sentence song uppercase period": "VOUY-urIXlg",
+"N2 parts of a plant song": "70zRAsa_8ko",
+"N2 what plants need to grow": "gIRR-VdIP1M",
+"N2 plant life cycle for kids": "GsE4ftKqIBs",
+"N2 plant parts we eat": "nPqKxaumOJI",
+"N2 how plants grow review": "kk5MKPa4SQQ",
+"N2 American flag for kids": "MjxA0YRVErg",
+"N2 Veterans Day for kids": "PXcjKtgEmRE",
+"N2 bald eagle national bird kids": "q1qXp0TxRBc",
+"N2 Statue of Liberty FreeSchool": "usHRc7G0gVo",
+"N2 American symbols review": "x3auxqCEUyU",
+})
+
+# Week of Nov 10, 2026 — vids_nevaeh.py
+V.update({
+    # Math Crash Course · Week 2 (fractions)
+    "simplify fractions GCF": "4CKDqvddhhg",                       # Math with Mr. J — How to Simplify Fractions
+    "add subtract fractions unlike denominators": "XsW8HJutIgM",    # Math with Mr. J — Adding and Subtracting Fractions with Unlike Denominators
+    "multiplying fractions and mixed numbers": "cwKpKmX3UtQ",       # Multiplying Fractions by Fractions, Whole Numbers, and Mixed Numbers
+    "dividing fractions reciprocal": "nWZdiZeP_iU",                 # How to Divide Fractions by Fractions
+    # English · Week 3 (punctuation)
+    "comma rules middle school": "w1v-B4heXzs",                     # Lesson 9: Commas for Middle Schoolers
+    "semicolons and colons": "1Oi0f78QjQQ",                         # George Explains... Semicolons and Colons
+    "punctuating dialogue quotation marks": "vZ4BbyBUSmA",          # Grammar for Kids: Punctuating Dialogue
+    "apostrophes possessives contractions": "t8ppmEoBNFE",          # Using apostrophes in contractions and possessives
+    # Science · Week 3 (matter & its changes)
+    "states of matter particle theory": "oMbB-TTIFU4",              # States of Matter and Particle Theory for Kids
+    "physical and chemical changes": "BOr76Zx48QM",                 # Physical and Chemical Changes for Kids
+    "signs of a chemical reaction": "dvSvkDinIy0",                  # 5 Signs of a Chemical Reaction
+    "conservation of mass counting atoms": "JCyjLPYXl1I",           # What Is the Law of Conservation of Mass
+    # History · Week 3 (road to revolution)
+    "French and Indian War for kids": "ZqvKTEkvGyc",                # George Washington and the French and Indian War - For Kids
+    "Stamp Act no taxation without representation": "hvwWpzxv2u8", # No Taxation Without Representation! Sons of Liberty and the Stamp Act 1765
+    "Boston Massacre and Boston Tea Party": "4kbUcwNropc",          # Boston Massacre, Tea Act, & Boston Tea Party
+    "Intolerable Acts Lexington and Concord": "cS3ymIrJwXQ",        # Intolerable - Coercive Acts, Colonial Response & Lexington and Concord
+})
+
+# Week of Nov 10, 2026 — vids_nylah.py
+# Nylah · week of Nov 10, 2026 (Level 3 math, sentence building, body systems, Bill of Rights)
+V.update({
+"multiplication as repeated addition": "h95q6JblzsY",
+"2 digit by 1 digit multiplication": "FJ5qLWP3Fqo",
+"multiplication and division fact families": "N82nieJyL8U",
+"long division with remainders 1 digit divisor": "81D7CibvOp8",
+"complete subject and complete predicate": "mYXqMmaDlxs",
+"simple subject and simple predicate": "od0CPZe_MSk",
+"four types of sentences": "sAy0AR9hnrI",
+"compound subjects and compound predicates": "SV_H9xQl14w",
+"skeletal and muscular systems for kids": "hVksf01kstM",
+"circulatory system for kids": "Dw0WO2XZ5fM",
+"respiratory system for kids": "67Jbbu7UZAA",
+"digestive system for kids": "SD8kLAD1jnA",
+"bill of rights for kids": "skWNC3a8NkM",
+"first amendment five freedoms": "JqeXHfCThyw",
+"bill of rights amendments 1 to 10": "3P6E3Bpn5yw",
+"rights of the accused 5th 6th 8th amendments": "VX_-1PDTisU",
+"bill of rights review for kids": "e_8WjfqOVm0",
+})
+
+# Week of Nov 10, 2026 — vids_shared.py
+V.update({
+"Romans 8:28 ESV song": "zR6v7Rbprrs",            # Romans 8:28 ESV (Song)
+"Joseph Bible story for kids": "aKqVGZPYKss",      # Joseph Bible Story for Kids: Sold by His Brothers, Chosen to Save Egypt
+"MM 3 times table song": "uFmbB2vileA",            # Three Times Table Counting Song
+"MM 4 times table song": "n-8gUu1qxT8",            # 4 Times Tables Song for Kids
+"MM skip counting by 3 song": "70aG99v704k",       # Skip Counting By 3 Song
+"MM one step multiplication word problems": "z-SR0OvBKX4",  # Math with Mr. J
+"MM four times table song 2": "TXoKhcB9a1o",       # Four Times Table Song
+"SC count by 2s Jack Hartmann": "OCxvNtrcDIs",     # Count by 2
+"SC count by 2s and move": "TD_x3AFDjG8",          # COUNT by 2's and MOVE!
+"SC dancing twos": "DIVQXj3kL00",                  # The Dancing Twos!
+"SC get ready count by 2s": "uaeNDeidlYw",         # Get Ready, Get Set, Let's Count by 2's!
+"SC count by 2s song": "FmLFUIUzj0M",              # Count by 2's
+"SP voiceless th sound phonics": "cXxn8UVLAH0",    # Phonics for Kids – The Voiceless TH Sound
+"SP voiced th sound phonics": "RWAs6yUxqtM",       # Phonics for Kids – The Voiced TH Sound
+"SP th articulation words": "HY6aJvW4OxY",         # TH Articulation Words for Speech Therapy Practice
+"SP th speech sound activities": "E0N5XzuHHhk",    # Speech sound activities: TH sound
+"SP teaching th sound Charli": "gFKtn72zLdA",      # Teaching 'th' sound - Charli
+"GEO landforms for kids": "4C5FrjqndWg",           # Landforms for Kids
+"GEO bodies of water for kids": "eVbkpOuA2_U",     # Bodies of Water for Kids
+"GEO island peninsula isthmus": "9DjRbizYb18",     # Landforms: Island, Archipelago, Peninsula and Isthmus
+"GEO world rivers for kids": "T5H3UyNBGMg",        # World Rivers for Kids
+"GEO land and water song": "sAya7sSOupc",          # Land and Water Song for Kids
+"EL dancing raisins experiment": "d8USjzJe9d8",    # The Dancing Raisins Science Experiment for Kids
+"EL how to draw Monet water lilies": "MHgxyZlP318",# How to Draw Water Lilies
+"EL Claude Monet for kids": "Uawwwa-jmYM",         # Claude Monet
+"EL Bach Jesu Joy of Man's Desiring": "alSDCUUgUFw", # Ormandy, Philadelphia Orchestra
+"EL meet Bach for kids": "V5ijvbKeAp8",            # Meet Bach
+"EL learn about 911 Emergency Ernie": "ulf4oKqTUc8",
+"EL kids safety when to call 911": "v8tZ3xJrgl4",
+"EL PE relay races": "YZQLU2Dk86w",                # P.E. Series: Relay Races
+})
+
+# Week of Nov 10, 2026 — vids_titus.py
+V.update({
+"TT more fewer same kindergarten": "Vvu-_yXnh14",      # Jack Hartmann - Comparing Numbers (more / less groups)
+"TT flat shapes kindergarten": "aRCt9Ch7oR0",          # Jack Hartmann - 2D Shapes Are Everywhere
+"TT patterns AB ABB ABC": "WHIfP33bYhg",               # The Kids' Picture Show - Vehicle Patterns (ABC, AAB, ABB, ABAB)
+"TT addition stories kindergarten": "pxUY29LpMZE",     # Addition for Kids (Homeschool Pop search result)
+"letter A song for kids": "t2MfGBsnyZM",               # Jack Hartmann - Let's Learn About the Letter A
+"letter A sound words for kids": "v65DwuWLD5w",        # The Kiboomers - Letter A Song
+"letter P song for kids": "GMqeOVHJyQg",               # Jack Hartmann - Let's Learn About the Letter P
+"letter P sound words for kids": "ru-UJTRm9y4",        # The Kiboomers - Letter P Song
+"AH birds nests": "qGz-pO0QTN4",                       # FreeSchool - All About Robins (mud nests)
+"AH bees hive": "v6tUWk7vC6g",                         # FreeSchool - All About Bees for Kids
+"AH bears den": "OhrhcsICrE8",                         # SciShow Kids - Why Do Some Animals Hibernate?
+"AH frogs pond": "-r6tZGMep0U",                        # FreeSchool - All About Frogs for Kids
+})
