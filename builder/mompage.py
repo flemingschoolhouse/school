@@ -35,7 +35,7 @@ function load(){fetch(API+'?action=all&week='+WEEK+'&t='+Date.now()).then(functi
   if(r){var li='';Object.keys(r.progress).sort().forEach(function(key){var v=r.progress[key],p=key.split('|');
     li+='<li>'+(v==2?'✅':v==1?'🟡':'⬜')+' Day '+p[0].slice(1)+' · '+p[1]+' — '+p[2]+'</li>'});
    det+='<details><summary>'+k+' — last saved '+new Date(r.saved).toLocaleString()+' · <a href="'+k.toLowerCase()+'.html?view=1">see answers</a></summary><ul>'+li+'</ul></details>'}});
- var sa='<div class="row" style="margin:10px 0">'+KIDS.map(function(k){return '<a class="mb" style="background:#2b8a3e" href="'+k.toLowerCase()+'.html?view=1">👀 '+k+'\'s answers</a>'}).join('')+'</div>';
+ var sa='<div class="row" style="margin:10px 0">'+KIDS.map(function(k){return '<a class="mb" style="background:#2b8a3e" href="'+k.toLowerCase()+'.html?view=1">👀 '+k+'’s answers</a>'}).join('')+'</div>';
  document.getElementById('pg').innerHTML=h+'</table>'+sa+det;
 }).catch(function(){document.getElementById('pg').textContent='Could not load progress right now — try refreshing.'})}
 load();setInterval(load,60000);document.getElementById('pgr').onclick=function(){document.getElementById('pg').textContent='Loading…';load()};})();

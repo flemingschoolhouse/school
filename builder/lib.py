@@ -18,10 +18,13 @@ SUBJ = {  # subject -> accent color
 }
 DAYS = [("Day 1", "Tuesday", "Nov 10"), ("Day 2", "Wednesday", "Nov 11"), ("Day 3", "Thursday", "Nov 12"),
         ("Day 4", "Friday", "Nov 13"), ("Day 5", "Saturday", "Nov 14")]
+UNDATED = True               # Grace (Nov 9 2026): packets show DAY N only - no weekday/date - so a week can start any day
 WEEK_ISO = "2026-11-10"          # Tuesday of this week (folder name + progress key)
 WEEK_SHORT = "Nov 10"            # file names: "<Kid> - Week of Nov 10.pdf"
 WEEK_RANGE = "Nov 10–14, 2026"   # headers
 WEEK_LONG = "November 10–14, 2026"
+
+WK_FOOT = "" if UNDATED else "Week of " + WEEK_RANGE
 
 esc = html.escape
 
@@ -245,11 +248,11 @@ def page(owner, day_i, subject, title, body, sub=None):
         dayblk = f'<div class="dayblk"><div class="d" style="font-size:24pt">{esc(sub or "")}</div></div>'
     else:
         d, wd, dt = DAYS[day_i]
-        dayblk = f'<div class="dayblk"><div class="d">{d.upper()}</div><div class="w">{wd} · {dt}</div></div>'
+        dayblk = f'<div class="dayblk"><div class="d">{d.upper()}</div>' + ("" if UNDATED else f'<div class="w">{wd} · {dt}</div>') + '</div>'
     return (f'<div class="page" style="--ac:{ac}"><div class="hdr">{dayblk}'
             f'<div class="subj"><span class="s">{esc(subject)}</span><div class="t">{esc(title)}</div>'
             f'<div class="n">{esc(owner)}</div></div></div><div class="body">{body}</div>'
-            f'<div class="foot"><span>{esc(owner)}</span><span>Week of {WEEK_RANGE}</span></div></div>')
+            f'<div class="foot"><span>{esc(owner)}</span><span>{WK_FOOT}</span></div></div>')
 
 def lines(n, h=26):
     return '<div class="lns">' + "".join(f'<div class="ln" style="height:{h}px"></div>' for _ in range(n)) + '</div>'

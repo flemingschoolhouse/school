@@ -368,7 +368,7 @@ def nariah_ss():
         + '<div class="lab">Trace.</div>' + trace_line("USA", 40, 3),
         "1) 50 2) one for each state 3) 13 4) colonies 5) the Stars and Stripes. Coloring: 7 red stripes (top and bottom are red), 6 white, blue box with white stars.")
     S.set(1, "Veterans Day",
-        learnbox("<p class='big'><b>Today is Veterans Day!</b> A <b>veteran</b> is someone who served our country in the military — the Army, Navy, Air Force, "
+        learnbox("<p class='big'><b>Veterans Day is November 11!</b> A <b>veteran</b> is someone who served our country in the military — the Army, Navy, Air Force, "
                  "Marines, Coast Guard, or Space Force. Long ago, a big war called <b>World War I</b> stopped on the <b>11th hour</b> of the <b>11th day</b> of the "
                  "<b>11th month</b> in <b>1918</b>. That is why Veterans Day is on <b>November 11</b>. Today we say <b>thank you</b> to veterans!</p>", yt("N2 Veterans Day for kids"), "Veterans Day")
         + f'<div class="center">{icon("medal", 1.3)}</div>'

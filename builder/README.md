@@ -46,3 +46,15 @@ and the tablet web pages published on this site.
 - test_core.py renders one module to PNGs and reports OVERFLOW / missing videos / answer keys:
   `python3 test_core.py core_nevaeh` or `python3 test_core.py core_titus titus_math --nayeli`.
 - While building, new video ids can go in /home/claude/vids_<name>.py (V = {...}); fold them into videos.py before committing.
+
+## Fall break + UNDATED packets (Grace, Nov 9 2026)
+- Fall break was Fri Nov 6 – Mon Nov 16; back to school Tue Nov 17. The kids had finished Days 1–3 of the Nov 3 packet.
+  Plan: Nov 17–18 = Days 4–5 of the Nov 3 packet · Nov 19–21 = Days 1–3 of the Nov 10 packet · Nov 24–25 = its Days 4–5 ·
+  Thanksgiving Nov 26–28 off · next NEW packet starts Tue Dec 1 (Sunday build Nov 29). No new packets on Nov 15 or Nov 22.
+- Grace wants packets UNDATED: pages show DAY N only, no weekday or date, so a packet can start on any day and slide when life happens.
+  lib.UNDATED = True does this (page headers/footers, covers, Mom's Guide). Keep WEEK_ISO / WEEK in web.py / mompage.py as the Tuesday the
+  packet was built for — it is only the folder name + progress key now. Don't write "today is <holiday/date>" into lessons.
+- The Nov 3 and Nov 10 tablet pages and the Nov 10 PDFs were un-dated in place (the PDFs by covering the date text; they were not rebuilt).
+  The root kid pages carry a "Welcome back — finish Day 4 & 5 first" banner linking to weeks/2026-11-03/; it disappears with the next build.
+- mompage.py: the "'s answers" button text must not use \' inside the non-raw DASH string (Python drops the backslash and the
+  progress-board script dies with a syntax error — that happened in the Nov 10 build). It now uses a curly apostrophe.

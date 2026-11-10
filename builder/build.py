@@ -34,12 +34,15 @@ def day_pages(kid, cfg, i):
     if cfg["el"]: pg.append(("Fun Electives", electives.el_page(kid, i)))
     return pg
 
+WK_COVER = "" if UNDATED else " · Week of " + WEEK_LONG
+WK_HEAD = "" if UNDATED else "Week of " + WEEK_RANGE
+
 def cover(kid, cfg, subjects):
-    head = "".join(f"<th class='center'>{d}<div class='small'>{w[:3]}</div></th>" for d, w, _ in DAYS)
+    head = "".join("<th class='center'>" + d + ("" if UNDATED else "<div class='small'>" + w[:3] + "</div>") + "</th>" for d, w, _ in DAYS)
     rows = "".join(f"<tr><td style='height:40px'><b>{s}</b></td>" + "".join("<td class='center'><span class='chk' style='width:22px;height:22px'></span></td>" for _ in DAYS) + "</tr>" for s in subjects)
     return (f'<div class="page" style="--ac:#1f2a5c"><div style="text-align:center;margin-top:40px">'
             f'<div style="font-size:44pt;font-weight:700;color:#1f2a5c">{kid}</div>'
-            f'<div style="font-size:16pt;color:#6d28d9;font-weight:600">{cfg["grade"]} · Week of {WEEK_LONG}</div>'
+            f'<div style="font-size:16pt;color:#6d28d9;font-weight:600">{cfg["grade"]}{WK_COVER}</div>'
             f'<div style="margin:14px auto 22px;width:70%;border-top:3px solid #6d28d9"></div></div>'
             f'<div class="lab" style="font-size:14pt;margin-bottom:6px">My week — check it off when it\'s done!</div>'
             f'<table class="t" style="font-size:13pt"><tr><th></th>{head}</tr>{rows}</table>'
@@ -59,7 +62,7 @@ def build_kid(kid, cfg):
 # ---------------- MOM PACKET ----------------
 def mom_page(title, body, sub="Mom's Guide"):
     return (f'<div class="page" style="--ac:#1f2a5c;font-size:10pt"><div class="hdr"><div class="dayblk"><div class="d" style="font-size:22pt">{esc(sub)}</div>'
-            f'<div class="w">Week of {WEEK_RANGE}</div></div><div class="subj"><span class="s">Mom</span><div class="t">{esc(title)}</div></div></div>'
+            f'<div class="w">{WK_HEAD}</div></div><div class="subj"><span class="s">Mom</span><div class="t">{esc(title)}</div></div></div>'
             f'<div class="body" style="gap:7px">{body}</div><div class="foot"><span>Mom\'s Guide</span><span>All For His Glory</span></div></div>')
 
 def build_mom():
@@ -77,7 +80,7 @@ def build_mom():
          "<tr><td><b>Naomi</b> (4th)</td><td>Morning · Math: multiplying by one digit · English: verbs · Science: habitats & adaptations · Florida History: Spanish & French Florida "
          "(Fort Caroline!) · Multiplication W3 · Geography (Tier B) · Electives (Tier B)</td></tr>"
          "<tr><td><b>Nariah</b> (2nd)</td><td>Morning · Math Level 2 (money & time to 5 minutes, with a regrouping warm-up daily) · English: long vowels & describing words · "
-         "Science: how plants grow · Social Studies: American symbols (Veterans Day on Wed) · Multiplication W3 · Speech Stars W3 (TH) · Geography (Tier A) · Electives (Tier A)</td></tr>"
+         "Science: how plants grow · Social Studies: American symbols (Veterans Day, Day 2) · Multiplication W3 · Speech Stars W3 (TH) · Geography (Tier A) · Electives (Tier A)</td></tr>"
          "<tr><td><b>Titus</b> (K)</td><td>Morning · Math: more, less & shapes · Letters: Aa & Pp · Science: animal homes · Skip Count Stars W3 (2s) · Speech Stars W3 (TH) · "
          "Geography (Tier A) · Electives (Tier A)</td></tr>"
          "<tr><td><b>Nayeli</b> (Pre-K)</td><td>Mini morning sheet · Pre-K animal of the day (dot marker, trace, sticker — matches Titus's animal homes) · her own Skip Count Stars & Speech Stars pages</td></tr></table>")
@@ -86,10 +89,10 @@ def build_mom():
         "<b>Geography:</b> play-dough (Day 1–3), a cup of salt water (Day 2), a shallow pan of water (Day 3), yarn (Day 4). "
         + electives.MATERIALS + " <b>Science:</b> Nariah's bean sprout bag starts Day 2 (2–3 dry beans, a paper towel, a zip bag, tape for a sunny window). "
         "Titus: a short walk to look for nests (Day 1) and a blanket over a table for a “bear den” (Day 3). Nevaeh (optional): baking soda + vinegar demo for Days 3–4. "
-        "<b>Social Studies:</b> Nariah makes a thank-you card for a veteran on Veterans Day (Wed) — you write the words. "
+        "<b>Social Studies:</b> Nariah makes a thank-you card for a veteran on Day 2 (Veterans Day lesson) — you write the words. "
         "<b>Optional field trip:</b> Fort Caroline National Memorial is right here in Jacksonville (Naomi's Day 2).</p>"))
     for i in range(5):
-        P.add(mom_page("Teaching Together — Lesson Plans", plans.day_plan(i), sub=f"{DAYS[i][0].upper()} · {DAYS[i][1]}"))
+        P.add(mom_page("Teaching Together — Lesson Plans", plans.day_plan(i), sub=DAYS[i][0].upper() if UNDATED else f"{DAYS[i][0].upper()} · {DAYS[i][1]}"))
     P.add(mom_page("Morning Work",
         f"<h3>Morning Work — {morning.THEME}</h3>" + morning.mom_notes()
         + "<h3>Speech Stars</h3>" + speech.MOM))
